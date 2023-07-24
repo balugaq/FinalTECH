@@ -34,6 +34,10 @@ tweak:
       FINALTECH_FUEL_OPERATOR: 1
     independent:
       ANY_SLIMEFUN_ITEM_ID: 2
+  live-time:
+    FINALTECH_STEPPING_STONE:
+      time: 10
+      drop-self: false
   no-blockTicker:
     item:
       - 'FINALTECH_NORMAL_STORAGE_UNIT'
