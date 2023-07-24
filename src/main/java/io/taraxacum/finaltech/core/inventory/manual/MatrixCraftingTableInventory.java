@@ -178,9 +178,9 @@ public class MatrixCraftingTableInventory extends AbstractManualMachineInventory
             ItemStackUtil.addLoresToLast(matchItem,
                     FinalTech.getLanguageManager().replaceStringArray(FinalTech.getLanguageStringArray("items", this.getId(), "show-icon", "lore"),
                             String.valueOf(basicCraft.getMatchAmount())));
-            inventory.setItem(parseSlot, matchItem);
+            inventory.setItem(this.parseSlot, matchItem);
         } else {
-            inventory.setItem(parseSlot, parseIcon);
+            inventory.setItem(this.parseSlot, this.parseIcon);
         }
     }
 }

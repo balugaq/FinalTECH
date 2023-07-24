@@ -95,7 +95,7 @@ public class StorageInteractPort extends AbstractCargo implements RecipeItem {
         StringItemCardCache[] stringItemCardCaches = new StringItemCardCache[this.searchLimit];
         for (int i = 0, size = Math.min(targetInventory.getSize(), this.searchLimit); i < size; i++) {
             ItemStack itemStack = targetInventory.getItem(i);
-            if(!ItemStackUtil.isItemNull(itemStack) && FinalTechItems.STORAGE_CARD.verifyItem(itemStack)) {
+            if (!ItemStackUtil.isItemNull(itemStack) && FinalTechItems.STORAGE_CARD.verifyItem(itemStack)) {
                 stringItemCardCaches[i] = new StringItemCardCache(itemStack);
             }
 
