@@ -7,6 +7,7 @@ import io.taraxacum.finaltech.core.interfaces.RecipeItem;
 import io.taraxacum.finaltech.setup.FinalTechItemStacks;
 import io.taraxacum.finaltech.util.RecipeUtil;
 import io.taraxacum.finaltech.util.StringItemUtil;
+import io.taraxacum.libs.plugin.dto.ItemWrapper;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.plugin.util.TextUtil;
 import io.taraxacum.libs.slimefun.interfaces.ValidItem;
@@ -44,6 +45,14 @@ public class StorageCard extends UnusableSlimefunItem implements RecipeItem, Val
     public boolean verifyItem(@Nonnull ItemStack itemStack) {
         if (itemStack.hasItemMeta()) {
             return this.verifyItem(itemStack.getItemMeta());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean verifyItem(@Nonnull ItemWrapper itemWrapper) {
+        if (itemWrapper.hasItemMeta()) {
+            return this.verifyItem(itemWrapper.getItemMeta());
         }
         return false;
     }
