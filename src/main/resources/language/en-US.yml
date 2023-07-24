@@ -1480,8 +1480,8 @@ items:
       lore:
         - '{color:normal}Affected Machine: {color:number}{1}'
         - '{color:normal}Total Energy: {color:number}{2} J'
-  FINALTECH_ORDERED_DUST_GENERATOR:
-    name: '{color:prandom}Ordered Dust Generator'
+  FINALTECH_DUST_GENERATOR:
+    name: '{color:prandom}Dust Generator'
     info:
       1:
         name: '{color:passive}Mechanism'
