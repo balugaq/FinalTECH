@@ -69,6 +69,26 @@ public class ItemStackBuilder {
         return true;
     }
 
+    public boolean softCompare(@Nonnull ItemWrapper itemWrapper) {
+        if (this.material != itemWrapper.getItemStack().getType()) {
+            return false;
+        }
+
+        if (this.amount != null) {
+            if (this.amount != itemWrapper.getItemStack().getAmount()) {
+                return false;
+            }
+        }
+
+        if (this.itemMetaBuilder != null) {
+            if (!itemWrapper.hasItemMeta() || !this.itemMetaBuilder.softCompare(itemWrapper.getItemMeta())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public boolean hardCompare(@Nonnull ItemStack itemStack) {
         if (this.material != itemStack.getType()) {
             return false;
