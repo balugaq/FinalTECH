@@ -192,13 +192,15 @@ public final class MachineUtil {
 
     @Nonnull
     public static ItemStack cloneAsDescriptiveItem(@Nullable ItemStack itemStack) {
-        if(ItemStackUtil.isItemNull(itemStack)) {
+        if (ItemStackUtil.isItemNull(itemStack)) {
             return ItemStackUtil.AIR;
         }
         SlimefunItem slimefunItem = SlimefunItem.getByItem(itemStack);
-        if(slimefunItem != null && ItemState.ENABLED.equals(slimefunItem.getState())) {
-            return MachineUtil.cloneAsDescriptiveItem(slimefunItem);
-        } else if(ItemStackUtil.isItemSimilar(itemStack, new ItemStack(itemStack.getType()))) {
+        if (slimefunItem != null && ItemState.ENABLED.equals(slimefunItem.getState())) {
+            ItemStack result = MachineUtil.cloneAsDescriptiveItem(slimefunItem);
+            result.setAmount(itemStack.getAmount());
+            return result;
+        } else if(ItemStackUtil.isRawMaterial(itemStack)) {
             ItemStack result = ItemStackUtil.cloneItem(itemStack);
             ItemMeta itemMeta;
             if(!itemStack.hasItemMeta()) {
