@@ -1,10 +1,11 @@
 package io.taraxacum.finaltech.core.inventory.limit;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.taraxacum.finaltech.core.option.Icon;
 
 import javax.annotation.Nonnull;
 
-public class DustFactoryDirtInventory extends AbstractLimitMachineInventory {
+public class DustFactoryInventory extends AbstractLimitMachineInventory {
     private final int[] border = new int[] {3, 4, 5, 12, 14, 21, 22, 23, 30, 31, 32};
     private final int[] inputBorder = new int[] {0, 1, 2, 11, 20, 27, 28, 29};
     private final int[] outputBorder = new int[] {6, 7, 8, 15, 24, 33, 34, 35};
@@ -13,8 +14,14 @@ public class DustFactoryDirtInventory extends AbstractLimitMachineInventory {
 
     public final int statusSlot = 22;
 
-    public DustFactoryDirtInventory(@Nonnull SlimefunItem slimefunItem) {
+    public DustFactoryInventory(@Nonnull SlimefunItem slimefunItem) {
         super(slimefunItem);
+    }
+
+    @Override
+    protected void initSelf() {
+        super.initSelf();
+        this.defaultItemStack.put(this.statusSlot, Icon.STATUS_ICON);
     }
 
     @Nonnull
