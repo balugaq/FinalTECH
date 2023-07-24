@@ -22,7 +22,7 @@ public class AdvancedMachineInventory extends AbstractLockMachineInventory {
     @Override
     protected void initSelf() {
         super.initSelf();
-        this.defaultItemStack.put(this.moduleSlot, Icon.QUANTITY_MODULE_ICON);
+        this.defaultItemStack.put(this.statusSlot, Icon.QUANTITY_MODULE_ICON);
     }
 
     @Override
