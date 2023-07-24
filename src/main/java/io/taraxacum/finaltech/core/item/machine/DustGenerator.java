@@ -16,7 +16,9 @@ import io.taraxacum.finaltech.setup.FinalTechItems;
 import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.MachineUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
+import io.taraxacum.libs.plugin.dto.ItemWrapper;
 import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.slimefun.interfaces.BeautifulEnergyProvider;
 import io.taraxacum.libs.slimefun.util.EnergyUtil;
 import org.bukkit.Location;
@@ -78,12 +80,17 @@ public class DustGenerator extends AbstractMachine implements RecipeItem, MenuUp
         boolean work = false;
         for (int slot : this.getInputSlot()) {
             ItemStack itemStack = inventory.getItem(slot);
-            if (FinalTechItems.UNORDERED_DUST.verifyItem(itemStack)) {
+            if (ItemStackUtil.isItemNull(itemStack)) {
+                continue;
+            }
+
+            ItemWrapper itemWrapper = new ItemWrapper(itemStack);
+            if (FinalTechItems.UNORDERED_DUST.verifyItem(itemWrapper)) {
                 itemStack.setAmount(itemStack.getAmount() - 1);
                 count = Math.min(++count, this.countLimit);
                 work = true;
                 break;
-            } else if (FinalTechItems.ITEM_PHONY.verifyItem(itemStack)) {
+            } else if (FinalTechItems.ITEM_PHONY.verifyItem(itemWrapper)) {
                 itemStack.setAmount(itemStack.getAmount() - 1);
                 count *= 2;
                 count = Math.min(count, this.countLimit);

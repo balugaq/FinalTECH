@@ -19,6 +19,7 @@ import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
 import io.taraxacum.libs.plugin.dto.LocationData;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
+import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.slimefun.service.SlimefunLocationDataService;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.Location;
@@ -104,7 +105,7 @@ public class EtherMiner extends AbstractOperationMachine implements RecipeItem, 
             ItemStack unorderedDustItemStack = null;
             for(int slot : this.getInputSlot()) {
                 ItemStack itemStack = inventory.getItem(slot);
-                if(FinalTechItems.UNORDERED_DUST.verifyItem(itemStack)) {
+                if (!ItemStackUtil.isItemNull(itemStack) && FinalTechItems.UNORDERED_DUST.verifyItem(itemStack)) {
                     unorderedDustItemStack = itemStack;
                     break;
                 }

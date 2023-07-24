@@ -126,9 +126,10 @@ public class MatrixReactor extends AbstractMachine implements RecipeItem, MenuUp
         int unorderedDustItemCount = 0;
 
         for (int slot : this.orderedDustSlot) {
-            if (FinalTechItems.ORDERED_DUST.verifyItem(inventory.getItem(slot))) {
+            ItemStack itemStack1 = inventory.getItem(slot);
+            if (!ItemStackUtil.isItemNull(itemStack1) && FinalTechItems.ORDERED_DUST.verifyItem(itemStack1)) {
                 orderedDustItemSlots[orderedDustItemSlotsP++] = slot;
-                orderedDustItemCount += inventory.getItem(slot).getAmount();
+                orderedDustItemCount += itemStack1.getAmount();
                 if (orderedDustItemCount > amount) {
                     break;
                 }
@@ -137,9 +138,10 @@ public class MatrixReactor extends AbstractMachine implements RecipeItem, MenuUp
 
         if (orderedDustItemCount >= amount) {
             for (int slot : this.unorderedDustSlot) {
-                if (FinalTechItems.UNORDERED_DUST.verifyItem(inventory.getItem(slot))) {
+                ItemStack itemStack1 = inventory.getItem(slot);
+                if (!ItemStackUtil.isItemNull(itemStack1) && FinalTechItems.UNORDERED_DUST.verifyItem(itemStack1)) {
                     unorderedDustItemSlots[unorderedDustItemSlotsP++] = slot;
-                    unorderedDustItemCount += inventory.getItem(slot).getAmount();
+                    unorderedDustItemCount += itemStack1.getAmount();
                     if (unorderedDustItemCount > amount) {
                         break;
                     }
@@ -181,7 +183,8 @@ public class MatrixReactor extends AbstractMachine implements RecipeItem, MenuUp
                 FinalTech.getLocationDataService().setLocationData(locationData, this.keyItem, ItemStackUtil.itemStackToString(itemStack));
 
                 int count;
-                if (FinalTechItems.ITEM_PHONY.verifyItem(inventory.getItem(this.itemPhonyInputSlot[0]))) {
+                ItemStack itemStack1 = inventory.getItem(this.itemPhonyInputSlot[0]);
+                if (!ItemStackUtil.isItemNull(itemStack1) && FinalTechItems.ITEM_PHONY.verifyItem(itemStack1)) {
                     ItemStack itemPhony = inventory.getItem(this.itemPhonyInputSlot[0]);
                     itemPhony.setAmount(itemPhony.getAmount() - 1);
                     count = 1;
@@ -193,9 +196,12 @@ public class MatrixReactor extends AbstractMachine implements RecipeItem, MenuUp
             } else {
                 String keyCountStr = FinalTech.getLocationDataService().getLocationData(locationData, this.keyCount);
                 int count = keyCountStr != null ? Integer.parseInt(keyCountStr) : 0;
-                if (FinalTechItems.ITEM_PHONY.verifyItem(inventory.getItem(this.itemPhonyInputSlot[0])) && inventory.getItem(this.itemPhonyInputSlot[0]).getAmount() >= amount + count) {
-                    ItemStack itemPhony = inventory.getItem(this.itemPhonyInputSlot[0]);
-                    itemPhony.setAmount(itemPhony.getAmount() - count - amount);
+                ItemStack itemStack1 = inventory.getItem(this.itemPhonyInputSlot[0]);
+                if (!ItemStackUtil.isItemNull(itemStack1)
+                        && FinalTechItems.ITEM_PHONY.verifyItem(itemStack1)
+                        && itemStack1.getAmount() >= amount + count) {
+                    itemStack1.setAmount(itemStack1.getAmount() - count - amount);
+                    // TODO item log
                     count++;
                 } else {
                     count = FinalTech.getRandom().nextBoolean() ? count - 1 : count + 1;

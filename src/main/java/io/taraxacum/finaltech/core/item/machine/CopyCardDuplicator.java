@@ -62,7 +62,7 @@ public class CopyCardDuplicator extends AbstractMachine implements RecipeItem {
 
         for (int slot : this.getInputSlot()) {
             ItemStack itemStack = inventory.getItem(slot);
-            if (FinalTechItems.COPY_CARD.verifyItem(itemStack)) {
+            if (!ItemStackUtil.isItemNull(itemStack) && FinalTechItems.COPY_CARD.verifyItem(itemStack)) {
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 ItemStack stringItem = StringItemUtil.parseItemInCard(itemMeta);
                 if (!ItemStackUtil.isItemNull(stringItem)) {
