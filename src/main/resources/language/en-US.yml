@@ -329,6 +329,17 @@ option:
       name: '{color:normal}Enable {color:conceal}- {color:random}True'
       lore:
         - '{color:normal}enabled'
+  SIMPLE_NUMBER:
+    icon:
+      name: '{color:normal}Number'
+      lore:
+        - '{color:number}{1}'
+      lore0:
+        - '{color:normal}Zero'
+    add-icon:
+      name: '{color:normal}Number {color:conceal}- {color:random}Add'
+    sub-icon:
+      name: '{color:normal}Number {color:conceal}- {color:random}Sub'
 categories:
   FINALTECH_ITEM_GROUP:
     name: '{color:random}FINAL TECH'
@@ -1537,8 +1548,7 @@ items:
         name: '{color:passive}Mechanism'
         lore:
           - "{color:normal}Charge machine on it's top"
-          - "{color:normal}Charge energy: {color:number}{1} * machine's capacity"
-          - "{color:normal}Can charge energy to {color:number}{2}% of machine's capacity"
+          - "{color:normal}Charge energy: {color:number}{1} * machine's stored energy"
       2:
         name: '{color:negative}Limit'
         lore:
@@ -1789,7 +1799,8 @@ items:
           - '{color:normal}To the machine it is pointing at one by one'
           - ''
           - '{color:normal}It will try to charge all machine at same time'
-          - '{color:normal}It will charge a machine with full energy'
+          - '{color:normal}It will only charge the machine whose energy is less that half of capacity'
+          - '{color:normal}It will only charge half of the machine capacity one times'
           - ''
           - '{color:normal}Range: {color:number}{1}'
       2:
@@ -1856,7 +1867,7 @@ items:
       1:
         name: '{color:passive}Mechanism'
         lore:
-          - '{color:normal}Make around machine work several times which stored energy is beyond capacity'
+          - '{color:normal}Make around machine work several times which stored energy is more than 0'
           - '{color:normal}Range: {color:number}{1}'
       2:
         name: '{color:negative}Limit'
@@ -2073,8 +2084,8 @@ items:
       1:
         name: '{color:passive}Mechanism'
         lore:
-          - '{color:normal}Can store {color:number}{2} {color:normal}kinds of items.'
-          - '{color:normal}Can store {color:number}{1} items per kind.'
+          - '{color:normal}Can store {color:number}{2} kinds {color:normal}of items.'
+          - '{color:normal}Can store {color:number}{1} items {color:normal}per kind.'
     status:
       name: '{color:passive}Status'
       lore:
@@ -2082,15 +2093,15 @@ items:
         - '{color:action}[Click {color:conceal}(hold {id:FINALTECH_STORAGE_CARD}{color:conceal}){color:action}] {color:normal}Insert all items from it.'
     show-item:
       lore:
-        - '{color:conceal}Amount: {1}'
+        - '{color:conceal}Amount: {color:number}{1}'
   FINALTECH_ADVANCED_STORAGE:
     name: '{color:prandom}Advanced Storage'
     info:
       1:
         name: '{color:passive}Mechanism'
         lore:
-          - '{color:normal}Can store {color:number}{2} {color:normal}kinds of items.'
-          - '{color:normal}Can store {color:number}{1} items per kind.'
+          - '{color:normal}Can store {color:number}{2} kinds {color:normal}of items.'
+          - '{color:normal}Can store {color:number}{1} items {color:normal}per kind.'
     status:
       name: '{color:passive}Status'
       lore:
@@ -2098,14 +2109,14 @@ items:
         - '{color:action}[Click {color:conceal}(hold {id:FINALTECH_STORAGE_CARD}{color:conceal}){color:action}] {color:normal}Insert all items from it.'
     show-item:
       lore:
-        - '{color:conceal}Amount: {1}'
+        - '{color:conceal}Amount: {color:number}{1}'
   FINALTECH_ENERGIZED_STORAGE:
     name: '{color:prandom}Energized Storage'
     info:
       1:
         name: '{color:passive}Mechanism'
         lore:
-          - '{color:normal}Can store {color:number}{2} {color:normal}kinds of items.'
+          - '{color:normal}Can store {color:number}{2} kinds {color:normal}of items.'
     status:
       name: '{color:passive}Status'
       lore:
@@ -2113,14 +2124,14 @@ items:
         - '{color:action}[Click {color:conceal}(hold {id:FINALTECH_STORAGE_CARD}{color:conceal}){color:action}] {color:normal}Insert all items from it.'
     show-item:
       lore:
-        - '{color:conceal}Amount: {1}'
+        - '{color:conceal}Amount: {color:number}{1}'
   FINALTECH_OVERLOADED_STORAGE:
     name: '{color:prandom}Overloaded Storage'
     info:
       1:
         name: '{color:passive}Mechanism'
         lore:
-          - '{color:normal}Can store {color:number}{1} items per kind.'
+          - '{color:normal}Can store {color:number}{1} items {color:normal}per kind.'
     status:
       name: '{color:passive}Status'
       lore:
@@ -2128,7 +2139,7 @@ items:
         - '{color:action}[Click {color:conceal}(hold {id:FINALTECH_STORAGE_CARD}{color:conceal}){color:action}] {color:normal}Insert all items from it.'
     show-item:
       lore:
-        - '{color:conceal}Amount: {1}'
+        - '{color:conceal}Amount: {color:number}{1}'
   FINALTECH_STORAGE_BALANCER:
     name: '{color:prandom}Storage Balancer'
     info:
@@ -3447,7 +3458,7 @@ items:
         - '{color:action}[Click {color:conceal}(hold {id:FINALTECH_STORAGE_CARD}{color:conceal}){color:action}] {color:normal}Insert all items from it.'
     show-item:
       lore:
-        - '{color:conceal}Amount: {1}'
+        - '{color:conceal}Amount: {color:number}{1}'
   FINALTECH_MATRIX_ACCELERATOR:
     name: '{color:prandom}Matrix Accelerator'
     info:
