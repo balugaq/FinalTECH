@@ -14,6 +14,7 @@ import io.taraxacum.finaltech.util.BlockTickerUtil;
 import io.taraxacum.finaltech.util.LocationUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
 import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
 import io.taraxacum.libs.slimefun.util.LocationDataUtil;
 import org.bukkit.Location;
@@ -64,14 +65,14 @@ public class StorageImporter extends StorageOperator implements RecipeItem {
                 return;
             }
 
-            LocationData targetLocationData = FinalTech.getLocationDataService().getLocationData(targetLocation);
-            if (targetLocationData == null
-                    || !abstractStorageMachine.getId().equals(LocationDataUtil.getId(FinalTech.getLocationDataService(), targetLocationData))) {
+            Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+            if(inventory == null || InventoryUtil.slotCount(inventory, this.getInputSlot()) < this.getInputSlot().length / 2) {
                 return;
             }
 
-            Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
-            if(inventory == null) {
+            LocationData targetLocationData = FinalTech.getLocationDataService().getLocationData(targetLocation);
+            if (targetLocationData == null
+                    || !abstractStorageMachine.getId().equals(LocationDataUtil.getId(FinalTech.getLocationDataService(), targetLocationData))) {
                 return;
             }
 
