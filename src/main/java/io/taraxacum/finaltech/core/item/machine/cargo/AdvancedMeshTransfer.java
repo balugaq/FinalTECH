@@ -186,7 +186,7 @@ public class AdvancedMeshTransfer extends AbstractCargo implements RecipeItem, L
                 int result = CargoUtil.doSimpleCargoInputMain(simpleCargoDTO);
                 if (CargoNumberMode.VALUE_UNIVERSAL.equals(outputCargoNumberMode)) {
                     outputCargoNumber -= result;
-                    if (outputCargoNumber == 0) {
+                    if (outputCargoNumber <= 0) {
                         break;
                     }
                 }
@@ -238,7 +238,7 @@ public class AdvancedMeshTransfer extends AbstractCargo implements RecipeItem, L
                 int result = CargoUtil.doSimpleCargoOutputMain(simpleCargoDTO);
                 if (CargoNumberMode.VALUE_UNIVERSAL.equals(inputCargoNumberMode)) {
                     inputCargoNumber -= result;
-                    if (inputCargoNumber == 0) {
+                    if (inputCargoNumber <= 0) {
                         break;
                     }
                 }
@@ -339,7 +339,7 @@ public class AdvancedMeshTransfer extends AbstractCargo implements RecipeItem, L
                         int result = CargoUtil.doSimpleCargoInputMain(simpleCargoDTO);
                         if (CargoNumberMode.VALUE_UNIVERSAL.equals(outputCargoNumberMode)) {
                             outputCargoNumber -= result;
-                            if (outputCargoNumber == 0) {
+                            if (outputCargoNumber <= 0) {
                                 break;
                             }
                         }
@@ -389,7 +389,7 @@ public class AdvancedMeshTransfer extends AbstractCargo implements RecipeItem, L
                         int result = CargoUtil.doSimpleCargoOutputMain(simpleCargoDTO);
                         if (CargoNumberMode.VALUE_UNIVERSAL.equals(inputCargoNumberMode)) {
                             inputCargoNumber -= result;
-                            if (inputCargoNumber == 0) {
+                            if (inputCargoNumber <= 0) {
                                 break;
                             }
                         }

@@ -242,7 +242,7 @@ public class CargoUtil {
         boolean typeLimit = !nonnull && !first && CargoLimit.typeLimit(simpleCargoDTO.getCargoLimit());
 
         int number = 0;
-        int cargoNumber = simpleCargoDTO.getCargoNumber();
+        int cargoNumber = simpleCargoDTO.getCargoNumber() == 0 ? 114514 : simpleCargoDTO.getCargoNumber();
         ItemWrapper typeItem = null;
         ItemWrapper inputItemWrapper = new ItemWrapper();
 
@@ -317,7 +317,7 @@ public class CargoUtil {
         boolean typeLimit = !nonnull && !first && CargoLimit.typeLimit(simpleCargoDTO.getCargoLimit());
 
         int number = 0;
-        int cargoNumber = simpleCargoDTO.getCargoNumber();
+        int cargoNumber = simpleCargoDTO.getCargoNumber() == 0 ? 114514 : simpleCargoDTO.getCargoNumber();
         ItemWrapper typeItem = null;
         ItemWrapper inputItemWrapper = new ItemWrapper();
 
@@ -395,7 +395,7 @@ public class CargoUtil {
         boolean typeLimit = !nonnull && !first && CargoLimit.typeLimit(simpleCargoDTO.getCargoLimit());
 
         int number = 0;
-        int cargoNumber = simpleCargoDTO.getCargoNumber();
+        int cargoNumber = simpleCargoDTO.getCargoNumber() == 0 ? 114514 : simpleCargoDTO.getCargoNumber();
         ItemWrapper typeItem = null;
         ItemWrapper inputItemWrapper = new ItemWrapper();
 
@@ -511,7 +511,7 @@ public class CargoUtil {
         boolean typeLimit = !nonnull && !first && CargoLimit.typeLimit(simpleCargoDTO.getCargoLimit());
 
         int number = 0;
-        int cargoNumber = simpleCargoDTO.getCargoNumber();
+        int cargoNumber = simpleCargoDTO.getCargoNumber() == 0 ? 114514 : simpleCargoDTO.getCargoNumber();
         ItemWrapper typeItem = null;
         final ItemWrapper finalItemWrapper = new ItemWrapper();
         ItemWrapper outputItemWrapper;
