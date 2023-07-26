@@ -29,7 +29,7 @@ public class SimpleNumber {
             FinalTech.getLanguageStringArray("option", "SIMPLE_NUMBER", "sub-icon", "lore"));
 
     public static final LocationDataLoreOption OPTION_256 = new LocationDataLoreOption("SIMPLE_NUMBER", KEY , 0, new LinkedHashMap<>() {{
-        for (int i = 0; i <= ConstantTableUtil.ITEM_MAX_STACK * 256; i++) {
+        for (int i = 0; i <= 256; i++) {
             this.put(String.valueOf(i), FinalTech.getLanguageManager().replaceStringList(FinalTech.getLanguageStringList("option", "SIMPLE_NUMBER", "icon", "lore"), String.valueOf(i)));
         }
     }}) {
