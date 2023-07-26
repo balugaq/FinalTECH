@@ -50,33 +50,37 @@ public class VariableWireResistance extends AbstractElectricMachine implements R
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
+        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        if (inventory == null) {
+            return;
+        }
+
         Location location = block.getLocation();
         String charge = EnergyUtil.getCharge(FinalTech.getLocationDataService(), locationData);
-        if (this.capacityString.equals(charge)) {
-            JavaPlugin javaPlugin = this.getAddon().getJavaPlugin();
-            FinalTech.getLocationDataService().clearLocationData(location);
-            Runnable runnable = () -> {
-                if (FinalTech.getLocationDataService() instanceof SlimefunLocationDataService slimefunLocationDataService) {
-                    LocationData tempLocationData = slimefunLocationDataService.getOrCreateEmptyLocationData(location, FinalTechItems.VARIABLE_WIRE_CAPACITOR.getId());
-                    slimefunLocationDataService.setLocationData(tempLocationData, ConstantTableUtil.CONFIG_CHARGE, charge);
-                    Slimefun.getNetworkManager().updateAllNetworks(location);
-                    javaPlugin.getServer().getScheduler().runTaskLater(javaPlugin, () -> {
-                        LocationData tempLocationData2 = FinalTech.getLocationDataService().getLocationData(location);
-                        if(!location.getBlock().getType().isAir()
-                                && tempLocationData2 != null
-                                && FinalTechItems.VARIABLE_WIRE_CAPACITOR.getId().equals(LocationDataUtil.getId(FinalTech.getLocationDataService(), tempLocationData2))) {
-                            block.setType(FinalTechItemStacks.VARIABLE_WIRE_CAPACITOR.getType());
-                        }
-                    }, 0);
-                }
-            };
+        if (inventory.getViewers().isEmpty()) {
+            if (this.capacityString.equals(charge)) {
+                JavaPlugin javaPlugin = this.getAddon().getJavaPlugin();
+                FinalTech.getLocationDataService().clearLocationData(location);
+                Runnable runnable = () -> {
+                    if (FinalTech.getLocationDataService() instanceof SlimefunLocationDataService slimefunLocationDataService) {
+                        LocationData tempLocationData = slimefunLocationDataService.getOrCreateEmptyLocationData(location, FinalTechItems.VARIABLE_WIRE_CAPACITOR.getId());
+                        slimefunLocationDataService.setLocationData(tempLocationData, ConstantTableUtil.CONFIG_CHARGE, charge);
+                        Slimefun.getNetworkManager().updateAllNetworks(location);
+                        javaPlugin.getServer().getScheduler().runTaskLater(javaPlugin, () -> {
+                            LocationData tempLocationData2 = FinalTech.getLocationDataService().getLocationData(location);
+                            if(!location.getBlock().getType().isAir()
+                                    && tempLocationData2 != null
+                                    && FinalTechItems.VARIABLE_WIRE_CAPACITOR.getId().equals(LocationDataUtil.getId(FinalTech.getLocationDataService(), tempLocationData2))) {
+                                block.setType(FinalTechItemStacks.VARIABLE_WIRE_CAPACITOR.getType());
+                            }
+                        }, 0);
+                    }
+                };
 
-            javaPlugin.getServer().getScheduler().runTask(javaPlugin, () -> BlockTickerUtil.runTask(FinalTech.getLocationRunnableFactory(), FinalTech.isAsyncSlimefunItem(this.getId()), runnable, location));
-        } else {
-            Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
-            if (inventory != null && !inventory.getViewers().isEmpty()) {
-                this.updateInv(inventory, this.statusSlot, this, charge);
+                javaPlugin.getServer().getScheduler().runTask(javaPlugin, () -> BlockTickerUtil.runTask(FinalTech.getLocationRunnableFactory(), FinalTech.isAsyncSlimefunItem(this.getId()), runnable, location));
             }
+        } else {
+            this.updateInv(inventory, this.statusSlot, this, charge);
         }
     }
 

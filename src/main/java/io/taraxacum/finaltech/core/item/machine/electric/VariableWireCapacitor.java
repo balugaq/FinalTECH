@@ -49,32 +49,36 @@ public class VariableWireCapacitor extends AbstractElectricMachine implements Re
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
+        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        if (inventory == null) {
+            return;
+        }
+
         Location location = block.getLocation();
         String charge = EnergyUtil.getCharge(FinalTech.getLocationDataService(), locationData);
-        if (StringNumberUtil.ZERO.equals(charge)) {
-            JavaPlugin javaPlugin = this.getAddon().getJavaPlugin();
-            FinalTech.getLocationDataService().clearLocationData(location);
-            Runnable runnable = () -> {
-                if(FinalTech.getLocationDataService() instanceof SlimefunLocationDataService slimefunLocationDataService) {
-                    slimefunLocationDataService.getOrCreateEmptyLocationData(location, FinalTechItems.VARIABLE_WIRE_RESISTANCE.getId());
-                    Slimefun.getNetworkManager().updateAllNetworks(location);
-                    javaPlugin.getServer().getScheduler().runTaskLater(javaPlugin, () -> {
-                        LocationData tempLocationData = FinalTech.getLocationDataService().getLocationData(location);
-                        if(!location.getBlock().getType().isAir()
-                                && tempLocationData != null
-                                && FinalTechItems.VARIABLE_WIRE_RESISTANCE.getId().equals(LocationDataUtil.getId(FinalTech.getLocationDataService(), tempLocationData))) {
-                            block.setType(FinalTechItemStacks.VARIABLE_WIRE_RESISTANCE.getType());
-                        }
-                    }, 0);
-                }
-            };
+        if (inventory.getViewers().isEmpty()) {
+            if (StringNumberUtil.ZERO.equals(charge)) {
+                JavaPlugin javaPlugin = this.getAddon().getJavaPlugin();
+                FinalTech.getLocationDataService().clearLocationData(location);
+                Runnable runnable = () -> {
+                    if(FinalTech.getLocationDataService() instanceof SlimefunLocationDataService slimefunLocationDataService) {
+                        slimefunLocationDataService.getOrCreateEmptyLocationData(location, FinalTechItems.VARIABLE_WIRE_RESISTANCE.getId());
+                        Slimefun.getNetworkManager().updateAllNetworks(location);
+                        javaPlugin.getServer().getScheduler().runTaskLater(javaPlugin, () -> {
+                            LocationData tempLocationData = FinalTech.getLocationDataService().getLocationData(location);
+                            if(!location.getBlock().getType().isAir()
+                                    && tempLocationData != null
+                                    && FinalTechItems.VARIABLE_WIRE_RESISTANCE.getId().equals(LocationDataUtil.getId(FinalTech.getLocationDataService(), tempLocationData))) {
+                                block.setType(FinalTechItemStacks.VARIABLE_WIRE_RESISTANCE.getType());
+                            }
+                        }, 0);
+                    }
+                };
 
-            javaPlugin.getServer().getScheduler().runTask(javaPlugin, () -> BlockTickerUtil.runTask(FinalTech.getLocationRunnableFactory(), FinalTech.isAsyncSlimefunItem(this.getId()), runnable, location));
-        } else {
-            Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
-            if (inventory != null && !inventory.getViewers().isEmpty()) {
-                this.updateInv(inventory, this.statusSlot, this, charge);
+                javaPlugin.getServer().getScheduler().runTask(javaPlugin, () -> BlockTickerUtil.runTask(FinalTech.getLocationRunnableFactory(), FinalTech.isAsyncSlimefunItem(this.getId()), runnable, location));
             }
+        } else {
+            this.updateInv(inventory, this.statusSlot, this, charge);
         }
     }
 
