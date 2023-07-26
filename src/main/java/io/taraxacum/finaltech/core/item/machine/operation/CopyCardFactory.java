@@ -83,11 +83,11 @@ public class CopyCardFactory extends AbstractOperationMachine {
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
         Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
-        if(inventory == null) {
+        if (inventory == null) {
             return;
         }
 
-        if (RandomUtil.compareTwoRandom(FinalTech.getRandom(), FinalTech.getTps(), ConstantTableUtil.FULL_TPS)) {
+        if (RandomUtil.compareTwoRandom(FinalTech.getRandom(), ConstantTableUtil.FULL_TPS, FinalTech.getTps())) {
             return;
         }
 
