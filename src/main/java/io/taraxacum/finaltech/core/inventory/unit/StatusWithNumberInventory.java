@@ -52,8 +52,8 @@ public class StatusWithNumberInventory extends AbstractMachineInventory implemen
     @Override
     public Consumer<InventoryClickEvent> onClick(@Nonnull Location location, int slot) {
         return switch (slot) {
-            case addSlot -> SimpleNumber.OPTION_256.getPreviousHandler(FinalTech.getLocationDataService(), location, this.statusSlot, this.slimefunItem);
-            case subSlot -> SimpleNumber.OPTION_256.getNextHandler(FinalTech.getLocationDataService(), location, this.statusSlot, this.slimefunItem);
+            case addSlot -> SimpleNumber.OPTION_256.getNextHandler(FinalTech.getLocationDataService(), location, this.statusSlot, this.slimefunItem);
+            case subSlot -> SimpleNumber.OPTION_256.getPreviousHandler(FinalTech.getLocationDataService(), location, this.statusSlot, this.slimefunItem);
             default -> super.onClick(location, slot);
         };
     }
