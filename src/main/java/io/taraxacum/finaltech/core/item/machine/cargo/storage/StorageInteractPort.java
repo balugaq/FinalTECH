@@ -74,37 +74,29 @@ public class StorageInteractPort extends AbstractCargo implements RecipeItem {
     }
 
     private void doFunction(@Nonnull Inventory targetInventory, @Nonnull Inventory blockInventory) {
-        boolean canInput = !InventoryUtil.isEmpty(blockInventory, this.getInputSlot()) && InventoryUtil.slotCount(blockInventory, this.getInputSlot()) >= this.getInputSlot().length / 2;
-        boolean canOutput = !InventoryUtil.isFull(blockInventory, this.getOutputSlot()) && InventoryUtil.slotCount(blockInventory, this.getOutputSlot()) < this.getOutputSlot().length / 2;
-
-        if (!canInput && !canOutput) {
-            return;
-        }
+        boolean canInput = InventoryUtil.slotCount(blockInventory, this.getInputSlot()) >= this.getInputSlot().length / 2;
+        boolean canOutput = InventoryUtil.slotCount(blockInventory, this.getOutputSlot()) < this.getOutputSlot().length / 2;
 
         if (canInput) {
             InventoryUtil.stockSlots(blockInventory, this.getInputSlot());
+            canInput = InventoryUtil.slotCount(blockInventory, this.getInputSlot()) >= this.getInputSlot().length / 2;
         }
-
-        canInput = !InventoryUtil.isEmpty(blockInventory, this.getInputSlot()) && InventoryUtil.slotCount(blockInventory, this.getInputSlot()) >= this.getInputSlot().length / 2;
 
         if (!canInput && !canOutput) {
             return;
         }
 
-        int pushItemAmount = 0;
         StringItemCardCache[] stringItemCardCaches = new StringItemCardCache[this.searchLimit];
         for (int i = 0, size = Math.min(targetInventory.getSize(), this.searchLimit); i < size; i++) {
             ItemStack itemStack = targetInventory.getItem(i);
-            if (!ItemStackUtil.isItemNull(itemStack) && FinalTechItems.STORAGE_CARD.verifyItem(itemStack)) {
+            if (!ItemStackUtil.isItemNull(itemStack) && itemStack.getAmount() == 1 && FinalTechItems.STORAGE_CARD.verifyItem(itemStack)) {
+                // TODO storage card should have another id in future
                 stringItemCardCaches[i] = new StringItemCardCache(itemStack);
-            }
-
-            if (stringItemCardCaches[i] != null && stringItemCardCaches[i].getCardItem().getAmount() == 1) {
-                pushItemAmount++;
             }
         }
 
-        for (StringItemCardCache stringItemCardCache : stringItemCardCaches) {
+        for (int i = 0; i < stringItemCardCaches.length; i++) {
+            StringItemCardCache stringItemCardCache = stringItemCardCaches[i];
             if(stringItemCardCache == null) {
                 continue;
             }
@@ -112,32 +104,30 @@ public class StorageInteractPort extends AbstractCargo implements RecipeItem {
                 break;
             }
 
-            ItemMeta itemMeta = stringItemCardCache.getCardItemMeta();
             ItemWrapper stringItem = stringItemCardCache.getTemplateStringItem();
 
             int pushCount = 0;
             if (canOutput && stringItemCardCache.getCardItem().getAmount() == 1 && stringItemCardCache.storeItem()) {
-                pushItemAmount--;
                 pushCount = StringItemUtil.pullItemFromCard(stringItemCardCache, blockInventory, this.getOutputSlot());
                 if (pushCount > 0) {
                     InventoryUtil.stockSlots(blockInventory, this.getOutputSlot());
-                    canOutput = !InventoryUtil.isFull(blockInventory, this.getOutputSlot());
-                }
-                if (pushItemAmount == 0) {
-                    canOutput = false;
+                    if (i != stringItemCardCaches.length - 1) {
+                        canOutput = !InventoryUtil.isFull(blockInventory, this.getOutputSlot());
+                    }
                 }
             }
 
             int stackCount = 0;
             if (canInput) {
                 stackCount = StringItemUtil.storageItemToCard(stringItemCardCache, blockInventory, JavaUtil.shuffle(this.getInputSlot()));
-                if (stackCount > 0) {
+                if (stackCount > 0 && i != stringItemCardCaches.length - 1) {
                     canInput = !InventoryUtil.isEmpty(blockInventory, this.getInputSlot());
                 }
             }
+
             if (pushCount != stackCount || stringItem != stringItemCardCache.getTemplateStringItem()) {
-                FinalTechItems.STORAGE_CARD.updateLore(itemMeta, stringItemCardCache.storeItem() ? stringItemCardCache.getTemplateStringItem().getItemStack() : null, stringItemCardCache.getAmount());
-                stringItemCardCache.updateCardItemMeta();
+                FinalTechItems.STORAGE_CARD.updateLore(stringItemCardCache.getCardItemMeta(), stringItemCardCache.storeItem() ? stringItemCardCache.getTemplateStringItem().getItemStack() : null, stringItemCardCache.getAmount());
+                stringItemCardCache.updateCardItem();
             }
         }
     }
