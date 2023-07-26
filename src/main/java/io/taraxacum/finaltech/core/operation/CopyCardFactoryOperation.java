@@ -9,21 +9,24 @@ import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * @author Final_ROOT
  */
 public class CopyCardFactoryOperation implements MachineOperation {
     private long count;
-    private long difficulty;
+    private long baseDifficulty;
+    private long dynamicDifficulty;
+    private boolean lockDifficulty;
     private final ItemWrapper itemWrapper;
     private final ItemStack resultItemStack;
     private final ItemStack showItemStack;
 
     public CopyCardFactoryOperation(@Nonnull ItemStack itemStack) {
         this.count = itemStack.getAmount();
-        this.difficulty = ConstantTableUtil.ITEM_COPY_CARD_AMOUNT;
+        this.baseDifficulty = ConstantTableUtil.ITEM_COPY_CARD_AMOUNT;
+        this.dynamicDifficulty = 0;
+        this.lockDifficulty = false;
         this.itemWrapper = new ItemWrapper(ItemStackUtil.cloneItem(itemStack, 1));
         this.resultItemStack = FinalTechItems.COPY_CARD.getValidItem(this.itemWrapper.getItemStack(), "1");
         this.showItemStack = ItemStackUtil.newItemStack(itemStack.getType(),
@@ -40,10 +43,19 @@ public class CopyCardFactoryOperation implements MachineOperation {
         this.count = count;
     }
 
-    public void setDifficulty(long difficulty) {
-        this.difficulty = difficulty;
+    public void setDynamicDifficulty(long dynamicDifficulty) {
+        this.dynamicDifficulty = dynamicDifficulty;
     }
 
+    public boolean isLockDifficulty() {
+        return lockDifficulty;
+    }
+
+    public void setLockDifficulty(boolean lockDifficulty) {
+        this.lockDifficulty = lockDifficulty;
+    }
+
+    @Nonnull
     public ItemWrapper getItemWrapper() {
         return itemWrapper;
     }
@@ -58,27 +70,29 @@ public class CopyCardFactoryOperation implements MachineOperation {
                 FinalTech.getLanguageManager().replaceStringArray(FinalTech.getLanguageStringArray("items", FinalTechItems.ITEM_SERIALIZATION_CONSTRUCTOR.getId(), "copy-card", "lore"),
                         ItemStackUtil.getItemName(this.itemWrapper.getItemStack()),
                         String.valueOf(this.count),
-                        String.valueOf(this.difficulty)));
+                        String.valueOf(this.baseDifficulty + this.dynamicDifficulty)));
     }
 
-    public int addItem(@Nullable ItemStack itemStack) {
+    public int addItem(@Nonnull ItemStack itemStack) {
         if (!this.isFinished()) {
-            if (ItemStackUtil.isItemSimilar(itemStack, this.itemWrapper)) {
-                if (itemStack.getAmount() + this.count < this.difficulty) {
+            ItemWrapper itemWrapper = new ItemWrapper(itemStack);
+            if (ItemStackUtil.isItemSimilar(itemWrapper, this.itemWrapper)) {
+                if (itemStack.getAmount() + this.count < this.dynamicDifficulty + this.baseDifficulty) {
                     int amount = itemStack.getAmount();
                     itemStack.setAmount(itemStack.getAmount() - amount);
                     this.count += amount;
                     return amount;
                 } else {
-                    int amount = (int) (this.difficulty - this.count);
+                    int amount = (int) (this.dynamicDifficulty + this.baseDifficulty - this.count);
                     itemStack.setAmount(itemStack.getAmount() - amount);
-                    this.count = this.difficulty;
+                    this.count = this.dynamicDifficulty + this.baseDifficulty;
                     return amount;
                 }
-            } else if (FinalTechItems.ITEM_PHONY.verifyItem(itemStack)) {
-                int amount = (int) Math.min(itemStack.getAmount(), this.difficulty - this.count);
+            } else if (FinalTechItems.ITEM_PHONY.verifyItem(itemWrapper)) {
+                int amount = (int) Math.min(itemStack.getAmount(), this.dynamicDifficulty + this.baseDifficulty - this.count);
                 itemStack.setAmount(itemStack.getAmount() - amount);
                 this.count += amount;
+                this.lockDifficulty = true;
                 return amount;
             }
         }
@@ -87,7 +101,7 @@ public class CopyCardFactoryOperation implements MachineOperation {
 
     @Override
     public boolean isFinished() {
-        return this.count >= this.difficulty;
+        return this.count >= this.dynamicDifficulty + this.baseDifficulty;
     }
 
     @Nonnull

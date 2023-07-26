@@ -94,16 +94,6 @@ public class CopyCardFactory extends AbstractOperationMachine {
         this.count.getAndIncrement();
         Location location = block.getLocation();
 
-        int count = this.lastCount;
-        if(FinalTech.getTps() < ConstantTableUtil.WARNING_TPS) {
-            count += 21 - FinalTech.getTps();
-            count *= 21 - FinalTech.getTps();
-        }
-        count = FinalTech.getRandom().nextInt(count + 1);
-        String difficultyStr = FinalTech.getLocationDataService().getLocationData(locationData, this.keyDifficulty);
-        long difficulty = difficultyStr == null ? count : Long.parseLong(difficultyStr) + count;
-        FinalTech.getLocationDataService().setLocationData(locationData, this.keyDifficulty, String.valueOf(difficulty));
-
         CopyCardFactoryOperation operation = (CopyCardFactoryOperation) this.getMachineProcessor().getOperation(block);
 
         if (operation == null) {
@@ -120,10 +110,7 @@ public class CopyCardFactory extends AbstractOperationMachine {
             }
         }
 
-        if (operation != null) {
-            operation.setDifficulty(difficulty);
-        }
-
+        int amount = 0;
         for (int slot : this.getInputSlot()) {
             ItemStack itemStack = inventory.getItem(slot);
             if (ItemStackUtil.isItemNull(itemStack)) {
@@ -139,11 +126,26 @@ public class CopyCardFactory extends AbstractOperationMachine {
                     break;
                 }
 
+                if (!this.allowedItem(itemStack)) {
+                    break;
+                }
+
                 operation = new CopyCardFactoryOperation(itemStack);
                 this.getMachineProcessor().startOperation(block, operation);
             } else {
-                operation.addItem(itemStack);
+                amount += operation.addItem(itemStack);
             }
+        }
+
+        if (operation != null && !operation.isFinished() && !operation.isLockDifficulty()) {
+            int count = this.lastCount;
+            int minCount = FinalTech.getRandom().nextInt((int) (amount * (ConstantTableUtil.FULL_TPS - FinalTech.getTps()) / ConstantTableUtil.FULL_TPS) + 1);
+            int maxCount = Math.min(amount, minCount * 2);
+            count = Math.max(FinalTech.getRandom().nextInt(count + 1), minCount + FinalTech.getRandom().nextInt(maxCount - minCount + 1));
+            String difficultyStr = FinalTech.getLocationDataService().getLocationData(locationData, this.keyDifficulty);
+            long difficulty = difficultyStr == null ? count : Long.parseLong(difficultyStr) + count;
+            FinalTech.getLocationDataService().setLocationData(locationData, this.keyDifficulty, String.valueOf(difficulty));
+            operation.setDynamicDifficulty(difficulty);
         }
 
         if (operation != null && operation.isFinished() && InventoryUtil.tryPushAllItem(inventory, this.getOutputSlot(), operation.getResult())) {
@@ -158,7 +160,7 @@ public class CopyCardFactory extends AbstractOperationMachine {
             String itemString = FinalTech.getLocationDataService().getLocationData(locationData, this.keyItem);
             if (itemString == null) {
                 itemString = ItemStackUtil.itemStackToString(operation.getItemWrapper().getItemStack());
-                if (itemString != null && FinalTech.safeSql()) {
+                if (FinalTech.safeSql()) {
                     itemString = SqlUtil.getSafeSql(itemString);
                 }
                 if (itemString != null) {
