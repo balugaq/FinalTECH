@@ -92,6 +92,11 @@ public abstract class AbstractDigitElectricityShootPile extends AbstractRangeMac
                 }
 
                 if (capacitorEnergy == 0) {
+                    if (hasViewer) {
+                        this.updateInv(inventory, this.statusSlot, this,
+                                String.valueOf(capacitorEnergy),
+                                String.valueOf(transferEnergy));
+                    }
                     return;
                 }
 
