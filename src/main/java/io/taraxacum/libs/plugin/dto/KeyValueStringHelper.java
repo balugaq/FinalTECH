@@ -47,6 +47,7 @@ public class KeyValueStringHelper {
             }
         }
     }
+
     public void deleteEntry(@Nullable String key) {
         this.map.remove(key);
     }
