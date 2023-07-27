@@ -12,6 +12,7 @@ import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.ConstantTableUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
 import io.taraxacum.finaltech.util.StringItemUtil;
+import io.taraxacum.libs.plugin.dto.ItemWrapper;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.plugin.util.TextUtil;
 import io.taraxacum.libs.slimefun.interfaces.ValidItem;
@@ -44,12 +45,27 @@ public class CopyCard extends UnusableSlimefunItem implements RecipeItem, ValidI
     }
 
     @Override
-    public boolean verifyItem(@Nullable ItemStack itemStack) {
-        if (ItemStackUtil.isItemNull(itemStack) || !itemStack.hasItemMeta()) {
+    public boolean verifyItem(@Nonnull ItemStack itemStack) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        List<String> lore = itemMeta.getLore();
+        if (lore == null) {
             return false;
         }
 
-        ItemMeta itemMeta = itemStack.getItemMeta();
+        for (String l : lore) {
+            if (this.itemLoreWithoutColor.equals(ChatColor.stripColor(l))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean verifyItem(@Nonnull ItemWrapper itemWrapper) {
+        ItemMeta itemMeta = itemWrapper.getItemMeta();
+        if (!itemMeta.hasLore()) {
+            return false;
+        }
         List<String> lore = itemMeta.getLore();
         if (lore == null) {
             return false;

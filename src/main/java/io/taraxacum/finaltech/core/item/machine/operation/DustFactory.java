@@ -10,7 +10,7 @@ import io.taraxacum.finaltech.core.enums.LogSourceType;
 import io.taraxacum.finaltech.core.interfaces.MenuUpdater;
 import io.taraxacum.finaltech.core.interfaces.RecipeItem;
 import io.taraxacum.finaltech.core.inventory.AbstractMachineInventory;
-import io.taraxacum.finaltech.core.inventory.limit.DustFactoryDirtInventory;
+import io.taraxacum.finaltech.core.inventory.limit.DustFactoryInventory;
 import io.taraxacum.finaltech.core.operation.DustFactoryOperation;
 import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.LocationUtil;
@@ -56,9 +56,9 @@ public class DustFactory extends AbstractOperationMachine implements RecipeItem,
     @Nullable
     @Override
     protected AbstractMachineInventory setMachineInventory() {
-        DustFactoryDirtInventory dustFactoryDirtInventory = new DustFactoryDirtInventory(this);
-        this.statusSlot = dustFactoryDirtInventory.statusSlot;
-        return dustFactoryDirtInventory;
+        DustFactoryInventory dustFactoryInventory = new DustFactoryInventory(this);
+        this.statusSlot = dustFactoryInventory.statusSlot;
+        return dustFactoryInventory;
     }
 
     @Nonnull
@@ -169,7 +169,7 @@ public class DustFactory extends AbstractOperationMachine implements RecipeItem,
     @Override
     public void updateInv(@Nonnull Inventory inventory, int slot, @Nonnull SlimefunItem slimefunItem, @Nonnull String... text) {
         MenuUpdater.super.updateInv(inventory, slot, slimefunItem, text);
-        if(text.length == 4) {
+        if (text.length == 5) {
             int amountCount = Integer.parseInt(text[0]);
             int typeCount = Integer.parseInt(text[1]);
             int amountDifficulty = Integer.parseInt(text[2]);

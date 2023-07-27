@@ -117,9 +117,8 @@ public class OverloadedAccelerator extends AbstractCubeMachine implements Recipe
                     if (sfItem instanceof EnergyNetComponent energyNetComponent) {
                         BlockTicker blockTicker = sfItem.getBlockTicker();
                         if (blockTicker != null) {
-                            int capacity = energyNetComponent.getCapacity();
                             int energy = Integer.parseInt(EnergyUtil.getCharge(FinalTech.getLocationDataService(), tempLocationData));
-                            if (energy > capacity) {
+                            if (energy > 0) {
                                 accelerateCount++;
 
                                 boolean async = FinalTech.isAsyncSlimefunItem(sfItem.getId());

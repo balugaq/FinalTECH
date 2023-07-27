@@ -116,6 +116,7 @@ public class CopyCardFactory extends AbstractOperationMachine {
             if (ItemStackUtil.isItemNull(itemStack)) {
                 continue;
             }
+
             if (operation == null) {
                 SlimefunItem sfItem = SlimefunItem.getByItem(itemStack);
                 if (sfItem == null || sfItem instanceof UnCopiableItem) {

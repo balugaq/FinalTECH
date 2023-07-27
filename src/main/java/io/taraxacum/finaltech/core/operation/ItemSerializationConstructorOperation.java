@@ -16,11 +16,11 @@ public interface ItemSerializationConstructorOperation extends MachineOperation 
     int ITEM_PHONY = 2;
     int ERROR_ITEM = -1;
 
-    static int getType(@Nonnull ItemStack item) {
-        if (FinalTechItems.COPY_CARD.verifyItem(item)) {
+    static int getType(@Nonnull ItemStack itemStack) {
+        if (FinalTechItems.COPY_CARD.verifyItem(itemStack)) {
             return ITEM_PHONY;
         }
-        if (FinalTechItems.COPY_CARD.isTargetItem(item)) {
+        if (FinalTechItems.COPY_CARD.isTargetItem(itemStack)) {
             return COPY_CARD;
         }
         return ERROR_ITEM;

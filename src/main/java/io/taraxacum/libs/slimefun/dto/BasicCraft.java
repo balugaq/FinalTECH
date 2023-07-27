@@ -1,6 +1,7 @@
 package io.taraxacum.libs.slimefun.dto;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.taraxacum.finaltech.setup.FinalTechItems;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.finaltech.util.ConstantTableUtil;
 import io.taraxacum.libs.plugin.dto.ItemWrapper;
@@ -65,19 +66,18 @@ public class BasicCraft {
         }
 
         for (SlimefunItem slimefunItem : slimefunItemList) {
-            if (slimefunItem.getRecipe().length <= slots.length) {
-                ItemStack[] itemStacks = slimefunItem.getRecipe();
-
+            ItemStack[] itemStacks = slimefunItem.getRecipe();
+            if (itemStacks.length <= slots.length) {
                 matchAmount = ConstantTableUtil.ITEM_MAX_STACK;
                 for (int i = 0; i < itemStacks.length; i++) {
                     itemStack = itemStacks[i];
 
-                    if(ItemStackUtil.isItemNull(itemStack) == indexItemMap.containsKey(i)) {
+                    if (ItemStackUtil.isItemNull(itemStack) == indexItemMap.containsKey(i)) {
                         matchAmount = 0;
                         break;
                     }
 
-                    if(ItemStackUtil.isItemNull(itemStack)) {
+                    if (ItemStackUtil.isItemNull(itemStack)) {
                         continue;
                     }
 
@@ -88,8 +88,8 @@ public class BasicCraft {
                     }
 
                     SlimefunItem sfItem = SlimefunItem.getByItem(itemStack);
-                    if(sfItem instanceof ValidItem validItem) {
-                        if(!validItem.verifyItem(itemWrapper.getItemStack())) {
+                    if (sfItem instanceof ValidItem validItem) {
+                        if(!validItem.verifyItem(itemWrapper)) {
                             matchAmount = 0;
                             break;
                         }

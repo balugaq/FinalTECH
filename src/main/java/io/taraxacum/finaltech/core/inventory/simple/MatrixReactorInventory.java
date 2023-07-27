@@ -6,6 +6,7 @@ import io.taraxacum.finaltech.core.option.Icon;
 import io.taraxacum.finaltech.setup.FinalTechItemStacks;
 import io.taraxacum.finaltech.setup.FinalTechItems;
 import io.taraxacum.finaltech.util.MachineUtil;
+import io.taraxacum.libs.plugin.dto.ItemWrapper;
 import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -89,11 +90,12 @@ public class MatrixReactorInventory extends AbstractOrdinaryMachineInventory {
             return new int[0];
         }
 
-        if (FinalTechItems.ORDERED_DUST.verifyItem(itemStack)) {
+        ItemWrapper itemWrapper = new ItemWrapper(itemStack);
+        if (FinalTechItems.ORDERED_DUST.verifyItem(itemWrapper)) {
             return orderedDustInputSlot;
-        } else if (FinalTechItems.UNORDERED_DUST.verifyItem(itemStack)) {
+        } else if (FinalTechItems.UNORDERED_DUST.verifyItem(itemWrapper)) {
             return unorderedDustInputSlot;
-        } else if (FinalTechItems.ITEM_PHONY.verifyItem(itemStack)) {
+        } else if (FinalTechItems.ITEM_PHONY.verifyItem(itemWrapper)) {
             return itemPhonyInputSlot;
         } else {
             return itemInputSlot;

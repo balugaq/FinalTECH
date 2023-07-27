@@ -131,7 +131,7 @@ public class EnergizedAccelerator extends AbstractCubeMachine implements EnergyN
         List<LocationData> locationDataList;
         while (machineEnergy > allCapacity.get()) {
             accelerateRoundTime++;
-            nextEnergy = (int) (machineEnergy - allCapacity.get() * accelerateRoundTime);
+            nextEnergy = (int) (machineEnergy - allCapacity.get() * accelerateRoundTime * accelerateRoundTime);
             if(nextEnergy > 0) {
                 machineEnergy = nextEnergy;
             } else {

@@ -19,11 +19,14 @@ import io.taraxacum.finaltech.util.MachineUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
 import io.taraxacum.libs.plugin.dto.LocationData;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
+import io.taraxacum.libs.plugin.util.ParticleUtil;
 import io.taraxacum.libs.slimefun.util.LocationDataUtil;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -92,7 +95,7 @@ public class LogicInjector extends AbstractPointMachine implements RecipeItem {
             return;
         }
 
-        Block targetBlock = block.getRelative(directional.getFacing());
+        Block targetBlock = block.getRelative(directional.getFacing().getOppositeFace());
         if (!targetBlock.getChunk().isLoaded()) {
             return;
         }

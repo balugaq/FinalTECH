@@ -9,14 +9,15 @@ import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.interfaces.RecipeItem;
 import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
+import io.taraxacum.libs.plugin.dto.ItemMetaBuilder;
+import io.taraxacum.libs.plugin.dto.ItemStackBuilder;
 import io.taraxacum.libs.plugin.dto.ItemWrapper;
-import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.slimefun.interfaces.SimpleValidItem;
-import io.taraxacum.libs.slimefun.util.SfItemUtil;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nonnull;
 
@@ -24,7 +25,6 @@ import javax.annotation.Nonnull;
  * @author Final_ROOT
  */
 public class Ether extends UnusableSlimefunItem implements GEOResource, SimpleValidItem, RecipeItem {
-    private final ItemWrapper templateValidItem;
     private final NamespacedKey key = new NamespacedKey(FinalTech.getInstance(), this.getId());
     private final int baseAmountNormal = ConfigUtil.getOrDefaultItemSetting(16, this, "base-amount-normal");
     private final int baseAmountNether = ConfigUtil.getOrDefaultItemSetting(8, this, "base-amount-nether");
@@ -32,11 +32,18 @@ public class Ether extends UnusableSlimefunItem implements GEOResource, SimpleVa
     private final int baseAmountCustom = ConfigUtil.getOrDefaultItemSetting(16, this, "base-amount-custom");
     private final int maxDeviation = ConfigUtil.getOrDefaultItemSetting(8, this, "max-deviation");
 
+    private final ItemStackBuilder itemStackBuilder;
+
     public Ether(@Nonnull ItemGroup itemGroup, @Nonnull SlimefunItemStack item, @Nonnull RecipeType recipeType) {
         super(itemGroup, item, recipeType, new ItemStack[0]);
-        ItemStack validItem = new ItemStack(this.getItem());
-        SfItemUtil.setSpecialItemKey(validItem);
-        this.templateValidItem = new ItemWrapper(validItem);
+
+        this.itemStackBuilder = ItemStackBuilder.fromItemStack(this.getItem());
+        this.itemStackBuilder.amount(null);
+        ItemMetaBuilder itemMetaBuilder = this.itemStackBuilder.getItemMetaBuilder();
+        itemMetaBuilder.setData(FinalTech.getItemService().getIdKey(), PersistentDataType.STRING, this.getId());
+
+        String validKey = FinalTech.getConfigManager().getOrDefault(String.valueOf(FinalTech.getRandom().nextDouble(FinalTech.getSeed())), "item-valid-key", this.getId());
+        itemMetaBuilder.setData(new NamespacedKey(FinalTech.getInstance(), this.getId()), PersistentDataType.STRING, validKey);
     }
 
     @Override
@@ -80,12 +87,17 @@ public class Ether extends UnusableSlimefunItem implements GEOResource, SimpleVa
     @Nonnull
     @Override
     public ItemStack getValidItem() {
-        return ItemStackUtil.cloneItem(this.templateValidItem.getItemStack());
+        return this.itemStackBuilder.build();
     }
 
     @Override
     public boolean verifyItem(@Nonnull ItemStack itemStack) {
-        return ItemStackUtil.isItemSimilar(itemStack, this.templateValidItem);
+        return this.itemStackBuilder.softCompare(itemStack);
+    }
+
+    @Override
+    public boolean verifyItem(@Nonnull ItemWrapper itemWrapper) {
+        return this.itemStackBuilder.softCompare(itemWrapper);
     }
 
     @Override

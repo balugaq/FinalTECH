@@ -89,7 +89,7 @@ public class DigitInjector extends AbstractPointMachine implements RecipeItem {
             return;
         }
 
-        Block targetBlock = block.getRelative(directional.getFacing());
+        Block targetBlock = block.getRelative(directional.getFacing().getOppositeFace());
         if (!targetBlock.getChunk().isLoaded()) {
             return;
         }

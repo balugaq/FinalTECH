@@ -85,12 +85,14 @@ public abstract class AbstractCubeElectricGenerator extends AbstractCubeMachine 
         int energy = 0;
         for(int slot : this.getInputSlot()) {
             ItemStack itemStack = inventory.getItem(slot);
-            if(ItemStackUtil.isItemSimilar(itemStack, this.itemWrapper)) {
+            if (ItemStackUtil.isItemSimilar(itemStack, this.itemWrapper)) {
                 energy = Integer.MAX_VALUE / this.getEnergy() < itemStack.getAmount() ? Integer.MAX_VALUE : this.getEnergy() * itemStack.getAmount();
+                energy += this.getEnergy();
                 break;
             } else if (!ItemStackUtil.isItemNull(itemStack) && FinalTechItems.STORAGE_CARD.verifyItem(itemStack) && ItemStackUtil.isItemSimilar(StringItemUtil.parseItemInCard(itemStack), this.itemWrapper)) {
                 int amount = Integer.parseInt(StringNumberUtil.min(StringItemUtil.parseAmountInCard(itemStack), StringNumberUtil.INTEGER_MAX_VALUE));
                 energy = Integer.MAX_VALUE / this.getEnergy() < amount ? Integer.MAX_VALUE : this.getEnergy() * amount;
+                energy += this.getEnergy();
                 break;
             } else {
                 energy = this.getEnergy();

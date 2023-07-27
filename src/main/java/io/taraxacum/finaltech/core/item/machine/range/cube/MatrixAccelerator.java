@@ -18,6 +18,7 @@ import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.MachineUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
 import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
 import io.taraxacum.libs.slimefun.util.LocationDataUtil;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
@@ -89,27 +90,29 @@ public class MatrixAccelerator extends AbstractCubeMachine implements RecipeItem
 
         // parse item
         ItemStack matchItem = inventory.getItem(this.getInputSlot()[0]);
-        if (FinalTechItems.ITEM_PHONY.verifyItem(matchItem)) {
-            int amount = matchItem.getAmount();
-            for (int i = 2, j = amount; j > 0; j /= i) {
-                accelerate++;
-            }
-            for (int i = 2, j = amount; j > 0; j /= i++) {
-                range++;
-            }
-        } else {
-            SlimefunItem machineItem = SlimefunItem.getByItem(matchItem);
-            if (machineItem == null
-                    || this.notAllowedId.contains(machineItem.getId())
-                    || machineItem.getBlockTicker() == null) {
-                if(hasViewer) {
-                    this.updateInv(inventory, this.statusSlot, this,
-                            "0", "0", "0");
+        if (!ItemStackUtil.isItemNull(matchItem)) {
+            if (FinalTechItems.ITEM_PHONY.verifyItem(matchItem)) {
+                int amount = matchItem.getAmount();
+                for (int i = 2, j = amount; j > 0; j /= i) {
+                    accelerate++;
                 }
-                return;
+                for (int i = 2, j = amount; j > 0; j /= i++) {
+                    range++;
+                }
+            } else {
+                SlimefunItem machineItem = SlimefunItem.getByItem(matchItem);
+                if (machineItem == null
+                        || this.notAllowedId.contains(machineItem.getId())
+                        || machineItem.getBlockTicker() == null) {
+                    if(hasViewer) {
+                        this.updateInv(inventory, this.statusSlot, this,
+                                "0", "0", "0");
+                    }
+                    return;
+                }
+                machineId = machineItem.getId();
+                accelerate = matchItem.getAmount();
             }
-            machineId = machineItem.getId();
-            accelerate = matchItem.getAmount();
         }
 
         // search around block

@@ -137,7 +137,7 @@ public class SlimefunItemBigRecipeInventory extends SimpleVirtualInventory {
             if(sfItem != null && !this.playerProfile.hasUnlocked(sfItem.getResearch())) {
                 icon = ChestMenuUtils.getNotResearchedItem();
             }
-            if(!ItemStackUtil.isItemNull(icon)) {
+            if (!ItemStackUtil.isItemNull(icon)) {
                 this.getInventory().setItem(this.recipeContent[i], MachineUtil.cloneAsDescriptiveItem(icon));
             }
             this.setOnClick(this.recipeContent[i], inventoryClickEvent -> {

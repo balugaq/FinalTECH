@@ -1,14 +1,19 @@
 package io.taraxacum.finaltech.core.item.machine.range;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.interfaces.DigitInjectableItem;
 import io.taraxacum.finaltech.core.inventory.AbstractMachineInventory;
 import io.taraxacum.finaltech.core.inventory.unit.StatusWithNumberInventory;
 import io.taraxacum.finaltech.core.option.SimpleNumber;
+import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.util.ItemStackUtil;
+import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,7 +35,7 @@ public class NormalConfigurableElectricityShootPile extends AbstractDigitElectri
         StatusWithNumberInventory statusWithNumberInventory = new StatusWithNumberInventory(this);
         this.statusSlot = statusWithNumberInventory.statusSlot;
         this.digitInjectInventoryUpdater = statusWithNumberInventory::updateNumber;
-        return super.setMachineInventory();
+        return statusWithNumberInventory;
     }
 
     @Override
@@ -45,6 +50,22 @@ public class NormalConfigurableElectricityShootPile extends AbstractDigitElectri
         Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
         if (inventory != null) {
             this.digitInjectInventoryUpdater.accept(inventory, locationData);
+        }
+    }
+
+    @Override
+    public void updateInv(@Nonnull Inventory inventory, int slot, @Nonnull SlimefunItem slimefunItem, @Nonnull String... text) {
+        ItemStack item = inventory.getItem(slot);
+        if (!ItemStackUtil.isItemNull(item)) {
+            ItemStackUtil.replaceLore(item, 1, ConfigUtil.getStatusMenuLore(FinalTech.getLanguageManager(), slimefunItem, text));
+        }
+    }
+
+    @Override
+    public void updateInv(@Nonnull Inventory inventory, @Nonnull Location location, int slot, @Nonnull SlimefunItem slimefunItem, @Nonnull String... text) {
+        ItemStack item = inventory.getItem(slot);
+        if (!ItemStackUtil.isItemNull(item)) {
+            ItemStackUtil.replaceLore(item, 1, ConfigUtil.getStatusMenuLore(FinalTech.getLanguageManager(), slimefunItem, text));
         }
     }
 }

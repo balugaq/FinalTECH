@@ -42,11 +42,11 @@ public class StringItemUtil {
             stringItemCardCache.clearWithoutUpdate();
             return 0;
         }
+        int validAmount1 = validAmount;
 
         amount = StringNumberUtil.sub(amount, String.valueOf(validAmount));
         ItemStack targetItem;
         int itemAmount;
-        int count = 0;
         for (int slot : slots) {
             targetItem = inventory.getItem(slot);
             if (ItemStackUtil.isItemNull(targetItem)) {
@@ -55,9 +55,8 @@ public class StringItemUtil {
                     inventory.setItem(slot, stringItem.getItemStack());
                     ItemStack itemStack = inventory.getItem(slot);
                     itemStack.setAmount(itemAmount);
-                    count += validAmount;
                     validAmount -= itemAmount;
-                    if(validAmount == 0) {
+                    if (validAmount == 0) {
                         break;
                     }
                 }
@@ -71,7 +70,7 @@ public class StringItemUtil {
             stringItemCardCache.setWithoutUpdate(amount);
         }
 
-        return count;
+        return validAmount1 - validAmount;
     }
 
     public static int storageItemToCard(@Nonnull StringItemCardCache stringItemCardCache, @Nonnull Inventory inventory, @Nonnull int[] slots) {
