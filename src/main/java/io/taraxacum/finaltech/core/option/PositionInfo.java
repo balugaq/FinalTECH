@@ -58,7 +58,7 @@ public class PositionInfo {
     public static final Material OUTPUT_MATERIAL = Material.ORANGE_STAINED_GLASS_PANE;
     public static final Material INPUT_AND_OUTPUT_MATERIAL = Material.PURPLE_STAINED_GLASS_PANE;
 
-    public static final KeyValueStringHelper MAP_EXAMPLE = new KeyValueStringOrderHelper(Arrays.asList(VALUE_KEY_NORTH, VALUE_KEY_DOWN, VALUE_KEY_SOUTH, VALUE_KEY_WEST, VALUE_KEY_UP, VALUE_KEY_EAST), Arrays.asList(VALUE_NULL, VALUE_INPUT, VALUE_OUTPUT, VALUE_INPUT_AND_OUTPUT));
+    public static final KeyValueStringHelper MAP_EXAMPLE = new KeyValueStringOrderHelper(Arrays.asList(VALUE_KEY_NORTH, VALUE_KEY_DOWN, VALUE_KEY_SOUTH, VALUE_KEY_WEST, VALUE_KEY_UP, VALUE_KEY_EAST), Arrays.asList(VALUE_INPUT, VALUE_OUTPUT, VALUE_INPUT_AND_OUTPUT));
 
     public static final Map<String, Material> VALUE_MATERIAL_MAP = new HashMap<>() {{
         this.put(VALUE_NULL, NULL_MATERIAL);
