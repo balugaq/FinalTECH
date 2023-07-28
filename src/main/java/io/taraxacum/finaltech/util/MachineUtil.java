@@ -13,7 +13,7 @@ import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.libs.plugin.dto.ComplexOptional;
 import io.taraxacum.finaltech.core.exception.ParseErrorException;
 import io.taraxacum.finaltech.core.interfaces.ExtraParameterItem;
-import io.taraxacum.finaltech.core.interfaces.SpecialResearch;
+import io.taraxacum.finaltech.core.dto.SpecialResearch;
 import io.taraxacum.finaltech.setup.FinalTechItemStacks;
 import io.taraxacum.libs.plugin.dto.AdvancedMachineRecipe;
 import io.taraxacum.libs.plugin.dto.ItemAmountWrapper;
@@ -270,6 +270,7 @@ public final class MachineUtil {
             }
         }
 
+        ItemStackUtil.setItemName(itemStack, research.getName(player));
         ItemStackUtil.setLore(itemStack, stringList);
         return itemStack;
     }

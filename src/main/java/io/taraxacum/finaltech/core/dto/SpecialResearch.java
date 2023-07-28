@@ -1,4 +1,4 @@
-package io.taraxacum.finaltech.core.interfaces;
+package io.taraxacum.finaltech.core.dto;
 
 import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import org.bukkit.NamespacedKey;
@@ -17,6 +17,8 @@ public abstract class SpecialResearch extends Research {
      * @return text to show what player is needed to unlocked it.
      */
     public abstract String[] getShowText(@Nonnull Player player);
+
+    public abstract String[] getChatText(@Nonnull Player player);
 
     /**
      * @return whether player can research this research.
