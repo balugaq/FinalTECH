@@ -210,4 +210,10 @@ public class TypeItemGroupInventory extends SimpleVirtualInventory {
             }
         }
     }
+
+    @Override
+    public void open(@Nonnull Player player) {
+        this.init();
+        super.open(player);
+    }
 }
