@@ -2,6 +2,7 @@ package io.taraxacum.finaltech.util;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.taraxacum.common.util.JavaUtil;
 import io.taraxacum.common.util.ReflectionUtil;
@@ -12,7 +13,13 @@ import io.taraxacum.finaltech.core.command.TransformToCopyCardItem;
 import io.taraxacum.finaltech.core.command.TransformToStorageItem;
 import io.taraxacum.finaltech.core.command.TransformToValidItem;
 import io.taraxacum.finaltech.core.enchantment.NullEnchantment;
+import io.taraxacum.finaltech.core.interfaces.ExtraParameterItem;
+import io.taraxacum.finaltech.core.interfaces.impl.ItemCondition;
+import io.taraxacum.finaltech.core.interfaces.impl.PermissionCondition;
+import io.taraxacum.finaltech.core.interfaces.impl.ResearchCondition;
+import io.taraxacum.finaltech.core.interfaces.impl.SimpleSpecialResearch;
 import io.taraxacum.finaltech.core.item.machine.AbstractMachine;
+import io.taraxacum.finaltech.core.listener.ResearchListener;
 import io.taraxacum.finaltech.setup.FinalTechItemStacks;
 import io.taraxacum.finaltech.setup.FinalTechItems;
 import io.taraxacum.finaltech.setup.FinalTechMenus;
@@ -21,16 +28,17 @@ import io.taraxacum.libs.plugin.dto.LanguageManager;
 import io.taraxacum.libs.plugin.dto.LocationData;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.plugin.util.TextUtil;
+import io.taraxacum.libs.slimefun.interfaces.SimpleValidItem;
 import io.taraxacum.libs.slimefun.service.BlockTickerService;
 import io.taraxacum.libs.slimefun.service.impl.BlockStorageDataService;
 import io.taraxacum.libs.slimefun.util.LocationDataUtil;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
@@ -40,6 +48,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author Final_ROOT
@@ -699,8 +708,231 @@ public final class SetupUtil {
     }
 
     private static void setupResearch() {
-        // TODO
-        FinalTech.logger().info("The research system may be updated in the next version");
+        PluginManager pluginManager = FinalTech.getInstance().getServer().getPluginManager();
+        pluginManager.registerEvents(new ResearchListener(), FinalTech.getInstance().getJavaPlugin());
+
+        LanguageManager researchManager = FinalTech.getResearchManager();
+        researchManager.getFunction().addAll(FinalTech.getLanguageManager().getFunction());
+
+        List<String> defaultItemRawConsumeSuccessLore = researchManager.getStringList("text", "items", "consume-true", "success", "lore");
+        List<String> defaultItemRawConsumeSuccessChat = researchManager.getStringList("text", "items", "consume-true", "success", "chat");
+        List<String> defaultItemRawConsumeFailLore = researchManager.getStringList("text", "items", "consume-true", "fail", "lore");
+        List<String> defaultItemRawConsumeFailChat = researchManager.getStringList("text", "items", "consume-true", "fail", "chat");
+        List<String> defaultItemRawSuccessLore = researchManager.getStringList("text", "items", "consume-false", "success", "lore");
+        List<String> defaultItemRawSuccessChat = researchManager.getStringList("text", "items", "consume-false", "success", "chat");
+        List<String> defaultItemRawFailLore = researchManager.getStringList("text", "items", "consume-false", "fail", "lore");
+        List<String> defaultItemRawFailChat = researchManager.getStringList("text", "items", "consume-false", "fail", "chat");
+
+        List<String> defaultResearchSuccessLore = researchManager.getStringList("text", "researches", "success", "lore");
+        List<String> defaultResearchSuccessChat = researchManager.getStringList("text", "researches", "success", "chat");
+        List<String> defaultResearchFailLore = researchManager.getStringList("text", "researches", "fail", "lore");
+        List<String> defaultResearchFailChat = researchManager.getStringList("text", "researches", "fail", "chat");
+
+        List<String> defaultPermissionSuccessLore = researchManager.getStringList("text", "permissions", "success", "lore");
+        List<String> defaultPermissionSuccessChat = researchManager.getStringList("text", "permissions", "success", "chat");
+        List<String> defaultPermissionFailLore = researchManager.getStringList("text", "permissions", "fail", "lore");
+        List<String> defaultPermissionFailChat = researchManager.getStringList("text", "permissions", "fail", "chat");
+
+        List<Research> researchList = Slimefun.getRegistry().getResearches();
+        Map<String, Research> researchIdMap = researchList.stream().collect(Collectors.toMap(research -> research.getKey().getKey(), research -> research));
+
+        List<String> stringList = researchManager.getStringList("researches");
+        while (!stringList.isEmpty()) {
+            int size = stringList.size();
+            try {
+                while (!stringList.isEmpty()) {
+                    String researchId = stringList.remove(0);
+                    String intIdStr = researchManager.getString("researches", researchId, "int-id");
+                    int intId;
+                    if ("{1}".equals(intIdStr)) {
+                        intId = researchId.hashCode();
+                    } else {
+                        intId = Integer.parseInt(intIdStr);
+                    }
+                    String name = researchManager.getString("researches", researchId, "name");
+                    SimpleSpecialResearch research = new SimpleSpecialResearch(new NamespacedKey(FinalTech.getInstance(), researchId), intId, name, 0);
+
+                    List<String> lore = researchManager.getStringList("researches", researchId, "lore");
+                    research.getBaseLore().addAll(lore);
+
+                    List<String> slimefunItemIdList = researchManager.getStringList("researches", researchId, "items");
+                    if (slimefunItemIdList.isEmpty()) {
+                        // TODO logger
+                        continue;
+                    }
+
+                    List<SlimefunItem> slimefunItemList = new ArrayList<>(slimefunItemIdList.size());
+                    for (String slimefunItemId : slimefunItemIdList) {
+                        SlimefunItem slimefunItem = SlimefunItem.getById(slimefunItemId);
+                        if (slimefunItem != null) {
+                            slimefunItemList.add(slimefunItem);
+                        }
+                    }
+
+                    if (researchManager.containPath("researches", researchId, "unlock-condition")) {
+                        if (researchManager.containPath("researches", researchId, "unlock-condition", "items")) {
+                            for (String index : researchManager.getStringList("researches", researchId, "unlock-condition", "items")) {
+                                String itemId = researchManager.getString("researches", researchId, "unlock-condition", "items", index, "id");
+                                int amount = researchManager.getOrDefault(1, "researches", researchId, "unlock-condition", "items", index, "amount");
+                                boolean consume = researchManager.getOrDefault(true, "researches", researchId, "unlock-condition", "items", index, "consume");
+
+                                List<String> successLoreStringList;
+                                if (researchManager.containPath("researches", researchId, "unlock-condition", "items", index, "text", "success", "lore")) {
+                                    successLoreStringList = researchManager.getStringList("researches", researchId, "unlock-condition", "items", index, "text", "success", "lore");
+                                } else {
+                                    successLoreStringList = consume ? defaultItemRawConsumeSuccessLore : defaultItemRawSuccessLore;
+                                }
+
+                                List<String> successChatStringList;
+                                if (researchManager.containPath("researches", researchId, "unlock-condition", "items", index, "text", "success", "chat")) {
+                                    successChatStringList = researchManager.getStringList("researches", researchId, "unlock-condition", "items", index, "text", "success", "chat");
+                                } else {
+                                    successChatStringList = consume ? defaultItemRawConsumeSuccessChat : defaultItemRawSuccessChat;
+                                }
+
+                                List<String> failLoreStringList;
+                                if (researchManager.containPath("researches", researchId, "unlock-condition", "items", index, "text", "fail", "lore")) {
+                                    failLoreStringList = researchManager.getStringList("researches", researchId, "unlock-condition", "items", index, "text", "fail", "lore");
+                                } else {
+                                    failLoreStringList = consume ? defaultItemRawConsumeFailLore : defaultItemRawFailLore;
+                                }
+
+                                List<String> failChatStringList;
+                                if (researchManager.containPath("researches", researchId, "unlock-condition", "items", index, "text", "fail", "chat")) {
+                                    failChatStringList = researchManager.getStringList("researches", researchId, "unlock-condition", "items", index, "text", "fail", "chat");
+                                } else {
+                                    failChatStringList = consume ? defaultItemRawConsumeFailChat : defaultItemRawFailChat;
+                                }
+
+                                ItemStack itemStack;
+                                SlimefunItem slimefunItem = SlimefunItem.getById(itemId);
+                                if (slimefunItem instanceof ExtraParameterItem extraParameterItem) {
+                                    itemStack = extraParameterItem.getByExtraParameter(researchManager.getStringArray("researches", researchId, "unlock-condition", "items", index, "extra-args"));
+                                } else if (slimefunItem instanceof SimpleValidItem simpleValidItem) {
+                                    itemStack = simpleValidItem.getValidItem();
+                                } else if (slimefunItem != null) {
+                                    itemStack = slimefunItem.getItem();
+                                } else {
+                                    Material material = Material.valueOf(itemId);
+                                    itemStack = new ItemStack(material);
+                                }
+
+                                if (itemStack == null) {
+                                    throw new IllegalArgumentException("Can not generate item for " + researchId + " in index " + index);
+                                }
+
+                                ItemCondition itemCondition = new ItemCondition(itemStack, amount, consume);
+                                itemCondition.getRawSuccessLore().addAll(successLoreStringList);
+                                itemCondition.getRawSuccessChat().addAll(successChatStringList);
+                                itemCondition.getRawFailLore().addAll(failLoreStringList);
+                                itemCondition.getRawFailChat().addAll(failChatStringList);
+
+                                research.addCondition(itemCondition);
+                            }
+                        }
+
+                        if (researchManager.containPath("researches", researchId, "unlock-condition", "researches")) {
+                            for (String index : researchManager.getStringList("researches", researchId, "unlock-condition", "researches")) {
+                                String targetResearchId = researchManager.getString("researches", researchId, "unlock-condition", "researches", index, "id");
+                                Research targetResearch = researchIdMap.get(targetResearchId);
+                                if (targetResearch == null) {
+                                    throw new NullPointerException("Can not find research with id: " + targetResearchId);
+                                }
+
+                                List<String> successLoreStringList;
+                                if (researchManager.containPath("researches", researchId, "unlock-condition", "researches", index, "text", "success", "lore")) {
+                                    successLoreStringList = researchManager.getStringList("researches", researchId, "unlock-condition", "researches", index, "text", "success", "lore");
+                                } else {
+                                    successLoreStringList = defaultResearchSuccessLore;
+                                }
+
+                                List<String> successChatStringList;
+                                if (researchManager.containPath("researches", researchId, "unlock-condition", "researches", index, "text", "success", "chat")) {
+                                    successChatStringList = researchManager.getStringList("researches", researchId, "unlock-condition", "researches", index, "text", "success", "chat");
+                                } else {
+                                    successChatStringList = defaultResearchSuccessChat;
+                                }
+
+                                List<String> failLoreStringList;
+                                if (researchManager.containPath("researches", researchId, "unlock-condition", "researches", index, "text", "fail", "lore")) {
+                                    failLoreStringList = researchManager.getStringList("researches", researchId, "unlock-condition", "researches", index, "text", "fail", "lore");
+                                } else {
+                                    failLoreStringList = defaultResearchFailLore;
+                                }
+
+                                List<String> failChatStringList;
+                                if (researchManager.containPath("researches", researchId, "unlock-condition", "researches", index, "text", "fail", "chat")) {
+                                    failChatStringList = researchManager.getStringList("researches", researchId, "unlock-condition", "researches", index, "text", "fail", "chat");
+                                } else {
+                                    failChatStringList = defaultResearchFailChat;
+                                }
+
+                                ResearchCondition researchCondition = new ResearchCondition(targetResearch);
+                                researchCondition.getRawSuccessLore().addAll(successLoreStringList);
+                                researchCondition.getRawSuccessChat().addAll(successChatStringList);
+                                researchCondition.getRawFailChat().addAll(failLoreStringList);
+                                researchCondition.getRawFailChat().addAll(failChatStringList);
+
+                                research.addCondition(researchCondition);
+                            }
+                        }
+
+                        if (researchManager.containPath("researches", researchId, "unlock-condition", "permissions")) {
+                            for (String index : researchManager.getStringList("researches", researchId, "unlock-condition", "permissions")) {
+                                String permissionCode = researchManager.getString("researches", researchId, "unlock-condition", "permissions", index, "id");
+
+                                List<String> successLoreStringList;
+                                if (researchManager.containPath("researches", researchId, "unlock-condition", "permissions", index, "text", "success", "lore")) {
+                                    successLoreStringList = researchManager.getStringList("researches", researchId, "unlock-condition", "permissions", index, "text", "success", "lore");
+                                } else {
+                                    successLoreStringList = defaultPermissionSuccessLore;
+                                }
+
+                                List<String> successChatStringList;
+                                if (researchManager.containPath("researches", researchId, "unlock-condition", "permissions", index, "text", "success", "chat")) {
+                                    successChatStringList = researchManager.getStringList("researches", researchId, "unlock-condition", "permissions", index, "text", "success", "chat");
+                                } else {
+                                    successChatStringList = defaultPermissionSuccessChat;
+                                }
+
+                                List<String> failLoreStringList;
+                                if (researchManager.containPath("researches", researchId, "unlock-condition", "permissions", index, "text", "fail", "lore")) {
+                                    failLoreStringList = researchManager.getStringList("researches", researchId, "unlock-condition", "permissions", index, "text", "fail", "lore");
+                                } else {
+                                    failLoreStringList = defaultPermissionFailLore;
+                                }
+
+                                List<String> failChatStringList;
+                                if (researchManager.containPath("researches", researchId, "unlock-condition", "permissions", index, "text", "fail", "chat")) {
+                                    failChatStringList = researchManager.getStringList("researches", researchId, "unlock-condition", "permissions", index, "text", "fail", "chat");
+                                } else {
+                                    failChatStringList = defaultPermissionFailChat;
+                                }
+
+                                PermissionCondition permissionCondition = new PermissionCondition(permissionCode);
+                                permissionCondition.getRawSuccessLore().addAll(successLoreStringList);
+                                permissionCondition.getRawSuccessChat().addAll(successChatStringList);
+                                permissionCondition.getRawFailChat().addAll(failLoreStringList);
+                                permissionCondition.getRawFailChat().addAll(failChatStringList);
+
+                                research.addCondition(permissionCondition);
+                            }
+                        }
+                    }
+
+                    research.register();
+                    for (SlimefunItem slimefunItem : slimefunItemList) {
+                        slimefunItem.setResearch(research);
+                    }
+                    researchIdMap.put(researchId, research);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (size == stringList.size()) {
+                break;
+            }
+        }
     }
 
     private static void setupCommand() {

@@ -1,0 +1,151 @@
+# The default text to show
+# {color:} is useful here
+text:
+  items:
+    # {1} Item name
+    # {2} How many items the research need
+    # {3} How many items the player has
+    # {4} How many items the player need to have
+    consume-true:
+      # If player match the condition
+      success:
+        lore:
+         - '{1}{color:conceal}: {color:number}{3} {color:conceal}/ {color:number}{2}'
+        # Empty string will not show in lore or chat
+        chat:
+         - ''
+      # If player not match the condition
+      fail:
+        lore:
+         - '{1}{color:conceal}: {color:number}{3} {color:conceal}/ {color:number}{2}'
+        chat:
+         - '{color:negative} You need {color:number}{4} {color:negative}more of {1} {color:negative}to unlock this'
+    consume-false:
+      success:
+        lore:
+         - '{1}{color:conceal}: {color:number}{3} {color:conceal}/ {color:number}{2}'
+        chat:
+         - '{color:positive} You consumed {color:number}{2} {color:positive}of {1} {color:positive}to unlock this'
+      fail:
+        lore:
+         - '{1}{color:conceal}: {color:number}{3} {color:conceal}/ {color:number}{2}'
+        chat:
+         - '{color:negative} You need {color:number}{4} {color:negative}more of {1} {color:negative}to unlock this'
+  researches:
+    # {1} The name of the research that should be unlocked
+    success:
+      lore: '{color:positive}Unlock research {1}'
+      chat: ''
+    fail:
+      lore: '{color:negative}Unlock research {1}'
+      chat: '{color:negative}You should unlock research {1} {color:negative}before unlock this'
+  permissions:
+    # {1} Permission code
+    success:
+      lore: ''
+      chat: ''
+    fail:
+      lore: ''
+      chat: '{color:normal}You need permission {color:stress}{1} {color:normal}to unlock this'
+researches:
+  # research id
+  EXAMPLE:
+    # The name of the research
+    # It should be show in the top
+    name: '{random-color:start}Example Research{random-color:end}'
+    # Extra lore you want to show in the icon
+    lore:
+      - '{color:passive}Do you know, you can custom the lore of the icon in special slimefun guide'
+      - '{color:passive}Do you know, you can add more than 1 lines to the lore'
+    # int id
+    # don't ask why. slimefun need this.
+    # {1} Hash code of the research id
+    int-id: '114514'
+    # slimefun item id
+    items:
+      - 'SLIMEFUN_ITEM_ID'
+      - 'SLIMEFUN_ITEM_ID_2'
+    unlock-condition:
+    # Player need to unlock some researches to unlock this research
+      # Player need items in their inventory to unlock it
+      items:
+        # 2 ordered dust is needed to unlock this research, and it will be consumed after unlocking.
+        1:
+          id: FINALTECH_ORDERED_DUST
+          amount: 2
+          consume: true
+        # 65 unordered dust is needed to unlock this research, and it will be not consumed after unlocking.
+        2:
+          id: FINALTECH_UNORDERED_DUST
+          amount: 65
+          consume: false
+        # 16 stone is needed to unlock this research.
+        3:
+          id: STONE
+          amount: 16
+          consume: true
+          # You may want to config the text per item
+          # {1} Item name
+          # {2} How many items the research need
+          # {3} How many items the player has
+          # {4} How many items the player need to have
+          text:
+            success:
+              lore:
+                - '✔ 16 Stones'
+              chat:
+                - 'You consumed {2} {1}s to unlock this'
+            fail:
+              lore:
+                - '✘ {2} stones'
+              chat:
+                - 'You need {4} stones to unlock this'
+          # Varies depending on slimefun items. It will not work in this situation.
+          extra-args:
+            - 'FINALTECH_ORDERED_DUST'
+            - '1'
+      # Player has to unlock some other researches to unlock this research
+      researches:
+        # In this case
+        1:
+          # Research id
+          id: 'RESEARCH_EXAMPLE_2'
+          # {1} Research name
+          text:
+            success:
+              lore:
+                - '✔ Unlock {1}'
+                - ''
+              chat:
+            fail:
+              lore:
+                - '✘ Unlock example research'
+              chat:
+                - 'Before unlock this, you should unlock {1}'
+      # Player need this permission to unlock it
+      permissions:
+        1:
+          code: 'finaltech.example.permission'
+          text:
+            success:
+              lore:
+                - '✔ You are a tester'
+                - 'Only the tester has permission finaltech.example.permission'
+              chat:
+                - ''
+            fail:
+              lore:
+                - '✘ You are a tester'
+                - 'You can buy this permission from example.com'
+              chat:
+                - 'Hey, you are not a tester.'
+  BIT_AND_META:
+    name: '{random-color:start}Start of the world{random-color:end}'
+    lore:
+      - '{color:passive}Knowledge is started here'
+    # {1} Hash code of the research id
+    int-id: '{1}'
+    items:
+      - 'FINALTECH_BIT'
+      - 'FINALTECH_META'
+    unlock-condition:
