@@ -1,0 +1,11 @@
+ITEM_ID:
+  # You should unlock these research to see this item
+  researches:
+    - 'research id1'
+    - 'research id2'
+  # You should be able to see these items to see this item
+  items:
+    - 'item id1'
+    - 'item id2'
+  permissions:
+    - 'example.permission'
