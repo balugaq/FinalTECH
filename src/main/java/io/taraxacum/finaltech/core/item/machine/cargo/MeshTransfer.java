@@ -34,6 +34,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -150,6 +152,7 @@ public class MeshTransfer extends AbstractCargo implements RecipeItem, LogicInje
             // do cargo for outputs
 
             SimpleCargoDTO simpleCargoDTO = new SimpleCargoDTO();
+            simpleCargoDTO.setLocationDataService(FinalTech.getLocationDataService());
             simpleCargoDTO.setCargoFilter(cargoFilter);
             simpleCargoDTO.setFilterInv(inventory);
             simpleCargoDTO.setFilterSlots(this.itemMatch);
@@ -269,12 +272,13 @@ public class MeshTransfer extends AbstractCargo implements RecipeItem, LogicInje
                     inputVanillaInventories[i] = CargoUtil.getVanillaInventory(inputBlocks[i]);
                 }
                 locations[locations.length - 1] = block.getLocation();
+                Location[] finalLocations = new HashSet<>(Arrays.asList(locations)).toArray(new Location[0]);
                 FinalTech.getLocationRunnableFactory().waitThenRun(() -> {
                     if (FinalTech.getLocationDataService().getLocationData(block.getLocation()) == null) {
                         return;
                     }
 
-                    if (!PermissionUtil.checkOfflinePermission(FinalTech.getLocationDataService(), locationData, LocationUtil.transferToLocation(inputBlocks)) || !PermissionUtil.checkOfflinePermission(FinalTech.getLocationDataService(), locationData, LocationUtil.transferToLocation(outputBlocks))) {
+                    if (!PermissionUtil.checkOfflinePermission(FinalTech.getLocationDataService(), locationData, finalLocations)) {
                         return;
                     }
 
@@ -303,6 +307,7 @@ public class MeshTransfer extends AbstractCargo implements RecipeItem, LogicInje
                     // do cargo for outputs
 
                     SimpleCargoDTO simpleCargoDTO = new SimpleCargoDTO();
+                    simpleCargoDTO.setLocationDataService(FinalTech.getLocationDataService());
                     simpleCargoDTO.setCargoFilter(cargoFilter);
                     simpleCargoDTO.setFilterInv(inventory);
                     simpleCargoDTO.setFilterSlots(this.itemMatch);
@@ -387,7 +392,7 @@ public class MeshTransfer extends AbstractCargo implements RecipeItem, LogicInje
                             }
                         }
                     }
-                }, locations);
+                }, finalLocations);
             });
         }
     }

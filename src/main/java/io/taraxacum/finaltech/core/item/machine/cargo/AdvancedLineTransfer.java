@@ -164,6 +164,7 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
             InvWithSlots outputMap;
 
             SimpleCargoDTO simpleCargoDTO = new SimpleCargoDTO();
+            simpleCargoDTO.setLocationDataService(FinalTech.getLocationDataService());
             simpleCargoDTO.setInputSize(inputSize);
             simpleCargoDTO.setInputOrder(inputOrder);
             simpleCargoDTO.setOutputSize(outputSize);
@@ -313,6 +314,7 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
                     InvWithSlots outputMap;
 
                     SimpleCargoDTO simpleCargoDTO = new SimpleCargoDTO();
+                    simpleCargoDTO.setLocationDataService(FinalTech.getLocationDataService());
                     simpleCargoDTO.setInputSize(inputSize);
                     simpleCargoDTO.setInputOrder(inputOrder);
                     simpleCargoDTO.setOutputSize(outputSize);

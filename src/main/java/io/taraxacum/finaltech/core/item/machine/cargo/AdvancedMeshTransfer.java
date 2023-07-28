@@ -28,8 +28,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 /**
@@ -157,6 +156,7 @@ public class AdvancedMeshTransfer extends AbstractCargo implements RecipeItem, L
             // do cargo for outputs
 
             SimpleCargoDTO simpleCargoDTO = new SimpleCargoDTO();
+            simpleCargoDTO.setLocationDataService(FinalTech.getLocationDataService());
             simpleCargoDTO.setCargoFilter(cargoFilter);
             simpleCargoDTO.setFilterInv(inventory);
             simpleCargoDTO.setFilterSlots(this.itemMatch);
@@ -244,11 +244,6 @@ public class AdvancedMeshTransfer extends AbstractCargo implements RecipeItem, L
                 }
             }
         } else {
-            String outputSize = SlotSearchSize.OUTPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
-            String outputOrder = SlotSearchOrder.OUTPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
-            String inputSize = SlotSearchSize.INPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
-            String inputOrder = SlotSearchOrder.INPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
-
             javaPlugin.getServer().getScheduler().runTask(javaPlugin, () -> {
                 for (int i = 0; i < outputBlocks.length; i++) {
                     outputBlocks[i] = this.searchBlock(block, outputBlockFaces[i], outputBlockSearchMode, drawParticle);
@@ -276,12 +271,13 @@ public class AdvancedMeshTransfer extends AbstractCargo implements RecipeItem, L
                     inputVanillaInventories[i] = CargoUtil.getVanillaInventory(inputBlocks[i]);
                 }
                 locations[locations.length - 1] = block.getLocation();
+                Location[] finalLocations = new HashSet<>(Arrays.asList(locations)).toArray(new Location[0]);
                 FinalTech.getLocationRunnableFactory().waitThenRun(() -> {
                     if (FinalTech.getLocationDataService().getLocationData(block.getLocation()) == null) {
                         return;
                     }
 
-                    if (!PermissionUtil.checkOfflinePermission(FinalTech.getLocationDataService(), locationData, LocationUtil.transferToLocation(inputBlocks)) || !PermissionUtil.checkOfflinePermission(FinalTech.getLocationDataService(), locationData, LocationUtil.transferToLocation(outputBlocks))) {
+                    if (!PermissionUtil.checkOfflinePermission(FinalTech.getLocationDataService(), locationData, finalLocations)) {
                         return;
                     }
 
@@ -294,10 +290,14 @@ public class AdvancedMeshTransfer extends AbstractCargo implements RecipeItem, L
 
                     // parse block storage
 
+                    String outputSize = SlotSearchSize.OUTPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
+                    String outputOrder = SlotSearchOrder.OUTPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
                     int outputCargoNumber = Integer.parseInt(CargoNumber.OUTPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData));
                     String outputCargoNumberMode = CargoNumberMode.OUTPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
                     String outputCargoLimit = CargoLimit.OUTPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
 
+                    String inputSize = SlotSearchSize.INPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
+                    String inputOrder = SlotSearchOrder.INPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
                     int inputCargoNumber = Integer.parseInt(CargoNumber.INPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData));
                     String inputCargoNumberMode = CargoNumberMode.INPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
                     String inputCargoLimit = CargoLimit.INPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
@@ -310,6 +310,7 @@ public class AdvancedMeshTransfer extends AbstractCargo implements RecipeItem, L
                     // do cargo for outputs
 
                     SimpleCargoDTO simpleCargoDTO = new SimpleCargoDTO();
+                    simpleCargoDTO.setLocationDataService(FinalTech.getLocationDataService());
                     simpleCargoDTO.setCargoFilter(cargoFilter);
                     simpleCargoDTO.setFilterInv(inventory);
                     simpleCargoDTO.setFilterSlots(this.itemMatch);
@@ -394,7 +395,7 @@ public class AdvancedMeshTransfer extends AbstractCargo implements RecipeItem, L
                             }
                         }
                     }
-                }, locations);
+                }, finalLocations);
             });
         }
     }

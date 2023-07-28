@@ -158,6 +158,7 @@ public class LineTransfer extends AbstractCargo implements RecipeItem, LogicInje
             InvWithSlots outputMap;
 
             SimpleCargoDTO simpleCargoDTO = new SimpleCargoDTO();
+            simpleCargoDTO.setLocationDataService(FinalTech.getLocationDataService());
             simpleCargoDTO.setInputSize(inputSize);
             simpleCargoDTO.setInputOrder(inputOrder);
             simpleCargoDTO.setOutputSize(outputSize);
@@ -307,6 +308,7 @@ public class LineTransfer extends AbstractCargo implements RecipeItem, LogicInje
                     InvWithSlots outputMap;
 
                     SimpleCargoDTO simpleCargoDTO = new SimpleCargoDTO();
+                    simpleCargoDTO.setLocationDataService(FinalTech.getLocationDataService());
                     simpleCargoDTO.setInputSize(inputSize);
                     simpleCargoDTO.setInputOrder(inputOrder);
                     simpleCargoDTO.setOutputSize(outputSize);

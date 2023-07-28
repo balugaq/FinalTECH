@@ -200,8 +200,8 @@ public final class FinalTechItemStacks {
     public static final SlimefunItemStack LOGIC_COMPARATOR_EQUAL = ConfigUtil.getSlimefunItemStack(FinalTech.getLanguageManager(), "FINALTECH_LOGIC_COMPARATOR_EQUAL", Material.STONE_BRICKS, "Logic Comparator - Equal");
     public static final SlimefunItemStack LOGIC_CRAFTER = ConfigUtil.getSlimefunItemStack(FinalTech.getLanguageManager(), "FINALTECH_LOGIC_CRAFTER", Material.LOOM, "Logic Crafter");
     public static final SlimefunItemStack DIGIT_ADDER = ConfigUtil.getSlimefunItemStack(FinalTech.getLanguageManager(), "FINALTECH_DIGIT_ADDER", Material.HAY_BLOCK, "Digit Adder");
-    public static final SlimefunItemStack LOGIC_INJECTOR = ConfigUtil.getSlimefunItemStack(FinalTech.getLanguageManager(), "FINALTECH_LOGIC_INJECTOR", Material.COPPER_ORE, "Logic Injector");
-    public static final SlimefunItemStack DIGIT_INJECTOR = ConfigUtil.getSlimefunItemStack(FinalTech.getLanguageManager(), "FINALTECH_DIGIT_INJECTOR", Material.COPPER_ORE, "Digit Injector");
+    public static final SlimefunItemStack LOGIC_INJECTOR = ConfigUtil.getSlimefunItemStack(FinalTech.getLanguageManager(), "FINALTECH_LOGIC_INJECTOR", Material.LIGHTNING_ROD, "Logic Injector");
+    public static final SlimefunItemStack DIGIT_INJECTOR = ConfigUtil.getSlimefunItemStack(FinalTech.getLanguageManager(), "FINALTECH_DIGIT_INJECTOR", Material.LIGHTNING_ROD, "Digit Injector");
 
     // cargo
     public static final SlimefunItemStack BASIC_FRAME_MACHINE = ConfigUtil.getSlimefunItemStack(FinalTech.getLanguageManager(), "FINALTECH_BASIC_FRAME_MACHINE", Material.STONE, "Basic Frame Machine");

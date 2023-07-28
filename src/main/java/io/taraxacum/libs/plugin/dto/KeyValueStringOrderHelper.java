@@ -43,17 +43,24 @@ public class KeyValueStringOrderHelper extends KeyValueStringHelper {
             } else {
                 for (Map.Entry<Integer, KeyValue> entry : this.map.entrySet()) {
                     if (entry.getValue().key.equals(key)) {
-                        entry.getValue().value = value;
-                        return;
+                        if (this.validValue(value)) {
+                            entry.getValue().value = value;
+                            return;
+                        } else {
+                            this.deleteEntry(key);
+                            return;
+                        }
                     }
                 }
-                for (int i = 0; i < this.map.size(); i++) {
-                    if (!this.map.containsKey(i) || this.nullMark.equals(this.map.get(i).value)) {
-                        this.map.put(i, new KeyValue(key, value));
-                        return;
+                if (this.validValue(value)) {
+                    for (int i = 0; i < this.map.size(); i++) {
+                        if (!this.map.containsKey(i) || this.nullMark.equals(this.map.get(i).value)) {
+                            this.map.put(i, new KeyValue(key, value));
+                            return;
+                        }
                     }
+                    this.map.put(this.map.size(), new KeyValue(key, value));
                 }
-                this.map.put(this.map.size(), new KeyValue(key, value));
             }
         }
     }
