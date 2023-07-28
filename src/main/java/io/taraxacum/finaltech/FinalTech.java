@@ -71,6 +71,8 @@ public class FinalTech extends JavaPlugin implements SlimefunAddon {
     private ConfigFileManager item;
     private ConfigFileManager template;
     private ConfigFileManager recipe;
+    private ConfigFileManager visible;
+    private LanguageManager research;
     private LanguageManager languageManager;
     private LogService logService;
     private ItemService itemService;
@@ -105,9 +107,11 @@ public class FinalTech extends JavaPlugin implements SlimefunAddon {
             this.item = ConfigFileManager.getOrNewInstance(this, "item");
             this.template = ConfigFileManager.getOrNewInstance(this, "template");
             this.recipe = ConfigFileManager.getOrNewInstance(this, "recipe");
+            this.visible = ConfigFileManager.getOrNewInstance(this, "visible");
+            this.research = LanguageManager.getOrNewInstance(this, "research");
 
             String language = this.config.getOrDefault("en-US", "language");
-            this.languageManager = LanguageManager.getOrNewInstance(this, language);
+            this.languageManager = LanguageManager.getOrNewInstance(this, "language", language);
         } catch (Exception e) {
             e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
@@ -277,9 +281,11 @@ public class FinalTech extends JavaPlugin implements SlimefunAddon {
         /* set up my items and menus and... */
         SetupUtil.init();
 
+        // TODO
         this.performanceLimitSlimefunIdSet.add(FinalTechItemStacks.ORDERED_DUST_FACTORY_DIRT.getItemId());
         this.performanceLimitSlimefunIdSet.add(FinalTechItemStacks.ORDERED_DUST_FACTORY_STONE.getItemId());
 
+        // TODO
         /* mark for some machines */
         this.antiAccelerateSlimefunIdSet.add(FinalTechItemStacks.ENERGIZED_ACCELERATOR.getItemId());
         this.antiAccelerateSlimefunIdSet.add(FinalTechItemStacks.OVERLOADED_ACCELERATOR.getItemId());
@@ -478,6 +484,14 @@ public class FinalTech extends JavaPlugin implements SlimefunAddon {
 
     public static ConfigFileManager getRecipeManager() {
         return instance.recipe;
+    }
+
+    public static ConfigFileManager getVisibleManager() {
+        return instance.visible;
+    }
+
+    public static LanguageManager getResearchManager() {
+        return instance.research;
     }
 
     public static LanguageManager getLanguageManager() {

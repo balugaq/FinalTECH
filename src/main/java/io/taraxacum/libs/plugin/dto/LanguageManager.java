@@ -14,8 +14,12 @@ import java.util.function.Function;
 public class LanguageManager extends ConfigFileManager implements StringReplacer {
     private final List<Function<String, String>> functionSet = new ArrayList<>();
 
+    private LanguageManager(@Nonnull Plugin plugin, @Nonnull String path, @Nonnull String configFileName) {
+        super(plugin, path, configFileName);
+    }
+
     private LanguageManager(@Nonnull Plugin plugin, @Nonnull String configFileName) {
-        super(plugin, "language", configFileName);
+        super(plugin, configFileName);
     }
 
     @SafeVarargs
@@ -85,6 +89,36 @@ public class LanguageManager extends ConfigFileManager implements StringReplacer
             result[i] = this.replaceString(source[i], targets);
         }
         return result;
+    }
+
+    @Nonnull
+    public static LanguageManager getOrNewInstance(@Nonnull Plugin plugin, @Nonnull String path, @Nonnull String fileName) {
+        if (INSTANCE_MAP.containsKey(plugin)) {
+            Map<String, ConfigFileManager> configRegistryMap = INSTANCE_MAP.get(plugin);
+            if (configRegistryMap.containsKey(fileName)) {
+                return (LanguageManager)configRegistryMap.get(fileName);
+            } else {
+                synchronized (configRegistryMap) {
+                    if (configRegistryMap.containsKey(fileName)) {
+                        return (LanguageManager)configRegistryMap.get(fileName);
+                    }
+                    final LanguageManager configManager = new LanguageManager(plugin, path, fileName);
+                    configRegistryMap.put(fileName, configManager);
+                    return configManager;
+                }
+            }
+        } else {
+            synchronized (ConfigFileManager.class) {
+                if (INSTANCE_MAP.containsKey(plugin)) {
+                    return LanguageManager.getOrNewInstance(plugin, path, fileName);
+                }
+                LanguageManager configManager = new LanguageManager(plugin, path, fileName);
+                final Map<String, ConfigFileManager> fileMap = new HashMap<>();
+                fileMap.put(fileName, configManager);
+                INSTANCE_MAP.put(plugin, fileMap);
+                return configManager;
+            }
+        }
     }
 
     @Nonnull
