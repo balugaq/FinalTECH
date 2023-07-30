@@ -165,6 +165,7 @@ public class MainItemGroupInventory extends SimpleVirtualInventory {
 
         for (int slot : JavaUtil.generateInts(this.size)) {
             this.setOnClick(slot, this.CANCEL_CLICK_CONSUMER);
+            this.getInventory().clear(slot);
         }
 
         this.setOnOpen(inventoryOpenEvent -> {
@@ -264,5 +265,11 @@ public class MainItemGroupInventory extends SimpleVirtualInventory {
     public void drawBackAsBorder() {
         this.getInventory().setItem(this.backSlot, Icon.BORDER_ICON);
         this.setOnClick(this.backSlot, CANCEL_CLICK_CONSUMER);
+    }
+
+    @Override
+    public void open(@Nonnull Player player) {
+        this.init();
+        super.open(player);
     }
 }

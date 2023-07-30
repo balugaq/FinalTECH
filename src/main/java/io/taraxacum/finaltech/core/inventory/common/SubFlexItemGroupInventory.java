@@ -120,6 +120,7 @@ public class SubFlexItemGroupInventory extends SimpleVirtualInventory {
 
         for (int slot : JavaUtil.generateInts(this.size)) {
             this.setOnClick(slot, this.CANCEL_CLICK_CONSUMER);
+            this.getInventory().clear(slot);
         }
 
         this.setOnOpen(inventoryOpenEvent -> {
