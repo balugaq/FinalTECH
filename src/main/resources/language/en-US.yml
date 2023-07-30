@@ -2646,6 +2646,7 @@ items:
       lore:
         - '{color:normal}Amount: {color:number}{1} {color:conceal}/ {color:number}{3}'
         - '{color:normal}Type: {color:number}{2} {color:conceal}/ {color:number}{4}'
+        - '{color:normal}Dynamic difficulty: {color:number}{5}'
   FINALTECH_ETHER_MINER:
     name: '{color:prandom}Ether Miner'
     info:
@@ -2764,7 +2765,6 @@ items:
       lore:
         - '{color:normal}Item Name: {color:number}{1}'
         - '{color:normal}Item Amount: {color:number}{2} {color:normal}/ {color:number}{3}'
-        - '{color:normal}Rate: {color:number}{4}'
   FINALTECH_PHONY_FACTORY:
     name: '{color:prandom}Phony Factory'
     info:
