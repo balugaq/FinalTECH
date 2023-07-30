@@ -84,57 +84,63 @@ public class EtherMiner extends AbstractOperationMachine implements RecipeItem, 
         if(inventory == null) {
             return;
         }
+
         Location location = block.getLocation();
 
         OptionalInt supplies = Slimefun.getGPSNetwork().getResourceManager().getSupplies(FinalTechItems.ETHER, block.getWorld(), block.getX() >> 4, block.getZ() >> 4);
         int etherAmount = supplies.isPresent() ? supplies.getAsInt() : -1;
 
         EtherMinerOperation etherMinerOperation = (EtherMinerOperation)this.getMachineProcessor().getOperation(location);
-        if(etherMinerOperation != null) {
+        if (etherMinerOperation != null) {
             etherMinerOperation.addProgress(1);
-            if(etherMinerOperation.isFinished()) {
-                ItemStack outputItemStack = FinalTechItems.ETHER.getValidItem();
-                if(InventoryUtil.tryPushAllItem(inventory, this.getOutputSlot(), outputItemStack)) {
-                    FinalTech.getLogService().addItem(FinalTechItems.ETHER.getId(), 1, this.getId(), LogSourceType.SLIMEFUN_MACHINE, null, location, this.getAddon().getJavaPlugin());
+            if (etherMinerOperation.isFinished()) {
+                if (etherMinerOperation.getEtherAmount() == etherAmount) {
+                    ItemStack outputItemStack = FinalTechItems.ETHER.getValidItem();
+                    if (InventoryUtil.tryPushAllItem(inventory, this.getOutputSlot(), outputItemStack)) {
+                        FinalTech.getLogService().addItem(FinalTechItems.ETHER.getId(), 1, this.getId(), LogSourceType.SLIMEFUN_MACHINE, null, location, this.getAddon().getJavaPlugin());
+                        Slimefun.getGPSNetwork().getResourceManager().setSupplies(FinalTechItems.ETHER, block.getWorld(), block.getX() >> 4, block.getZ() >> 4, Math.max(0, etherAmount - 1));
+                    }
+                } else {
                     this.getMachineProcessor().endOperation(location);
                     etherMinerOperation = null;
-                    Slimefun.getGPSNetwork().getResourceManager().setSupplies(FinalTechItems.ETHER, block.getWorld(), block.getX() >> 4, block.getZ() >> 4, Math.max(0, etherAmount));
                 }
             }
-        } else if(etherAmount > 0) {
+        } else if (etherAmount > 0) {
             ItemStack unorderedDustItemStack = null;
-            for(int slot : this.getInputSlot()) {
+            for (int slot : this.getInputSlot()) {
                 ItemStack itemStack = inventory.getItem(slot);
                 if (!ItemStackUtil.isItemNull(itemStack) && FinalTechItems.UNORDERED_DUST.verifyItem(itemStack)) {
                     unorderedDustItemStack = itemStack;
                     break;
                 }
             }
-            if(unorderedDustItemStack != null) {
+            if (unorderedDustItemStack != null) {
                 etherMinerOperation = new EtherMinerOperation((int) (this.baseTime / MathUtil.getLog(this.logN, etherAmount * this.mul + 1 + this.add) * (1 + FinalTech.getRandom().nextDouble(this.random))), etherAmount);
                 boolean startOperation = this.getMachineProcessor().startOperation(location, etherMinerOperation);
-                if(startOperation) {
+                if (startOperation) {
                     unorderedDustItemStack.setAmount(unorderedDustItemStack.getAmount() - 1);
                     FinalTech.getLogService().subItem(FinalTechItems.UNORDERED_DUST.getId(), 1, this.getId(), LogSourceType.SLIMEFUN_MACHINE, null, location, this.getAddon().getJavaPlugin());
                 } else {
                     etherMinerOperation = null;
                 }
             }
-        } else if(etherAmount == 0) {
+        } else if (etherAmount == 0) {
             etherAmount = FinalTechItems.ETHER.getDefaultSupply(block.getWorld().getEnvironment(), block.getBiome()) + FinalTech.getRandom().nextInt(1 + FinalTechItems.ETHER.getMaxDeviation());
             Slimefun.getGPSNetwork().getResourceManager().setSupplies(FinalTechItems.ETHER, block.getWorld(), block.getX() >> 4, block.getZ() >> 4, Math.max(0, etherAmount));
         }
 
-        if(!inventory.getViewers().isEmpty()) {
+        if (!inventory.getViewers().isEmpty()) {
             int progress = 0;
-            int totalTicks = 0;
-            if(etherMinerOperation != null) {
+            String totalTicksStr;
+            if (etherMinerOperation != null) {
                 progress = etherMinerOperation.getProgress();
-                totalTicks = etherMinerOperation.getTotalTicks();
+                totalTicksStr = String.valueOf(etherMinerOperation.getTotalTicks());
+            } else {
+                totalTicksStr = "?";
             }
             this.updateInv(inventory, this.statusSlot, this,
                     String.valueOf(progress),
-                    String.valueOf(totalTicks),
+                    totalTicksStr,
                     String.valueOf(etherAmount));
         }
     }
