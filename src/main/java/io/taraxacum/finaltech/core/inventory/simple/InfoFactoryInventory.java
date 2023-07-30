@@ -16,7 +16,7 @@ import java.util.List;
  * @author Final_ROOT
  */
 public class InfoFactoryInventory extends AbstractOrdinaryMachineInventory {
-    private final int[] border = new int[] {};
+    private final int[] border = new int[] {5, 6, 7, 8, 14, 15, 16, 17, 23, 24, 25, 26, 32, 33, 34, 35};
     private final int[] inputBorder = new int[] {4, 13, 22, 31};
     private final int[] outputBorder = new int[0];
     private final int[] inputSlot = new int[] {0, 1, 2, 3, 9, 10, 11, 12, 18, 19, 20, 21, 27, 28, 29, 30};
