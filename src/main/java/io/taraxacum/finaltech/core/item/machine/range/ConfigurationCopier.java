@@ -67,19 +67,19 @@ public class ConfigurationCopier extends AbstractRangeMachine implements RecipeI
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
         Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
-        if(inventory == null) {
+        if (inventory == null) {
             return;
         }
         boolean hasViewer = !inventory.getViewers().isEmpty();
         boolean drawParticle = hasViewer || RouteShow.VALUE_TRUE.equals(RouteShow.OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData));
 
-        if(!ItemStackUtil.isItemNull(inventory.getItem(this.getOutputSlot()[0]))) {
+        if (!ItemStackUtil.isItemNull(inventory.getItem(this.getOutputSlot()[0]))) {
             return;
         }
 
         ItemStack itemConfigurator = inventory.getItem(this.getInputSlot()[0]);
         SlimefunItem machineConfigurator = SlimefunItem.getByItem(itemConfigurator);
-        if(machineConfigurator == null || !FinalTechItems.MACHINE_CONFIGURATOR.getId().equals(machineConfigurator.getId())) {
+        if (FinalTechItems.MACHINE_CONFIGURATOR != machineConfigurator) {
             return;
         }
 
@@ -87,25 +87,25 @@ public class ConfigurationCopier extends AbstractRangeMachine implements RecipeI
         int digital = SlimefunItem.getByItem(digitalItemStack) instanceof DigitalItem digitalItem ? digitalItem.getDigit() : 0;
 
         BlockData blockData = block.getBlockData();
-        if(blockData instanceof Directional directional) {
+        if (blockData instanceof Directional directional) {
             Runnable runnable = () -> {
                 ItemStack outputItem = ItemStackUtil.cloneItem(itemConfigurator, 1);
 
                 RangeFunction rangeFunction = location -> {
-                    if(!location.getChunk().isLoaded()) {
+                    if (!location.getChunk().isLoaded()) {
                         return -1;
                     }
 
                     LocationData tempLocationData = FinalTech.getLocationDataService().getLocationData(location);
                     if (tempLocationData != null) {
                         String id = LocationDataUtil.getId(FinalTech.getLocationDataService(), tempLocationData);
-                        if(id == null || this.notAllowedId.contains(id)) {
+                        if (id == null || this.notAllowedId.contains(id)) {
                             return -1;
                         }
 
-                        if(ItemConfigurationUtil.saveConfigToItem(outputItem, FinalTech.getLocationDataService(), tempLocationData)) {
+                        if (ItemConfigurationUtil.saveConfigToItem(outputItem, FinalTech.getLocationDataService(), tempLocationData)) {
                             SlimefunItem sfItem = LocationDataUtil.getSlimefunItem(FinalTech.getLocationDataService(), tempLocationData);
-                            if(sfItem != null) {
+                            if (sfItem != null) {
                                 ItemStackUtil.setLore(outputItem, sfItem.getItemName());
                             }
 
@@ -120,13 +120,13 @@ public class ConfigurationCopier extends AbstractRangeMachine implements RecipeI
                     return 0;
                 };
 
-                if(digital == 0) {
+                if (digital == 0) {
                     this.lineFunction(block, this.range, rangeFunction);
                 } else {
                     this.pointFunction(block, digital, rangeFunction);
                 }
 
-                if(InventoryUtil.tryPushAllItem(inventory, this.getOutputSlot(), outputItem)) {
+                if (InventoryUtil.tryPushAllItem(inventory, this.getOutputSlot(), outputItem)) {
                     itemConfigurator.setAmount(itemConfigurator.getAmount() - 1);
                 }
             };
@@ -158,14 +158,14 @@ public class ConfigurationCopier extends AbstractRangeMachine implements RecipeI
     public Location getTargetLocation(@Nonnull Location location, int range) {
         Block block = location.getBlock();
         BlockData blockData = block.getBlockData();
-        return blockData instanceof Directional directional ? block.getRelative(directional.getFacing().getOppositeFace(), range).getLocation() : location;
+        return blockData instanceof Directional directional ? block.getRelative(directional.getFacing(), range).getLocation() : location;
     }
 
     @Override
     public Location[] getLocations(@Nonnull Location sourceLocation) {
         Block block = sourceLocation.getBlock();
         BlockData blockData = block.getBlockData();
-        if(blockData instanceof Directional directional) {
+        if (blockData instanceof Directional directional) {
             BlockFace blockFace = directional.getFacing();
             Location[] locations = new Location[this.range + 1];
             int i = 0;
