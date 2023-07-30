@@ -2,6 +2,7 @@ package io.taraxacum.finaltech.core.inventory.manual;
 
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.item.machine.manual.process.AbstractProcessMachine;
+import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.libs.plugin.interfaces.LogicInventory;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import org.bukkit.Location;
@@ -28,12 +29,12 @@ public class ProcessMachineInventory extends AbstractManualMachineInventory impl
     public final int craftSlot = 13;
 
     private final ItemStack errorIcon = ItemStackUtil.newItemStack(Material.RED_STAINED_GLASS_PANE,
-            FinalTech.getLanguageString(this.getId(), "error-icon", "name"),
-            FinalTech.getLanguageStringArray(this.getId(), "error-icon", "lore"));
+            FinalTech.getLanguageString("items", this.getId(), "error-icon", "name"),
+            FinalTech.getLanguageStringArray("items", this.getId(), "error-icon", "lore"));
 
     private final ItemStack successIcon = ItemStackUtil.newItemStack(Material.GREEN_STAINED_GLASS_PANE,
-            FinalTech.getLanguageString(this.getId(), "success-icon", "name"),
-            FinalTech.getLanguageStringArray(this.getId(), "success-icon", "lore"));
+            FinalTech.getLanguageString("items", this.getId(), "success-icon", "name"),
+            FinalTech.getLanguageStringArray("items", this.getId(), "success-icon", "lore"));
 
     private final AbstractProcessMachine abstractProcessMachine;
 
