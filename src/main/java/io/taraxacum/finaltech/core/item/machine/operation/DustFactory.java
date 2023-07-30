@@ -46,11 +46,13 @@ public class DustFactory extends AbstractOperationMachine implements RecipeItem,
     private final String key = "d";
     private final int maxDynamicDifficulty = (Integer.MAX_VALUE - this.baseAmountDifficulty) / this.baseTypeDifficulty / 2;
     private final List<Location> locationList;
+    private final List<Location> lastLocationList;
     private int statusSlot;
 
     public DustFactory(@Nonnull ItemGroup itemGroup, @Nonnull SlimefunItemStack item) {
         super(itemGroup, item);
         this.locationList = FinalTech.isAsyncSlimefunItem(this.getId()) ? new ArrayList<>() : new CopyOnWriteArrayList<>();
+        this.lastLocationList = FinalTech.isAsyncSlimefunItem(this.getId()) ? new ArrayList<>() : new CopyOnWriteArrayList<>();
     }
 
     @Nullable
@@ -103,7 +105,7 @@ public class DustFactory extends AbstractOperationMachine implements RecipeItem,
                 int amount = this.baseAmountDifficulty;
                 int type = this.baseTypeDifficulty;
                 int dynamicDeviation = this.deviationDifficulty + dynamicDifficulty;
-                if(dynamicDeviation != 0) {
+                if (dynamicDeviation != 0) {
                     int deviation = dynamicDeviation / Math.abs(dynamicDeviation) * FinalTech.getRandom().nextInt(Math.abs(dynamicDeviation) + 1);
                     amount += this.multiAmountDifficulty * (dynamicDeviation - deviation);
                     type += this.multiTypeDifficulty * deviation;
@@ -129,9 +131,10 @@ public class DustFactory extends AbstractOperationMachine implements RecipeItem,
         if (operation == null) {
             int amount = this.baseAmountDifficulty;
             int type = this.baseTypeDifficulty;
-            if(this.deviationDifficulty != 0) {
-                int deviation = this.deviationDifficulty / Math.abs(this.deviationDifficulty) * FinalTech.getRandom().nextInt(Math.abs(this.deviationDifficulty) + 1);
-                amount += this.multiAmountDifficulty * (this.deviationDifficulty - deviation);
+            int dynamicDeviation = this.deviationDifficulty + dynamicDifficulty;
+            if (dynamicDeviation != 0) {
+                int deviation = dynamicDeviation / Math.abs(dynamicDeviation) * FinalTech.getRandom().nextInt(Math.abs(dynamicDeviation) + 1);
+                amount += this.multiAmountDifficulty * (dynamicDeviation - deviation);
                 type += this.multiTypeDifficulty * deviation;
             }
 
@@ -148,10 +151,10 @@ public class DustFactory extends AbstractOperationMachine implements RecipeItem,
                     String.valueOf(dynamicDifficulty));
         }
 
-        if (this.locationList.size() > 1) {
-            Location anotherLocation = this.locationList.get(FinalTech.getRandom().nextInt(this.locationList.size()));
+        if (this.lastLocationList.size() > 1) {
+            Location anotherLocation = this.lastLocationList.get(FinalTech.getRandom().nextInt(this.lastLocationList.size()));
             double distance = LocationUtil.getManhattanDistance(locationData.getLocation(), anotherLocation);
-            if (distance > 0 && FinalTech.getRandom().nextDouble(distance * distance) <= this.locationList.size()) {
+            if (distance > 0 && FinalTech.getRandom().nextDouble(distance) <= this.lastLocationList.size()) {
                 dynamicDifficultyStr = StringNumberUtil.min(StringNumberUtil.add(String.valueOf(dynamicDifficulty)), String.valueOf(this.maxDynamicDifficulty));
                 FinalTech.getLocationDataService().setLocationData(locationData, this.key, dynamicDifficultyStr);
             }
@@ -163,6 +166,9 @@ public class DustFactory extends AbstractOperationMachine implements RecipeItem,
     @Override
     protected void uniqueTick() {
         super.uniqueTick();
+
+        this.lastLocationList.clear();
+        this.lastLocationList.addAll(this.locationList);
         this.locationList.clear();
     }
 
