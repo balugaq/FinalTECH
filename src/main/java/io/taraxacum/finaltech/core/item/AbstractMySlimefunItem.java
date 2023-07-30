@@ -64,55 +64,16 @@ public abstract class AbstractMySlimefunItem extends SlimefunItem implements Vis
                 MachineRecipeFactory.getInstance().initAdvancedRecipeMap(this.getId());
             }
         }
-
-        ConfigFileManager visibleManager = FinalTech.getVisibleManager();
-        if (visibleManager.containPath(this.getId())) {
-            List<Function<Player, Boolean>> functionList = new ArrayList<>();
-            if (visibleManager.containPath(this.getId(), "items")) {
-                for (String itemId : visibleManager.getStringList(this.getId(), "items")) {
-                    functionList.add(player -> {
-                        SlimefunItem slimefunItem = SlimefunItem.getById(itemId);
-                        if (slimefunItem instanceof VisibleItem visibleItem) {
-                            return visibleItem.isVisible(player);
-                        } else if (slimefunItem != null) {
-                            return !slimefunItem.isHidden();
-                        } else {
-                            return true;
-                        }
-                    });
-                }
-            }
-            if (visibleManager.containPath(this.getId(), "researches")) {
-                for (String researchId : visibleManager.getStringList(this.getId(), "researches")) {
-                    List<Research> researchList = Slimefun.getRegistry().getResearches();
-                    Research targetResearch = null;
-                    for (Research research : researchList) {
-                        if (research.getKey().getKey().equals(researchId)) {
-                            targetResearch = research;
-                            break;
-                        }
-                    }
-                    if (targetResearch != null) {
-                        final Research finalResearch = targetResearch;
-                        functionList.add(player -> {
-                            Optional<PlayerProfile> optionalPlayerProfile = PlayerProfile.find(player);
-                            return optionalPlayerProfile.map(playerProfile -> playerProfile.hasUnlocked(finalResearch)).orElse(true);
-                        });
-                    }
-                }
-            }
-            if (visibleManager.containPath(this.getId(), "permissions")) {
-                for (String permissionCode : visibleManager.getStringList(this.getId(), "permissions")) {
-                    functionList.add(player -> player.hasPermission(permissionCode));
-                }
-            }
-        }
     }
 
     @Nonnull
     public AbstractMySlimefunItem registerThis() {
         this.register(JavaPlugin.getPlugin(FinalTech.class));
         return this;
+    }
+
+    public void addVisibleFunction(@Nonnull Function<Player, Boolean> function) {
+        this.visibleFunctionList.add(function);
     }
 
     @Override
@@ -122,6 +83,7 @@ public abstract class AbstractMySlimefunItem extends SlimefunItem implements Vis
                 return false;
             }
         }
+
         return true;
     }
 }
