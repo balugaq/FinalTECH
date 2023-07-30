@@ -31,10 +31,10 @@ public class ItemValueTableV2 {
     // string: slimefun item id
     private final List<String> availableOutputList = new ArrayList<>();
 
-    private final String baseRealInputValue = FinalTech.getValueManager().getOrDefault("1","itemValueTable","baseInputValue");
-    private final String baseImaginaryInputValue = FinalTech.getValueManager().getOrDefault("1","itemValueTable","baseInputValue");
-    private final String baseRealOutputValue = FinalTech.getValueManager().getOrDefault("64","itemValueTable","baseOutputValue");
-    private final String baseImaginaryOutputValue = FinalTech.getValueManager().getOrDefault("1","itemValueTable","baseOutputValue");
+    private final String baseRealInputValue = FinalTech.getValueManager().getOrDefault("1","itemValueTable", "base", "real", "input-value");
+    private final String baseImaginaryInputValue = FinalTech.getValueManager().getOrDefault("1","itemValueTable", "base", "imaginary", "input-value");
+    private final String baseRealOutputValue = FinalTech.getValueManager().getOrDefault("64","itemValueTable", "base", "real", "output-value");
+    private final String baseImaginaryOutputValue = FinalTech.getValueManager().getOrDefault("1","itemValueTable", "base", "imaginary", "output-value");
 
     private final Value emptyInputValue = new Value(StringNumberUtil.ZERO);
     private final Value infinityOutputValue = new Value(StringNumberUtil.VALUE_INFINITY, StringNumberUtil.VALUE_INFINITY);
@@ -316,8 +316,8 @@ public class ItemValueTableV2 {
         return new Value(StringNumberUtil.mul(value.realNumber, String.valueOf(mul)), StringNumberUtil.mul(value.imaginaryNumber, String.valueOf(mul)));
     }
 
-    public boolean biggerThan(@Nonnull Value value1, @Nonnull Value value2) {
-        return StringNumberUtil.compare(value1.realNumber, value2.realNumber) > 0 && StringNumberUtil.compare(value1.imaginaryNumber, value2.imaginaryNumber) > 0;
+    public boolean biggerOrEqual(@Nonnull Value value1, @Nonnull Value value2) {
+        return StringNumberUtil.compare(value1.realNumber, value2.realNumber) >= 0 && StringNumberUtil.compare(value1.imaginaryNumber, value2.imaginaryNumber) >= 0;
     }
 
     public boolean isEmptyValue(@Nonnull Value value) {
