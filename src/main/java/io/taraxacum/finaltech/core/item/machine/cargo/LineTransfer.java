@@ -23,6 +23,7 @@ import io.taraxacum.finaltech.util.RecipeUtil;
 import io.taraxacum.finaltech.util.CargoUtil;
 import io.taraxacum.finaltech.util.LocationUtil;
 import io.taraxacum.finaltech.util.MachineUtil;
+import io.taraxacum.libs.slimefun.dto.SlimefunLocationData;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -226,7 +227,7 @@ public class LineTransfer extends AbstractCargo implements RecipeItem, LogicInje
 
                 BlockFace blockFace = directional.getFacing();
                 final List<Block> blockList = LineTransfer.this.searchBlock(block, blockFace, BlockSearchMode.LINE_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData));
-                if(blockList.isEmpty()) {
+                if (blockList.isEmpty()) {
                     return;
                 }
 
@@ -341,18 +342,21 @@ public class LineTransfer extends AbstractCargo implements RecipeItem, LogicInje
                             continue;
                         }
 
-                        if (CargoMode.VALUE_OUTPUT_MAIN.equals(cargoMode) && FinalTech.getLocationDataService().getInventory(inputBlock.getLocation()) != null) {
+                        Inventory inputInventory = FinalTech.getLocationDataService().getInventory(inputBlock.getLocation());
+                        if (CargoMode.VALUE_OUTPUT_MAIN.equals(cargoMode) && inputInventory != null) {
                             inputMap = null;
-                        } else if (FinalTech.getLocationDataService().getInventory(inputBlock.getLocation()) != null) {
+                        } else if (inputInventory != null) {
                             inputMap = CargoUtil.getInvWithSlots(FinalTech.getLocationDataService(), inputBlock, inputSize, inputOrder);
                         } else if (finalVanillaInventories.get(input) != null) {
                             inputMap = CargoUtil.calInvWithSlots(finalVanillaInventories.get(input), inputOrder);
                         } else {
                             continue;
                         }
-                        if (CargoMode.VALUE_INPUT_MAIN.equals(cargoMode) && FinalTech.getLocationDataService().getInventory(outputBlock.getLocation()) != null) {
+
+                        Inventory outputInventory = FinalTech.getLocationDataService().getInventory(outputBlock.getLocation());
+                        if (CargoMode.VALUE_INPUT_MAIN.equals(cargoMode) && outputInventory != null) {
                             outputMap = null;
-                        } else if (FinalTech.getLocationDataService().getInventory(outputBlock.getLocation()) != null) {
+                        } else if (outputInventory != null) {
                             outputMap = CargoUtil.getInvWithSlots(FinalTech.getLocationDataService(), outputBlock, outputSize, outputOrder);
                         } else if (finalVanillaInventories.get(output) != null) {
                             outputMap = CargoUtil.calInvWithSlots(finalVanillaInventories.get(output), outputOrder);
@@ -360,7 +364,7 @@ public class LineTransfer extends AbstractCargo implements RecipeItem, LogicInje
                             continue;
                         }
 
-                        if(inputMap != null && outputMap != null) {
+                        if (inputMap == null && outputMap == null) {
                             continue;
                         }
 
@@ -405,12 +409,10 @@ public class LineTransfer extends AbstractCargo implements RecipeItem, LogicInje
             return list;
         }
         while (CargoUtil.hasInventory(FinalTech.getLocationDataService(), block.getLocation())) {
-            if (FinalTech.getLocationDataService().getInventory(block.getLocation()) != null && this.getId().equals(FinalTech.getLocationDataService().getLocationData(block.getLocation(), "id"))) {
+            if (FinalTech.getLocationDataService().getLocationData(block.getLocation()) instanceof SlimefunLocationData slimefunLocationData
+                    && this.getId().equals(slimefunLocationData.getId())) {
                 if (BlockSearchMode.VALUE_PENETRATE.equals(blockSearchMode)) {
                     block = block.getRelative(blockFace);
-                    if(!block.getChunk().isLoaded()) {
-                        return new ArrayList<>();
-                    }
                     continue;
                 } else if (BlockSearchMode.VALUE_INTERRUPT.equals(blockSearchMode)) {
                     list.add(block);

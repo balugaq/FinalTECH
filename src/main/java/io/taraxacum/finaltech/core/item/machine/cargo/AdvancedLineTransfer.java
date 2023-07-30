@@ -19,6 +19,7 @@ import io.taraxacum.finaltech.util.*;
 import io.taraxacum.libs.plugin.dto.InvWithSlots;
 import io.taraxacum.libs.plugin.dto.LocationData;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
+import io.taraxacum.libs.slimefun.dto.SlimefunLocationData;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -347,18 +348,21 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
                             continue;
                         }
 
-                        if (CargoMode.VALUE_OUTPUT_MAIN.equals(cargoMode) && FinalTech.getLocationDataService().getInventory(inputBlock.getLocation()) != null) {
+                        Inventory inputInventory = FinalTech.getLocationDataService().getInventory(inputBlock.getLocation());
+                        if (CargoMode.VALUE_OUTPUT_MAIN.equals(cargoMode) && inputInventory != null) {
                             inputMap = null;
-                        } else if (FinalTech.getLocationDataService().getInventory(inputBlock.getLocation()) != null) {
+                        } else if (inputInventory != null) {
                             inputMap = CargoUtil.getInvWithSlots(FinalTech.getLocationDataService(), inputBlock, inputSize, inputOrder);
                         } else if (finalVanillaInventories.get(input) != null) {
                             inputMap = CargoUtil.calInvWithSlots(finalVanillaInventories.get(input), inputOrder);
                         } else {
                             continue;
                         }
-                        if (CargoMode.VALUE_INPUT_MAIN.equals(cargoMode) && FinalTech.getLocationDataService().getInventory(outputBlock.getLocation()) != null) {
+
+                        Inventory outputInventory = FinalTech.getLocationDataService().getInventory(outputBlock.getLocation());
+                        if (CargoMode.VALUE_INPUT_MAIN.equals(cargoMode) && outputInventory != null) {
                             outputMap = null;
-                        } else if (FinalTech.getLocationDataService().getInventory(outputBlock.getLocation()) != null) {
+                        } else if (outputInventory != null) {
                             outputMap = CargoUtil.getInvWithSlots(FinalTech.getLocationDataService(), outputBlock, outputSize, outputOrder);
                         } else if (finalVanillaInventories.get(output) != null) {
                             outputMap = CargoUtil.calInvWithSlots(finalVanillaInventories.get(output), outputOrder);
@@ -366,7 +370,7 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
                             continue;
                         }
 
-                        if(inputMap != null && outputMap != null) {
+                        if(inputMap == null && outputMap == null) {
                             continue;
                         }
 
@@ -394,7 +398,7 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
     public List<Block> searchBlock(@Nonnull Block begin, @Nonnull BlockFace blockFace, @Nonnull String blockSearchMode) {
         List<Block> list = new ArrayList<>();
         Block block = begin.getRelative(blockFace);
-        if(!block.getChunk().isLoaded()) {
+        if (!block.getChunk().isLoaded()) {
             return new ArrayList<>();
         }
         if (BlockSearchMode.VALUE_ZERO.equals(blockSearchMode)) {
@@ -402,7 +406,7 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
                 list.add(block);
             }
             block = block.getRelative(blockFace);
-            if(!block.getChunk().isLoaded()) {
+            if (!block.getChunk().isLoaded()) {
                 return new ArrayList<>();
             }
             if (CargoUtil.hasInventory(FinalTech.getLocationDataService(), block.getLocation())) {
@@ -411,12 +415,10 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
             return list;
         }
         while (CargoUtil.hasInventory(FinalTech.getLocationDataService(), block.getLocation())) {
-            if (FinalTech.getLocationDataService().getInventory(block.getLocation()) != null && this.getId().equals(FinalTech.getLocationDataService().getLocationData(block.getLocation(), "id"))) {
+            if (FinalTech.getLocationDataService().getLocationData(block.getLocation()) instanceof SlimefunLocationData slimefunLocationData
+                    && this.getId().equals(slimefunLocationData.getId())) {
                 if (BlockSearchMode.VALUE_PENETRATE.equals(blockSearchMode)) {
                     block = block.getRelative(blockFace);
-                    if(!block.getChunk().isLoaded()) {
-                        return new ArrayList<>();
-                    }
                     continue;
                 } else if (BlockSearchMode.VALUE_INTERRUPT.equals(blockSearchMode)) {
                     list.add(block);
@@ -425,7 +427,7 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
             }
             list.add(block);
             block = block.getRelative(blockFace);
-            if(!block.getChunk().isLoaded()) {
+            if (!block.getChunk().isLoaded()) {
                 return new ArrayList<>();
             }
         }
