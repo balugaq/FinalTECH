@@ -17,6 +17,7 @@ import io.taraxacum.finaltech.util.*;
 import io.taraxacum.libs.plugin.dto.InvWithSlots;
 import io.taraxacum.libs.plugin.dto.LocationData;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
+import io.taraxacum.libs.slimefun.dto.SlimefunLocationData;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -425,7 +426,9 @@ public class AdvancedMeshTransfer extends AbstractCargo implements RecipeItem, L
                 result = result.getRelative(blockFace);
                 continue;
             }
-            if (BlockSearchMode.VALUE_PENETRATE.equals(searchMode) && FinalTech.getLocationDataService().getInventory(result.getLocation()) != null && this.getId().equals(FinalTech.getLocationDataService().getLocationData(result.getLocation(), "id"))) {
+            if (BlockSearchMode.VALUE_PENETRATE.equals(searchMode)
+                    && FinalTech.getLocationDataService().getLocationData(result.getLocation()) instanceof SlimefunLocationData slimefunLocationData
+                    && this.getId().equals(slimefunLocationData.getId())) {
                 result = result.getRelative(blockFace);
                 continue;
             }

@@ -22,6 +22,7 @@ import io.taraxacum.finaltech.util.RecipeUtil;
 import io.taraxacum.finaltech.util.CargoUtil;
 import io.taraxacum.finaltech.util.LocationUtil;
 import io.taraxacum.finaltech.util.MachineUtil;
+import io.taraxacum.libs.slimefun.dto.SlimefunLocationData;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -422,7 +423,9 @@ public class MeshTransfer extends AbstractCargo implements RecipeItem, LogicInje
                 result = result.getRelative(blockFace);
                 continue;
             }
-            if (BlockSearchMode.VALUE_PENETRATE.equals(searchMode) && FinalTech.getLocationDataService().getInventory(result.getLocation()) != null && this.getId().equals(FinalTech.getLocationDataService().getLocationData(result.getLocation(), "id"))) {
+            if (BlockSearchMode.VALUE_PENETRATE.equals(searchMode)
+                    && FinalTech.getLocationDataService().getLocationData(result.getLocation()) instanceof SlimefunLocationData slimefunLocationData
+                    && this.getId().equals(slimefunLocationData.getId())) {
                 result = result.getRelative(blockFace);
                 continue;
             }
