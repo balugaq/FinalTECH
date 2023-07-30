@@ -31,7 +31,7 @@ public class CopyCardFactoryOperation implements MachineOperation {
         this.resultItemStack = FinalTechItems.COPY_CARD.getValidItem(this.itemWrapper.getItemStack(), "1");
         this.showItemStack = ItemStackUtil.newItemStack(itemStack.getType(),
                 // TODO ITEM_SERIALIZATION_CONSTRUCTOR
-                FinalTech.getLanguageString("items", FinalTechItems.ITEM_SERIALIZATION_CONSTRUCTOR.getId(), "copy-card", "name"));
+                FinalTech.getLanguageString("items", FinalTechItems.COPY_CARD_FACTORY.getId(), "copy-card", "name"));
         this.updateShowItem();
     }
 
@@ -67,7 +67,7 @@ public class CopyCardFactoryOperation implements MachineOperation {
 
     public void updateShowItem() {
         ItemStackUtil.setLore(this.showItemStack,
-                FinalTech.getLanguageManager().replaceStringArray(FinalTech.getLanguageStringArray("items", FinalTechItems.ITEM_SERIALIZATION_CONSTRUCTOR.getId(), "copy-card", "lore"),
+                FinalTech.getLanguageManager().replaceStringArray(FinalTech.getLanguageStringArray("items", FinalTechItems.COPY_CARD_FACTORY.getId(), "copy-card", "lore"),
                         ItemStackUtil.getItemName(this.itemWrapper.getItemStack()),
                         String.valueOf(this.count),
                         String.valueOf(this.baseDifficulty + this.dynamicDifficulty)));

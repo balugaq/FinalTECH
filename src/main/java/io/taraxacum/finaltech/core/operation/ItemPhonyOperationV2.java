@@ -29,7 +29,7 @@ public class ItemPhonyOperationV2 implements MachineOperation {
         this.singularityDifficulty = ConstantTableUtil.ITEM_SPIROCHETE_AMOUNT;
         this.spirocheteDifficulty = ConstantTableUtil.ITEM_SINGULARITY_AMOUNT;
         this.showItem = ItemStackUtil.newItemStack(FinalTechItems.ITEM_PHONY.getItem().getType(),
-                FinalTech.getLanguageString("items", FinalTechItems.ITEM_SERIALIZATION_CONSTRUCTOR.getId(), "phony", "name"));
+                FinalTech.getLanguageString("items", FinalTechItems.PHONY_FACTORY.getId(), "phony", "name"));
     }
 
     @Nonnull
@@ -39,7 +39,7 @@ public class ItemPhonyOperationV2 implements MachineOperation {
 
     public void updateShowItem() {
         ItemStackUtil.setLore(this.showItem,
-                FinalTech.getLanguageManager().replaceStringArray(FinalTech.getLanguageStringArray("items", FinalTechItems.ITEM_SERIALIZATION_CONSTRUCTOR.getId(), "phony", "lore"),
+                FinalTech.getLanguageManager().replaceStringArray(FinalTech.getLanguageStringArray("items", FinalTechItems.PHONY_FACTORY.getId(), "phony", "lore"),
                         String.valueOf(this.itemValueSum),
                         String.valueOf(this.differentValueSet.size()),
                         String.valueOf(this.singularityDifficulty),
