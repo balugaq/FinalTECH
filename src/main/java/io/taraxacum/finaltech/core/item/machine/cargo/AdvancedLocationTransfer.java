@@ -114,6 +114,7 @@ public class AdvancedLocationTransfer extends AbstractCargo implements RecipeIte
         String slotSearchOrder = SlotSearchOrder.OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
 
         CargoDTO cargoDTO = new CargoDTO();
+        cargoDTO.setLocationDataService(FinalTech.getLocationDataService());
         cargoDTO.setJavaPlugin(this.getAddon().getJavaPlugin());
 
         boolean positive;
