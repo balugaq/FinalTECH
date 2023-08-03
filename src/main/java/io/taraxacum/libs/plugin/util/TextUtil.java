@@ -22,6 +22,7 @@ public class TextUtil {
     public static final String COLOR_CONCEAL = "§x§8§8§8§8§8§8";
     public static final String COLOR_INPUT = "§9";
     public static final String COLOR_OUTPUT = "§6";
+    public static final String COLOR_WHITE = "§f";
     public static final Color WHITE_COLOR = Color.fromRGB(255, 255, 255);
 
     private static long COUNT = 0;

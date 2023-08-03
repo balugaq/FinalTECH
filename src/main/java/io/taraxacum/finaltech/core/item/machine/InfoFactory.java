@@ -55,22 +55,26 @@ public class InfoFactory extends AbstractMachine {
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
         Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
-        if (inventory == null) {
+        if (inventory == null || InventoryUtil.slotCount(inventory, this.getInputSlot()) != this.getInputSlot().length) {
             return;
         }
 
         Set<Integer> amountSet = new HashSet<>(this.getInputSlot().length);
-        Set<Material> materialSet = new HashSet<>(this.getInputSlot().length);
+        Set<String> materialSet = new HashSet<>(this.getInputSlot().length);
 
         for (int slot : this.getInputSlot()) {
             ItemStack itemStack = inventory.getItem(slot);
             if (!ItemStackUtil.isItemNull(itemStack)) {
                 amountSet.add(itemStack.getAmount());
-                materialSet.add(itemStack.getType());
+                SlimefunItem sfItem = SlimefunItem.getByItem(itemStack);
+                String name = sfItem == null ? itemStack.getType().name() : sfItem.getId();
+                materialSet.add(name);
             } else {
                 return;
             }
+        }
 
+        for (int slot : this.getInputSlot()) {
             inventory.clear(slot);
         }
 

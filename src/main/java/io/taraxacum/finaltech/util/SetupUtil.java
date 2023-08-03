@@ -2,22 +2,22 @@ package io.taraxacum.finaltech.util;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.taraxacum.common.util.JavaUtil;
 import io.taraxacum.common.util.ReflectionUtil;
 import io.taraxacum.common.util.StringUtil;
 import io.taraxacum.finaltech.FinalTech;
-import io.taraxacum.finaltech.core.command.ShowItemInfo;
-import io.taraxacum.finaltech.core.command.TransformToCopyCardItem;
-import io.taraxacum.finaltech.core.command.TransformToStorageItem;
-import io.taraxacum.finaltech.core.command.TransformToValidItem;
+import io.taraxacum.finaltech.core.command.*;
 import io.taraxacum.finaltech.core.enchantment.NullEnchantment;
 import io.taraxacum.finaltech.core.interfaces.ExtraParameterItem;
+import io.taraxacum.finaltech.core.interfaces.VisibleItem;
 import io.taraxacum.finaltech.core.interfaces.impl.ItemCondition;
 import io.taraxacum.finaltech.core.interfaces.impl.PermissionCondition;
 import io.taraxacum.finaltech.core.interfaces.impl.ResearchCondition;
 import io.taraxacum.finaltech.core.interfaces.impl.SimpleSpecialResearch;
+import io.taraxacum.finaltech.core.item.AbstractMySlimefunItem;
 import io.taraxacum.finaltech.core.item.machine.AbstractMachine;
 import io.taraxacum.finaltech.core.listener.ResearchListener;
 import io.taraxacum.finaltech.setup.FinalTechItemStacks;
@@ -37,14 +37,13 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -935,6 +934,54 @@ public final class SetupUtil {
         }
     }
 
+    private static void setupVisible() {
+        ConfigFileManager visibleManager = FinalTech.getVisibleManager();
+        for (SlimefunItem slimefunItem : Slimefun.getRegistry().getEnabledSlimefunItems()) {
+            if (slimefunItem instanceof AbstractMySlimefunItem abstractMySlimefunItem) {
+                if (visibleManager.containPath(abstractMySlimefunItem.getId())) {
+                    if (visibleManager.containPath(abstractMySlimefunItem.getId(), "items")) {
+                        for (String itemId : visibleManager.getStringList(abstractMySlimefunItem.getId(), "items")) {
+                            abstractMySlimefunItem.addVisibleFunction(player -> {
+                                SlimefunItem sfItem = SlimefunItem.getById(itemId);
+                                if (sfItem instanceof VisibleItem visibleItem) {
+                                    return visibleItem.isVisible(player);
+                                } else if (sfItem != null) {
+                                    return !sfItem.isHidden();
+                                } else {
+                                    return true;
+                                }
+                            });
+                        }
+                    }
+                    if (visibleManager.containPath(abstractMySlimefunItem.getId(), "researches")) {
+                        for (String researchId : visibleManager.getStringList(abstractMySlimefunItem.getId(), "researches")) {
+                            researchId = researchId.toLowerCase(Locale.ROOT);
+                            Research targetResearch = null;
+                            for (Research research : Slimefun.getRegistry().getResearches()) {
+                                if (research.getKey().getKey().equals(researchId)) {
+                                    targetResearch = research;
+                                    break;
+                                }
+                            }
+                            if (targetResearch != null) {
+                                final Research finalResearch = targetResearch;
+                                abstractMySlimefunItem.addVisibleFunction(player -> {
+                                    Optional<PlayerProfile> optionalPlayerProfile = PlayerProfile.find(player);
+                                    return optionalPlayerProfile.map(playerProfile -> playerProfile.hasUnlocked(finalResearch)).orElse(true);
+                                });
+                            }
+                        }
+                    }
+                    if (visibleManager.containPath(abstractMySlimefunItem.getId(), "permissions")) {
+                        for (String permissionCode : visibleManager.getStringList(abstractMySlimefunItem.getId(), "permissions")) {
+                            abstractMySlimefunItem.addVisibleFunction(player -> player.hasPermission(permissionCode));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private static void setupCommand() {
         FinalTech finalTech = FinalTech.getInstance();
 
@@ -942,6 +989,7 @@ public final class SetupUtil {
         finalTech.getCommand("finaltech-storage-card").setExecutor(new TransformToStorageItem());
         finalTech.getCommand("finaltech-info").setExecutor(new ShowItemInfo());
         finalTech.getCommand("finaltech-valid-item").setExecutor(new TransformToValidItem());
+        finalTech.getCommand("finaltech-show-task-size").setExecutor(new ShowTaskSize());
     }
 
     public static void init() {
@@ -953,6 +1001,7 @@ public final class SetupUtil {
             setupItem();
             setupMenu();
             setupResearch();
+            setupVisible();
         }
 
         setupCommand();

@@ -51,7 +51,7 @@ public class EquivalentExchangeTable extends AbstractManualMachine implements Re
     @Nonnull
     @Override
     protected AbstractManualMachineInventory newMachineInventory() {
-        EquivalentExchangeTableInventory equivalentExchangeTableInventory = new EquivalentExchangeTableInventory(this);
+        EquivalentExchangeTableInventory equivalentExchangeTableInventory = new EquivalentExchangeTableInventory(this, this.keyReal, this.keyImaginary);
         this.parseItemSlot = equivalentExchangeTableInventory.parseItemSlot;
         return equivalentExchangeTableInventory;
     }
@@ -138,8 +138,8 @@ public class EquivalentExchangeTable extends AbstractManualMachine implements Re
                 continue;
             }
 
-            if (ItemValueTableV2.getInstance().biggerThan(value, itemValue)) {
-                if(searchedValue == null || ItemValueTableV2.getInstance().isEmptyValue(itemValue) || ItemValueTableV2.getInstance().biggerThan(itemValue, searchedValue)) {
+            if (ItemValueTableV2.getInstance().biggerOrEqual(value, itemValue)) {
+                if(searchedValue == null || ItemValueTableV2.getInstance().isEmptyValue(itemValue) || ItemValueTableV2.getInstance().biggerOrEqual(itemValue, searchedValue)) {
                     searchedSlimefunItem = slimefunItem;
                     searchedValue = itemValue;
                 }

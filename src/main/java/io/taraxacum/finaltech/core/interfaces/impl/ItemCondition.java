@@ -1,9 +1,11 @@
 package io.taraxacum.finaltech.core.interfaces.impl;
 
+import io.taraxacum.common.util.StringUtil;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.interfaces.Condition;
 import io.taraxacum.libs.plugin.dto.ItemAmountWrapper;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
+import io.taraxacum.libs.plugin.util.TextUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -55,8 +57,13 @@ public class ItemCondition implements Condition {
     @Override
     public List<String> getSuccessLore(@Nonnull Player player) {
         int amount = this.getAmount(player);
+        String itemName = ItemStackUtil.getItemName(this.itemAmountWrapper.getItemStack());
+        String[] split = StringUtil.split(itemName, "[", "]");
+        if (split.length == 3 && split[0].isBlank() && split[2].isBlank()) {
+            itemName = TextUtil.COLOR_WHITE + split[1];
+        }
         return FinalTech.getResearchManager().replaceStringList(this.rawSuccessLore,
-                ItemStackUtil.getItemName(this.itemAmountWrapper.getItemStack()),
+                itemName,
                 String.valueOf(this.itemAmountWrapper.getAmount()),
                 String.valueOf(amount),
                 String.valueOf(Math.max(0, this.itemAmountWrapper.getAmount() - amount))
@@ -67,8 +74,13 @@ public class ItemCondition implements Condition {
     @Override
     public List<String> getSuccessChat(@Nonnull Player player) {
         int amount = this.getAmount(player);
+        String itemName = ItemStackUtil.getItemName(this.itemAmountWrapper.getItemStack());
+        String[] split = StringUtil.split(itemName, "[", "]");
+        if (split.length == 3 && split[0].isBlank() && split[2].isBlank()) {
+            itemName = TextUtil.COLOR_WHITE + split[1];
+        }
         return FinalTech.getResearchManager().replaceStringList(this.rawSuccessChat,
-                ItemStackUtil.getItemName(this.itemAmountWrapper.getItemStack()),
+                itemName,
                 String.valueOf(this.itemAmountWrapper.getAmount()),
                 String.valueOf(amount),
                 String.valueOf(Math.max(0, this.itemAmountWrapper.getAmount() - amount))
@@ -79,8 +91,13 @@ public class ItemCondition implements Condition {
     @Override
     public List<String> getFailLore(@Nonnull Player player) {
         int amount = this.getAmount(player);
+        String itemName = ItemStackUtil.getItemName(this.itemAmountWrapper.getItemStack());
+        String[] split = StringUtil.split(itemName, "[", "]");
+        if (split.length == 3 && split[0].isBlank() && split[2].isBlank()) {
+            itemName = TextUtil.COLOR_WHITE + split[1];
+        }
         return FinalTech.getResearchManager().replaceStringList(this.rawFailLore,
-                ItemStackUtil.getItemName(this.itemAmountWrapper.getItemStack()),
+                itemName,
                 String.valueOf(this.itemAmountWrapper.getAmount()),
                 String.valueOf(amount),
                 String.valueOf(Math.max(0, this.itemAmountWrapper.getAmount() - amount))
@@ -91,8 +108,13 @@ public class ItemCondition implements Condition {
     @Override
     public List<String> getFailChat(@Nonnull Player player) {
         int amount = this.getAmount(player);
+        String itemName = ItemStackUtil.getItemName(this.itemAmountWrapper.getItemStack());
+        String[] split = StringUtil.split(itemName, "[", "]");
+        if (split.length == 3 && split[0].isBlank() && split[2].isBlank()) {
+            itemName = TextUtil.COLOR_WHITE + split[1];
+        }
         return FinalTech.getResearchManager().replaceStringList(this.rawFailChat,
-                ItemStackUtil.getItemName(this.itemAmountWrapper.getItemStack()),
+                itemName,
                 String.valueOf(this.itemAmountWrapper.getAmount()),
                 String.valueOf(amount),
                 String.valueOf(Math.max(0, this.itemAmountWrapper.getAmount() - amount))

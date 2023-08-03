@@ -44,15 +44,10 @@ public class LocationRecorder extends UsableSlimefunItem implements RecipeItem {
             Block block = interactEvent.getClickedBlock();
             if (block != null) {
                 javaPlugin.getServer().getScheduler().runTaskAsynchronously(javaPlugin, () -> ParticleUtil.drawCubeByBlock(javaPlugin, Particle.WAX_OFF, 0, block));
-                LocationData locationData = FinalTech.getLocationDataService().getLocationData(block.getLocation());
-                if(locationData != null
-                        && !this.notAllowedId.contains(LocationDataUtil.getId(FinalTech.getLocationDataService(), locationData))
-                        && PermissionUtil.checkPermission(playerRightClickEvent.getPlayer(), block.getLocation(), Interaction.INTERACT_BLOCK, Interaction.BREAK_BLOCK, Interaction.PLACE_BLOCK)) {
-                    ItemStack item = playerRightClickEvent.getItem();
-                    LocationUtil.saveLocationToItem(item, block.getLocation());
-                    LocationUtil.updateLocationItem(item);
-                    PlayerUtil.updateIdInItem(item, playerRightClickEvent.getPlayer(), true);
-                }
+                ItemStack item = playerRightClickEvent.getItem();
+                LocationUtil.saveLocationToItem(item, block.getLocation());
+                LocationUtil.updateLocationItem(item);
+                PlayerUtil.updateIdInItem(item, playerRightClickEvent.getPlayer(), true);
             }
         } else {
             Location location = LocationUtil.parseLocationInItem(playerRightClickEvent.getItem());
@@ -69,9 +64,13 @@ public class LocationRecorder extends UsableSlimefunItem implements RecipeItem {
                 return;
             }
 
-            if(FinalTech.getLocationDataService() instanceof SlimefunLocationDataService slimefunLocationDataService) {
+            if (FinalTech.getLocationDataService() instanceof SlimefunLocationDataService slimefunLocationDataService) {
                 LocationData locationData = slimefunLocationDataService.getLocationData(location);
-                if(locationData instanceof SlimefunLocationData slimefunLocationData) {
+                if (locationData instanceof SlimefunLocationData slimefunLocationData) {
+                    if (this.notAllowedId.contains(slimefunLocationData.getId())) {
+                        player.sendRawMessage(FinalTech.getLanguageString("message", "no-permission", "location"));
+                        return;
+                    }
                     BlockMenu blockMenu = slimefunLocationDataService.getBlockMenu(slimefunLocationData);
                     if(blockMenu != null) {
                         if (blockMenu.canOpen(block, player)) {

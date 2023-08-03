@@ -15,8 +15,7 @@ public class ResearchListener implements Listener {
         Research research = playerPreResearchEvent.getResearch();
         if (research instanceof SpecialResearch specialResearch) {
             Player player = playerPreResearchEvent.getPlayer();
-            String[] showText = specialResearch.getChatText(player);
-            player.sendMessage(showText);
+            player.sendMessage(specialResearch.getChatText(player));
             if(specialResearch.canResearch(player)) {
                 specialResearch.afterResearch(player);
             } else {

@@ -37,7 +37,6 @@ public class AdvancedLocationTransferInventory extends LocationTransferInventory
     public Consumer<InventoryClickEvent> onClick(@Nonnull Location location, int slot) {
         return switch (slot) {
             case cargoNumberSubSlot -> CargoNumber.OPTION.getPreviousHandler(FinalTech.getLocationDataService(), location, cargoNumberSlot, this.slimefunItem);
-            case cargoNumberSlot -> CargoNumberMode.OPTION.getHandler(FinalTech.getLocationDataService(), location, this.slimefunItem);
             case cargoNumberAddSlot -> CargoNumber.OPTION.getNextHandler(FinalTech.getLocationDataService(), location, cargoNumberSlot, this.slimefunItem);
             case slotSearchSizeSlot -> SlotSearchSize.OPTION.getHandler(FinalTech.getLocationDataService(), location, this.slimefunItem);
             case slotSearchOrderSlot -> SlotSearchOrder.OPTION.getHandler(FinalTech.getLocationDataService(), location, this.slimefunItem);
@@ -64,7 +63,6 @@ public class AdvancedLocationTransferInventory extends LocationTransferInventory
         super.updateInventory(inventory, location);
 
         CargoNumber.OPTION.checkAndUpdateIcon(inventory, this.cargoNumberSlot, FinalTech.getLocationDataService(), location);
-        CargoNumberMode.OPTION.checkAndUpdateIcon(inventory, this.cargoNumberSlot, FinalTech.getLocationDataService(), location);
 
         SlotSearchSize.OPTION.checkAndUpdateIcon(inventory, this.slotSearchSizeSlot, FinalTech.getLocationDataService(), location);
         SlotSearchOrder.OPTION.checkAndUpdateIcon(inventory, this.slotSearchOrderSlot, FinalTech.getLocationDataService(), location);

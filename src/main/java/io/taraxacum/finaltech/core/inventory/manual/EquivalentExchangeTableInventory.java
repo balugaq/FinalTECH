@@ -43,8 +43,14 @@ public class EquivalentExchangeTableInventory extends AbstractManualMachineInven
             FinalTech.getLanguageString("items", this.getId(), "status-icon", "name"),
             FinalTech.getLanguageStringArray("items", this.getId(), "status-icon", "lore"));
 
-    public EquivalentExchangeTableInventory(@Nonnull AbstractMachine machine) {
+    private final String keyRealValue;
+    private final String keyImaginaryValue;
+
+    public EquivalentExchangeTableInventory(@Nonnull AbstractMachine machine, @Nonnull String keyRealValue, @Nonnull String keyImaginaryValue) {
         super(machine);
+
+        this.keyRealValue = keyRealValue;
+        this.keyImaginaryValue = keyImaginaryValue;
     }
 
     @Nonnull
@@ -123,8 +129,11 @@ public class EquivalentExchangeTableInventory extends AbstractManualMachineInven
         if (ItemStackUtil.isItemNull(iconItem)) {
             return;
         }
+        String realValue = JavaUtil.getFirstNotNull(FinalTech.getLocationDataService().getLocationData(location, this.keyRealValue), StringNumberUtil.ZERO);
+        String imaginaryValue = JavaUtil.getFirstNotNull(FinalTech.getLocationDataService().getLocationData(location, this.keyImaginaryValue), StringNumberUtil.ZERO);
+        String storedValue = new ItemValueTableV2.Value(realValue, imaginaryValue).toString();
         ItemStackUtil.setLore(iconItem,
                 FinalTech.getLanguageManager().replaceStringList(FinalTech.getLanguageStringList("items", this.getId(), "stored-value", "lore"),
-                        JavaUtil.getFirstNotNull(FinalTech.getLocationDataService().getLocationData(location, "value"), StringNumberUtil.ZERO)));
+                        storedValue));
     }
 }
