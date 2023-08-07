@@ -228,9 +228,11 @@ public class MatrixReactor extends AbstractMachine implements RecipeItem, MenuUp
         }
 
         if (!inventory.getViewers().isEmpty()) {
+            String countStr = JavaUtil.getFirstNotNull(FinalTech.getLocationDataService().getLocationData(locationData, this.keyCount), "0");
+            int count = Integer.parseInt(countStr);
             this.updateInv(inventory, this.statusSlot, this,
-                    JavaUtil.getFirstNotNull(FinalTech.getLocationDataService().getLocationData(locationData, this.keyCount), "0"),
-                    String.valueOf(difficulty));
+                    String.valueOf(amount + count),
+                    String.valueOf(this.difficulty));
         }
     }
 
