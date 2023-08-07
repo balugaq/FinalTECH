@@ -209,7 +209,7 @@ public class CargoUtil {
                         return;
                     }
                 }
-                FinalTech.getLocationRunnableFactory().waitThenRun(() -> CargoUtil.doSimpleCargoInputMain(new SimpleCargoDTO(cargoDTO, inputMap, outputMap)), cargoDTO.getInputBlock().getLocation(), cargoDTO.getOutputBlock().getLocation());
+                FinalTech.getLocationRunnableFactory().waitThenRun(() -> CargoUtil.doSimpleCargoOutputMain(new SimpleCargoDTO(cargoDTO, inputMap, outputMap)), cargoDTO.getInputBlock().getLocation(), cargoDTO.getOutputBlock().getLocation());
             });
             return ZERO_FUTURE;
         }
