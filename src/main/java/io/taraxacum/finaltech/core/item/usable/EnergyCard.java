@@ -77,11 +77,12 @@ public class EnergyCard extends UsableSlimefunItem implements RecipeItem {
             int capacity = energyNetComponent.getCapacity();
             String energyStr = EnergyUtil.getCharge(FinalTech.getLocationDataService(), locationData);
             int energy = Integer.parseInt(energyStr);
-            if(energy < capacity) {
+            if (energy < capacity) {
                 EnergyDepositEvent energyDepositEvent = new EnergyDepositEvent(location, this.energy);
                 this.getAddon().getJavaPlugin().getServer().getPluginManager().callEvent(energyDepositEvent);
                 String transferEnergy = energyDepositEvent.getEnergy();
 
+                energyStr = EnergyUtil.getCharge(FinalTech.getLocationDataService(), locationData);
                 energyStr = StringNumberUtil.min(StringNumberUtil.add(transferEnergy, energyStr), String.valueOf(capacity));
                 EnergyUtil.setCharge(FinalTech.getLocationDataService(), locationData, energyStr);
 
