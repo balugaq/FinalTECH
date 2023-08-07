@@ -91,8 +91,8 @@ public class BlockTickerUtil {
         if(value == null) {
             return true;
         }
-        int sleep = Integer.parseInt(value);
-        sleep --;
+        double sleep = Double.parseDouble(value);
+        sleep--;
         if(sleep > 0) {
             locationDataService.setLocationData(locationData, KEY_SLEEP, String.valueOf(sleep));
             return false;
