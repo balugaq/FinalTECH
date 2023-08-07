@@ -1,12 +1,15 @@
 package io.taraxacum.finaltech.core.operation;
 
 import io.github.thebusybiscuit.slimefun4.core.machines.MachineOperation;
+import io.taraxacum.common.util.StringNumberUtil;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.setup.FinalTechItems;
 import io.taraxacum.finaltech.util.ConstantTableUtil;
+import io.taraxacum.finaltech.util.StringItemUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.slimefun.dto.ItemValueTableV2;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -54,10 +57,16 @@ public class ItemPhonyOperationV2 implements MachineOperation {
         if (!FinalTechItems.COPY_CARD.verifyItem(itemStack)) {
             return 0;
         }
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        ItemStack stringItem = StringItemUtil.parseItemInCard(itemMeta);
+        String amountStr = StringItemUtil.parseAmountInCard(itemMeta);
+        if (stringItem == null || amountStr == null) {
+            return 0;
+        }
 
-        ItemValueTableV2.Value value = ItemValueTableV2.getInstance().getOrCalItemInputValue(itemStack);
-        this.itemValueSum += Long.parseLong(value.getRealNumber());
-        this.itemTotalAmount += 1;
+        ItemValueTableV2.Value value = ItemValueTableV2.getInstance().getOrCalItemInputValue(stringItem);
+        this.itemValueSum += Long.parseLong(StringNumberUtil.mul(amountStr, StringNumberUtil.mul(value.getRealNumber(), String.valueOf(itemStack.getAmount()))));
+        this.itemTotalAmount += itemStack.getAmount();
         if (!this.differentValueSet.contains(value)) {
             this.differentValueSet.add(value);
             this.differentValueSum += Long.parseLong(value.getRealNumber());
