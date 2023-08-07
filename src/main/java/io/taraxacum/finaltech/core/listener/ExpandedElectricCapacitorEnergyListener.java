@@ -20,14 +20,15 @@ public class ExpandedElectricCapacitorEnergyListener implements Listener {
     public void onEnergyDeposit(EnergyDepositEvent energyDepositEvent) {
         Location location = energyDepositEvent.getLocation();
         LocationData locationData = FinalTech.getLocationDataService().getLocationData(location);
-        if(locationData != null && LocationDataUtil.getSlimefunItem(FinalTech.getLocationDataService(), locationData) instanceof AbstractExpandedElectricCapacitor expandedElectricCapacitor) {
+        if (locationData != null
+                && LocationDataUtil.getSlimefunItem(FinalTech.getLocationDataService(), locationData) instanceof AbstractExpandedElectricCapacitor expandedElectricCapacitor) {
             int energy = expandedElectricCapacitor.getCharge(location);
             int stack = expandedElectricCapacitor.getStack(locationData);
 
             long nowEnergy = expandedElectricCapacitor.calEnergy(energy, stack);
             long availableEnergy = expandedElectricCapacitor.getMaxEnergy() - nowEnergy;
 
-            if(availableEnergy > 0) {
+            if (availableEnergy > 0) {
                 String depositEnergy = energyDepositEvent.getEnergy();
                 String transferEnergy = StringNumberUtil.min(depositEnergy, String.valueOf(availableEnergy));
 
