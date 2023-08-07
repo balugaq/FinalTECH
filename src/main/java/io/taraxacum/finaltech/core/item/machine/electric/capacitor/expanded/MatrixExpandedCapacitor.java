@@ -60,6 +60,6 @@ public class MatrixExpandedCapacitor extends AbstractExpandedElectricCapacitor {
 
     @Override
     public int getMaxStack() {
-        return this.stack;
+        return this.stack - 2;
     }
 }
