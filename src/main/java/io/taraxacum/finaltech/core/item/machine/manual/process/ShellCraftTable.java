@@ -23,11 +23,11 @@ public class ShellCraftTable extends AbstractProcessMachine {
     @Override
     public boolean canCraft(@Nullable ItemStack itemStack1, @Nullable ItemStack itemStack2) {
         if (!ItemStackUtil.isItemNull(itemStack1)) {
-            return FinalTechItems.SINGULARITY.verifyItem(itemStack1) || FinalTechItems.SINGULARITY.verifyItem(itemStack1);
+            return FinalTechItems.SINGULARITY.verifyItem(itemStack1) || FinalTechItems.SPIROCHETE.verifyItem(itemStack1);
         }
 
         if (!ItemStackUtil.isItemNull(itemStack2)) {
-            return FinalTechItems.SINGULARITY.verifyItem(itemStack2) || FinalTechItems.SINGULARITY.verifyItem(itemStack2);
+            return FinalTechItems.SINGULARITY.verifyItem(itemStack2) || FinalTechItems.SPIROCHETE.verifyItem(itemStack2);
         }
 
         return false;
