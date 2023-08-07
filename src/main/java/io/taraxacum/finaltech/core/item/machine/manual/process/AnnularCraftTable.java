@@ -32,15 +32,15 @@ public class AnnularCraftTable extends AbstractProcessMachine {
         if (!ItemStackUtil.isItemNull(itemStack1) && FinalTechItems.COPY_CARD.verifyItem(itemStack1)) {
             ItemStack itemStack = StringItemUtil.parseItemInCard(itemStack1);
             ItemValueTableV2.Value value = ItemValueTableV2.getInstance().getOrCalItemInputValue(itemStack);
-            BigInteger bigInteger = new BigInteger(value.getRealNumber());
-            return bigInteger.compareTo(new BigInteger(this.baseValue)) > 0;
+            BigInteger bigInteger = new BigInteger(StringNumberUtil.mul(value.getRealNumber(), String.valueOf(itemStack1.getAmount())));
+            return bigInteger.compareTo(new BigInteger(this.baseValue)) >= 0;
         }
 
         if (!ItemStackUtil.isItemNull(itemStack2) && FinalTechItems.COPY_CARD.verifyItem(itemStack2)) {
             ItemStack itemStack = StringItemUtil.parseItemInCard(itemStack2);
             ItemValueTableV2.Value value = ItemValueTableV2.getInstance().getOrCalItemInputValue(itemStack);
-            BigInteger bigInteger = new BigInteger(value.getRealNumber());
-            return bigInteger.compareTo(new BigInteger(this.baseValue)) > 0;
+            BigInteger bigInteger = new BigInteger(StringNumberUtil.mul(value.getRealNumber(), String.valueOf(itemStack2.getAmount())));
+            return bigInteger.compareTo(new BigInteger(this.baseValue)) >= 0;
         }
 
         return false;
@@ -51,10 +51,9 @@ public class AnnularCraftTable extends AbstractProcessMachine {
         if (!ItemStackUtil.isItemNull(itemStack1) && FinalTechItems.COPY_CARD.verifyItem(itemStack1)) {
             ItemStack itemStack = StringItemUtil.parseItemInCard(itemStack1);
             ItemValueTableV2.Value value = ItemValueTableV2.getInstance().getOrCalItemInputValue(itemStack);
-            BigInteger totalValue = new BigInteger(value.getRealNumber());
-            totalValue = totalValue.multiply(new BigInteger(String.valueOf(itemStack1.getAmount())));
+            BigInteger totalValue = new BigInteger(StringNumberUtil.mul(value.getRealNumber(), String.valueOf(itemStack1.getAmount())));
             BigInteger baseValue = new BigInteger(this.baseValue);
-            int amount = totalValue.divide(baseValue).max(new BigInteger(String.valueOf(FinalTechItems.COPY_CARD.getItem().getMaxStackSize()))).intValue();
+            int amount = totalValue.divide(baseValue).min(new BigInteger(String.valueOf(FinalTechItems.COPY_CARD.getItem().getMaxStackSize()))).intValue();
             if (amount > 0) {
                 int amount1 = itemStack1.getAmount();
                 itemStack1.setAmount(0);
@@ -70,10 +69,9 @@ public class AnnularCraftTable extends AbstractProcessMachine {
         if (!ItemStackUtil.isItemNull(itemStack2) && FinalTechItems.COPY_CARD.verifyItem(itemStack2)) {
             ItemStack itemStack = StringItemUtil.parseItemInCard(itemStack2);
             ItemValueTableV2.Value value = ItemValueTableV2.getInstance().getOrCalItemInputValue(itemStack);
-            BigInteger totalValue = new BigInteger(value.getRealNumber());
-            totalValue = totalValue.multiply(new BigInteger(String.valueOf(itemStack2.getAmount())));
+            BigInteger totalValue = new BigInteger(StringNumberUtil.mul(value.getRealNumber(), String.valueOf(itemStack2.getAmount())));
             BigInteger baseValue = new BigInteger(this.baseValue);
-            int amount = totalValue.divide(baseValue).max(new BigInteger(String.valueOf(FinalTechItems.COPY_CARD.getItem().getMaxStackSize()))).intValue();
+            int amount = totalValue.divide(baseValue).min(new BigInteger(String.valueOf(FinalTechItems.COPY_CARD.getItem().getMaxStackSize()))).intValue();
             if (amount > 0) {
                 int amount1 = itemStack2.getAmount();
                 itemStack2.setAmount(0);
