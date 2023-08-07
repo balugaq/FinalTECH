@@ -68,6 +68,7 @@ public class AdvancedCraftStorage extends CraftStorage {
     protected AbstractMachineInventory setMachineInventory() {
         AdvancedCraftStorageInventory advancedCraftStorageInventory = new AdvancedCraftStorageInventory(this);
         this.parseSlot = advancedCraftStorageInventory.parseSlot;
+        this.statusSlot = advancedCraftStorageInventory.statusSlot;
         return advancedCraftStorageInventory;
     }
 
