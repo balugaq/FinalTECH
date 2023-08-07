@@ -150,6 +150,13 @@ public abstract class AbstractStorageMachine extends AbstractManualMachine {
                 if (availableAmount == 0) {
                     break;
                 }
+            } else if (itemStack.getAmount() < itemStack.getMaxStackSize() && ItemStackUtil.isItemSimilar(itemStack, itemWithAmount.itemWrapper)) {
+                int amount = Math.min(availableAmount, itemStack.getMaxStackSize() - itemStack.getAmount());
+                availableAmount -= amount;
+                itemStack.setAmount(itemStack.getAmount() + amount);
+                if (availableAmount == 0) {
+                    break;
+                }
             }
         }
         if (availableAmount != validAmount) {
