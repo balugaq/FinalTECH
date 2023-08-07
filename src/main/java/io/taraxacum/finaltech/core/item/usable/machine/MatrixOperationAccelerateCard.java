@@ -23,7 +23,10 @@ public class MatrixOperationAccelerateCard extends AbstractOperationAccelerateCa
 
     @Override
     void addProgress(@Nonnull MachineOperation machineOperation) {
-        machineOperation.addProgress(Math.min(machineOperation.getRemainingTicks(), machineOperation.getTotalTicks() - machineOperation.getProgress()));
+        int progress = Math.min(machineOperation.getRemainingTicks(), machineOperation.getTotalTicks() - machineOperation.getProgress());
+        if (progress > 0) {
+            machineOperation.addProgress(progress);
+        }
     }
 
     @Override

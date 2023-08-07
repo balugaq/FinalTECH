@@ -23,8 +23,10 @@ public class EnergizedOperationAccelerateCard extends AbstractOperationAccelerat
 
     @Override
     void addProgress(@Nonnull MachineOperation machineOperation) {
-        int progress = machineOperation.getProgress();
-        machineOperation.addProgress(Math.min(progress / 2, machineOperation.getRemainingTicks()));
+        int progress = Math.min(machineOperation.getProgress() / 2, machineOperation.getRemainingTicks());
+        if (progress > 0) {
+            machineOperation.addProgress(progress);
+        }
     }
 
     @Override

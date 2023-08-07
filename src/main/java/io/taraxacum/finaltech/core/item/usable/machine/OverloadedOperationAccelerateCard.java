@@ -23,8 +23,10 @@ public class OverloadedOperationAccelerateCard extends AbstractOperationAccelera
 
     @Override
     void addProgress(@Nonnull MachineOperation machineOperation) {
-        int progress = machineOperation.getRemainingTicks();
-        machineOperation.addProgress(Math.min(progress / 2, machineOperation.getTotalTicks() - machineOperation.getProgress()));
+        int progress = Math.min(machineOperation.getRemainingTicks() / 2, machineOperation.getTotalTicks() - machineOperation.getProgress());
+        if (progress > 0) {
+            machineOperation.addProgress(progress);
+        }
     }
 
     @Override
