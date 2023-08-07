@@ -47,8 +47,8 @@ public class AdvancedAutoCraftInventory extends AdvancedAutoCraftFrameInventory 
     protected void initSelf() {
         super.initSelf();
 
-        this.defaultItemStack.put(this.inputSearchSlot, SlotSearchSize.OUTPUT_OPTION.defaultIcon());
-        this.defaultItemStack.put(this.outputSearchSlot, SlotSearchSize.INPUT_OPTION.defaultIcon());
+        this.defaultItemStack.put(this.inputSearchSlot, SlotSearchSize.INPUT_OPTION.defaultIcon());
+        this.defaultItemStack.put(this.outputSearchSlot, SlotSearchSize.OUTPUT_OPTION.defaultIcon());
         this.defaultItemStack.put(this.statusSlot, Icon.QUANTITY_MODULE_ICON);
     }
 
