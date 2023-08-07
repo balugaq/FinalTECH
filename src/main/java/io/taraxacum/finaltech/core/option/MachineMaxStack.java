@@ -67,9 +67,9 @@ public final class MachineMaxStack {
                 return inventoryClickEvent -> {
                     inventoryClickEvent.setCancelled(true);
                     Inventory inventory = inventoryClickEvent.getClickedInventory();
-                    if(inventory != null) {
+                    if (inventory != null) {
                         ItemStack itemStack = inventory.getItem(inventoryClickEvent.getSlot());
-                        if(!ItemStackUtil.isItemNull(itemStack)) {
+                        if (!ItemStackUtil.isItemNull(itemStack)) {
                             int quantity = Integer.parseInt(this.getOrDefaultValue(locationDataService, location));
                             if (inventoryClickEvent.getClick().isShiftClick()) {
                                 quantity = 0;
@@ -80,6 +80,7 @@ public final class MachineMaxStack {
                                     quantity = (quantity + 1) % (abstractMachine.getInputSlot().length + 1);
                                 }
                             }
+                            this.setOrClearValue(FinalTech.getLocationDataService(), location, String.valueOf(quantity));
                             this.updateLore(itemStack, String.valueOf(quantity));
                         }
                     }
