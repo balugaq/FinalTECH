@@ -3,8 +3,10 @@ package io.taraxacum.finaltech.core.item.machine.range.point.face;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
+import io.taraxacum.common.util.JavaUtil;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.interfaces.LocationMachine;
 import io.taraxacum.finaltech.core.interfaces.RecipeItem;
@@ -20,6 +22,7 @@ import io.taraxacum.libs.plugin.dto.LocationData;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.slimefun.dto.AdvancedCraft;
+import io.taraxacum.libs.slimefun.dto.RecipeTypeRegistry;
 import io.taraxacum.libs.slimefun.util.LocationDataUtil;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -94,8 +97,8 @@ public class AdvancedAutoCraft extends AbstractFaceMachine implements RecipeItem
                     return;
                 }
 
-                InvWithSlots inputMap = CargoUtil.getInvWithSlots(FinalTech.getLocationDataService(), containerBlock, SlotSearchSize.INPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), containerLocationData), SlotSearchOrder.VALUE_ASCENT);
-                InvWithSlots outputMap = CargoUtil.getInvWithSlots(FinalTech.getLocationDataService(), containerBlock, SlotSearchSize.OUTPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), containerLocationData), SlotSearchOrder.VALUE_ASCENT);
+                InvWithSlots inputMap = CargoUtil.getInvWithSlots(FinalTech.getLocationDataService(), containerBlock, SlotSearchSize.INPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData), SlotSearchOrder.VALUE_ASCENT);
+                InvWithSlots outputMap = CargoUtil.getInvWithSlots(FinalTech.getLocationDataService(), containerBlock, SlotSearchSize.OUTPUT_OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData), SlotSearchOrder.VALUE_ASCENT);
                 if (inputMap == null || outputMap == null || inputMap.getSlots().length == 0 || outputMap.getSlots().length == 0) {
                     return;
                 }
@@ -125,6 +128,11 @@ public class AdvancedAutoCraft extends AbstractFaceMachine implements RecipeItem
     }
 
     @Override
+    public int getRegisterRecipeDelay() {
+        return 2;
+    }
+
+    @Override
     public void registerDefaultRecipes() {
         RecipeUtil.registerDescriptiveRecipeWithBorder(FinalTech.getLanguageManager(), this);
 
@@ -136,6 +144,18 @@ public class AdvancedAutoCraft extends AbstractFaceMachine implements RecipeItem
                 ItemStack itemStack = slimefunItem.getItem();
                 if (!ItemStackUtil.isItemNull(itemStack)) {
                     this.registerDescriptiveRecipe(itemStack);
+                }
+            }
+
+            this.registerBorder();
+
+            for (String recipeTypeId : this.advancedAutoCraftInventory.getRecipeTypeIdList()) {
+                RecipeType recipeType = RecipeTypeRegistry.getInstance().getRecipeTypeById(recipeTypeId);
+                if (recipeType != null) {
+                    ItemStack itemStack = JavaUtil.getFirstNotNull(recipeType.toItem(), recipeType.getMachine().getItem());
+                    if (!ItemStackUtil.isItemNull(itemStack)) {
+                        this.registerDescriptiveRecipe(itemStack);
+                    }
                 }
             }
         }
