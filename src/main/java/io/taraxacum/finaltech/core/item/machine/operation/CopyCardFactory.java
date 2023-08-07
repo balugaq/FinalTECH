@@ -118,15 +118,6 @@ public class CopyCardFactory extends AbstractOperationMachine {
             }
 
             if (operation == null) {
-                SlimefunItem sfItem = SlimefunItem.getByItem(itemStack);
-                if (sfItem == null || sfItem instanceof UnCopiableItem) {
-                    break;
-                }
-
-                if (!FinalTechItems.COPY_CARD.isTargetItem(itemStack)) {
-                    break;
-                }
-
                 if (!this.allowedItem(itemStack)) {
                     break;
                 }
@@ -197,7 +188,12 @@ public class CopyCardFactory extends AbstractOperationMachine {
     }
 
     protected boolean allowedItem(@Nonnull ItemStack itemStack) {
+        if (!FinalTechItems.COPY_CARD.isTargetItem(itemStack)) {
+            return false;
+        }
+
         SlimefunItem slimefunItem = SlimefunItem.getByItem(itemStack);
+
         if (slimefunItem == null || slimefunItem instanceof UnCopiableItem || slimefunItem instanceof ValidItem) {
             return false;
         }
