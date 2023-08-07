@@ -353,7 +353,7 @@ public class ManualCraftMachineInventory extends AbstractManualMachineInventory 
 
     @Override
     public void onOpen(@Nonnull Player player, @Nonnull Location location, @Nonnull Inventory inventory) {
-        if (this.verifyCount(location)) {
+        if (!this.verifyCount(location)) {
             return;
         }
 
@@ -486,7 +486,7 @@ public class ManualCraftMachineInventory extends AbstractManualMachineInventory 
         return inventoryClickEvent -> {
             inventoryClickEvent.setCancelled(true);
 
-            if (this.verifyCount(location)) {
+            if (!this.verifyCount(location)) {
                 return;
             }
 
