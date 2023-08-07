@@ -95,7 +95,9 @@ public class PhonyFactory extends AbstractOperationMachine {
                 continue;
             }
 
-            operation.addItem(inputItem);
+            if (operation.addItem(inputItem) > 0) {
+                inventory.clear(slot);
+            }
         }
 
         if (operation.isFinished() && InventoryUtil.tryPushAllItem(inventory, this.getOutputSlot(), operation.getResult())) {
