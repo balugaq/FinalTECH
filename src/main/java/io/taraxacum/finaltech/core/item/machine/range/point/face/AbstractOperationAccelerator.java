@@ -75,8 +75,8 @@ public abstract class AbstractOperationAccelerator extends AbstractFaceMachine i
 
         int amount;
         ItemStack itemStack = inventory.getItem(this.getInputSlot()[0]);
-        if(ItemStackUtil.isItemSimilar(itemStack, this.getItem())) {
-            amount = itemStack.getAmount();
+        if (ItemStackUtil.isItemSimilar(itemStack, this.getItem())) {
+            amount = itemStack.getAmount() + 1;
         } else {
             amount = 1;
         }
@@ -95,7 +95,7 @@ public abstract class AbstractOperationAccelerator extends AbstractFaceMachine i
                     MachineOperation operation = machineProcessor.getOperation(location);
                     if (operation != null) {
                         time = Math.min(Math.min(amount * this.getBaseEfficiency() + FinalTech.getRandom().nextInt(1 + amount * this.getRandomEfficiency()), energy / energyNetComponent.getCapacity()), operation.getRemainingTicks());
-                        if(time > 0) {
+                        if(time > 0 && operation.getRemainingTicks() > 0) {
                             operation.addProgress(Math.min(time, operation.getRemainingTicks()));
                             energy = Math.max(0, energy - time * energyNetComponent.getCapacity());
                             EnergyUtil.setCharge(FinalTech.getLocationDataService(), locationData, String.valueOf(energy));
