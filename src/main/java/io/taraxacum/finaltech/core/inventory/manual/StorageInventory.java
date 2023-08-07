@@ -259,7 +259,7 @@ public class StorageInventory extends AbstractManualMachineInventory implements 
                             if (itemString != null) {
                                 HumanEntity humanEntity = inventoryClickEvent.getWhoClicked();
                                 AbstractStorageMachine.ItemWithAmount itemWithAmount = itemMap.get(itemString);
-                                String amountStr = StringNumberUtil.min(String.valueOf(humanEntity.getInventory().getSize() * itemWithAmount.getItemWrapper().getItemStack().getMaxStackSize()), itemWithAmount.getItemAmount());
+                                String amountStr = StringNumberUtil.min(String.valueOf(humanEntity.getInventory().getStorageContents().length * itemWithAmount.getItemWrapper().getItemStack().getMaxStackSize()), itemWithAmount.getItemAmount());
                                 ItemStack itemStack = humanEntity.getItemOnCursor();
                                 if (ItemStackUtil.isItemNull(itemStack)) {
                                     int validAmount = Integer.parseInt(amountStr);
@@ -271,7 +271,7 @@ public class StorageInventory extends AbstractManualMachineInventory implements 
                                     } else {
                                         validAmount = Math.min(ConfigUtil.getOrDefaultItemSetting(1, this.getId(), "left-click"), validAmount);
                                     }
-                                    this.abstractStorageMachine.output(itemMap, locationData, itemString, validAmount, humanEntity.getInventory(), JavaUtil.generateInts(humanEntity.getInventory().getSize()));
+                                    this.abstractStorageMachine.output(itemMap, locationData, itemString, validAmount, humanEntity.getInventory(), JavaUtil.generateInts(humanEntity.getInventory().getStorageContents().length));
                                 } else {
                                     ItemMeta itemMeta = itemStack.getItemMeta();
                                     if (itemMeta != null && FinalTechItems.STORAGE_CARD.verifyItem(itemMeta)) {
