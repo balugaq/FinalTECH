@@ -55,7 +55,7 @@ public class ExtractionMachineInventory extends AbstractOrdinaryMachineInventory
 
     @Override
     public int getSize() {
-        return 9;
+        return 54;
     }
 
     @Override
