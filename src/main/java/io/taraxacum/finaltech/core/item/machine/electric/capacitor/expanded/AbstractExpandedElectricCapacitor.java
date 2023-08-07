@@ -47,9 +47,9 @@ public abstract class AbstractExpandedElectricCapacitor extends AbstractElectric
         String energyStr = EnergyUtil.getCharge(FinalTech.getLocationDataService(), locationData);
         String energyStackStr = JavaUtil.getFirstNotNull(FinalTech.getLocationDataService().getLocationData(locationData, this.key), StringNumberUtil.ZERO);
         long energy = Integer.parseInt(energyStr);
-        long energyStack = Integer.parseInt(energyStackStr);
+        long energyStack = Long.parseLong(energyStackStr);
 
-        long allEnergy = energyStack * (this.getCapacity() / 2) + energy;
+        long allEnergy = this.calEnergy((int) energy, (int) energyStack);
         allEnergy += energyStack;
 
         this.setEnergy(locationData, allEnergy);
@@ -78,28 +78,23 @@ public abstract class AbstractExpandedElectricCapacitor extends AbstractElectric
     }
 
     public long getMaxEnergy() {
-        return (long) this.getCapacity() / 2 * this.getMaxStack() + this.getCapacity();
+        return (long) this.getCapacity() * this.getMaxStack() / 2 + this.getCapacity();
     }
 
     public long calEnergy(int energy, int stack) {
-        return (long) this.getCapacity() / 2 * stack + energy;
+        return (long) this.getCapacity() * stack / 2 + energy;
     }
 
     public void setEnergy(@Nonnull LocationData locationData, long energy) {
-        long stack = energy / (this.getCapacity() / 2);
+        long stack = (energy - this.getCapacity() / 4) / (this.getCapacity() / 2);
         stack = Math.min(stack, this.getMaxStack());
-        long lastEnergy = energy - this.getCapacity() / 2 * stack;
+        stack = Math.max(stack, 0);
+
+        long lastEnergy = energy - stack * this.getCapacity() / 2;
         lastEnergy = Math.min(lastEnergy, this.getCapacity());
+        lastEnergy = Math.max(lastEnergy, 0);
 
-        if (lastEnergy < this.getCapacity() / 4 && stack > 0) {
-            lastEnergy += this.getCapacity() / 2;
-            stack--;
-        } else if (lastEnergy > this.getCapacity() / 4 * 3 && stack < this.getMaxStack()) {
-            lastEnergy -= this.getCapacity() / 2;
-            stack++;
-        }
-
+        EnergyUtil.setCharge(FinalTech.getLocationDataService(), locationData, String.valueOf(lastEnergy));
         FinalTech.getLocationDataService().setLocationData(locationData, this.key, String.valueOf(stack));
-        FinalTech.getLocationDataService().setLocationData(locationData, ConstantTableUtil.CONFIG_CHARGE, String.valueOf(lastEnergy));
     }
 }
