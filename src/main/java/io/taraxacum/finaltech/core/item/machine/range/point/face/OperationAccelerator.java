@@ -33,11 +33,11 @@ public class OperationAccelerator extends AbstractOperationAccelerator {
 
     @Override
     int getBaseEfficiency() {
-        return this.efficiency;
+        return 0;
     }
 
     @Override
     int getRandomEfficiency() {
-        return 0;
+        return this.efficiency;
     }
 }
