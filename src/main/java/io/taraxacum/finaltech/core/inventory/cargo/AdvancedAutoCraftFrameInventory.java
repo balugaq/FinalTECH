@@ -34,7 +34,7 @@ import java.util.function.Consumer;
  * @author Final_ROOT
  */
 public class AdvancedAutoCraftFrameInventory extends AbstractMachineInventory implements LogicInventory {
-    private final int[] border = new int[] {29, 36, 38, 47};
+    private final int[] border = new int[] {27, 28, 29, 36, 38, 47};
     private final int[] inputBorder = new int[] {18, 19, 20, 21, 22, 23, 24, 25, 26};
     private final int[] outputBorder = new int[] {33, 34, 35, 42, 44, 51, 52, 53};
     private final int[] machineSlot = new int[] {0, 1, 2, 3, 4, 5, 6 ,7 ,8 ,9 ,10, 11, 12, 13, 14, 15 ,16 ,17};
