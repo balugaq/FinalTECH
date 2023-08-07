@@ -13,8 +13,8 @@ public class ResearchListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onResearchStart(PlayerPreResearchEvent playerPreResearchEvent) {
         Research research = playerPreResearchEvent.getResearch();
-        Player player = playerPreResearchEvent.getPlayer();
         if (research instanceof SpecialResearch specialResearch) {
+            Player player = playerPreResearchEvent.getPlayer();
             player.sendMessage(specialResearch.getChatText(player));
             if(specialResearch.canResearch(player)) {
                 specialResearch.afterResearch(player);
