@@ -66,9 +66,8 @@ public class FuelOperator extends AbstractFaceMachine implements RecipeItem {
             if (tempLocationData != null) {
                 String id = LocationDataUtil.getId(FinalTech.getLocationDataService(), tempLocationData);
                 if(id != null && !this.notAllowedId.contains(id)
-                    && LocationDataUtil.getSlimefunItem(FinalTech.getLocationDataService(), locationData) instanceof EnergyNetProvider
-                    && LocationDataUtil.getSlimefunItem(FinalTech.getLocationDataService(), locationData) instanceof MachineProcessHolder<?> machineProcessHolder) {
-
+                    && LocationDataUtil.getSlimefunItem(FinalTech.getLocationDataService(), tempLocationData) instanceof EnergyNetProvider
+                    && LocationDataUtil.getSlimefunItem(FinalTech.getLocationDataService(), tempLocationData) instanceof MachineProcessHolder machineProcessHolder) {
                     BlockTickerUtil.runTask(FinalTech.getLocationRunnableFactory(), FinalTech.isAsyncSlimefunItem(id), () -> FuelOperator.this.doCharge((MachineProcessHolder<FuelOperation>) machineProcessHolder, tempLocationData), location);
                 }
             }
@@ -78,7 +77,7 @@ public class FuelOperator extends AbstractFaceMachine implements RecipeItem {
 
     private void doCharge(@Nonnull MachineProcessHolder<FuelOperation> MachineProcessHolder, @Nonnull LocationData locationData) {
         MachineOperation machineOperation = MachineProcessHolder.getMachineProcessor().getOperation(locationData.getLocation());
-        if(machineOperation == null) {
+        if (machineOperation == null) {
             MachineProcessHolder.getMachineProcessor().startOperation(locationData.getLocation(), new FuelOperation(new MachineFuel(2, new ItemStack(Material.COBBLESTONE))));
         }
     }
