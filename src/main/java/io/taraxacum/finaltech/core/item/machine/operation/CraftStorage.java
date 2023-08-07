@@ -39,13 +39,13 @@ import java.util.*;
  * @author Final_ROOT
  */
 public class CraftStorage extends AbstractOperationMachine implements MenuUpdater {
-    protected final String keyCraft = "ci";
+    protected final String keyCraft = "d";
     protected final String keyCount = "c";
     private final Set<String> allowedRecipeTypeId = new HashSet<>(ConfigUtil.getItemStringList(this, "allowed-recipe-type"));
     private final Set<String> allowedId = new HashSet<>();
     private final Set<String> notAllowedId = new HashSet<>(ConfigUtil.getItemStringList(this, "not-allowed-id"));
     private final Map<String, ItemAmountWrapper[]> slimefunItemRecipeMap = new HashMap<>();
-    private int statusSlot;
+    protected int statusSlot;
 
     public CraftStorage(@Nonnull ItemGroup itemGroup, @Nonnull SlimefunItemStack item) {
         super(itemGroup, item);
@@ -91,7 +91,7 @@ public class CraftStorage extends AbstractOperationMachine implements MenuUpdate
         MachineProcessor<MachineOperation> machineProcessor = this.getMachineProcessor();
         MachineOperation operation = machineProcessor.getOperation(location);
 
-        if(operation == null) {
+        if (operation == null) {
             this.setupCraftByConfig(locationData);
         }
 
@@ -113,7 +113,7 @@ public class CraftStorage extends AbstractOperationMachine implements MenuUpdate
     public void updateInv(@Nonnull Inventory inventory, @Nonnull Location location, int slot, @Nonnull SlimefunItem slimefunItem, @Nonnull String... text) {
         ItemStack itemStack = inventory.getItem(slot);
         MachineOperation machineOperation = this.getMachineProcessor().getOperation(location);
-        if(!ItemStackUtil.isItemNull(itemStack) && machineOperation instanceof CraftStorageOperation craftStorageOperation) {
+        if (!ItemStackUtil.isItemNull(itemStack) && machineOperation instanceof CraftStorageOperation craftStorageOperation) {
             ItemAmountWrapper[] recipe = craftStorageOperation.getItemAmountWrappers();
             BigInteger[] amount = craftStorageOperation.getAmount();
 
@@ -137,7 +137,7 @@ public class CraftStorage extends AbstractOperationMachine implements MenuUpdate
             ItemStackUtil.setItemName(itemStack, FinalTech.getLanguageString("items", this.getId(), "valid", "name"));
             ItemStackUtil.setLore(itemStack, loreList);
             itemStack.setType(Material.GREEN_STAINED_GLASS_PANE);
-        } else if(machineOperation == null) {
+        } else if (!ItemStackUtil.isItemNull(itemStack) && machineOperation == null) {
             List<String> loreList = new ArrayList<>(FinalTech.getLanguageStringList("items", this.getId(), "invalid", "lore"));
 
             ItemStackUtil.setItemName(itemStack, FinalTech.getLanguageString("items", this.getId(), "invalid", "name"));
@@ -240,8 +240,8 @@ public class CraftStorage extends AbstractOperationMachine implements MenuUpdate
             SlimefunItem slimefunItem = SlimefunItem.getById(id);
             if(slimefunItem != null && this.calAllowed(slimefunItem)) {
                 Map<Integer, BigInteger> amountMap = new HashMap<>();
-                for(String key : FinalTech.getLocationDataService().getKeys(locationData)) {
-                    if(key.startsWith(this.keyCount)) {
+                for (String key : FinalTech.getLocationDataService().getKeys(locationData)) {
+                    if (key.startsWith(this.keyCount)) {
                         amountMap.put(Integer.parseInt(key.substring(this.keyCount.length())), new BigInteger(FinalTech.getLocationDataService().getLocationData(locationData, key)));
                     }
                 }
