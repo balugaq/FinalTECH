@@ -1,7 +1,7 @@
 package io.taraxacum.libs.plugin.task;
 
 import io.taraxacum.common.util.JavaUtil;
-import io.taraxacum.libs.plugin.dto.ServerRunnableLockFactory;
+import io.taraxacum.libs.plugin.thread.ServerRunnableLockFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 

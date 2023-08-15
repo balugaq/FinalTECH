@@ -14,7 +14,7 @@ import io.taraxacum.finaltech.core.item.machine.AbstractMachine;
 import io.taraxacum.finaltech.core.option.RouteShow;
 import io.taraxacum.finaltech.setup.FinalTechItems;
 import io.taraxacum.finaltech.util.*;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
@@ -68,7 +68,7 @@ public class ConfigurationPaster extends AbstractMachine implements RecipeItem, 
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory == null) {
             return;
         }

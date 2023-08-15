@@ -9,7 +9,7 @@ import io.taraxacum.finaltech.core.inventory.AbstractMachineInventory;
 import io.taraxacum.finaltech.core.inventory.unit.StatusL2Inventory;
 import io.taraxacum.finaltech.setup.FinalTechItems;
 import io.taraxacum.finaltech.util.ConfigUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.Inventory;
@@ -39,7 +39,7 @@ public class MatrixExpandedCapacitor extends AbstractExpandedElectricCapacitor {
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if(inventory != null) {
             for (int slot : this.getInputSlot()) {
                 ItemStack item = inventory.getItem(slot);

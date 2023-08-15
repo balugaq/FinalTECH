@@ -10,7 +10,7 @@ import io.taraxacum.finaltech.core.group.MainItemGroup;
 import io.taraxacum.finaltech.core.group.SubFlexItemGroup;
 import io.taraxacum.finaltech.core.option.Icon;
 import io.taraxacum.finaltech.util.MachineUtil;
-import io.taraxacum.libs.plugin.dto.SimpleVirtualInventory;
+import io.taraxacum.libs.plugin.inventory.SimpleVirtualInventory;
 import io.taraxacum.libs.plugin.service.InventoryHistoryService;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import org.bukkit.Sound;

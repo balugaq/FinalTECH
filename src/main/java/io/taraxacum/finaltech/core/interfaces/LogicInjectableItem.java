@@ -1,6 +1,6 @@
 package io.taraxacum.finaltech.core.interfaces;
 
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 
 import javax.annotation.Nonnull;
 

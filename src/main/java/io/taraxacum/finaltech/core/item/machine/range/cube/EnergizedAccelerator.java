@@ -18,7 +18,7 @@ import io.taraxacum.finaltech.util.BlockTickerUtil;
 import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.MachineUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
 import io.taraxacum.libs.slimefun.util.EnergyUtil;
 import io.taraxacum.libs.slimefun.util.LocationDataUtil;
@@ -72,7 +72,7 @@ public class EnergizedAccelerator extends AbstractCubeMachine implements EnergyN
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if(inventory == null) {
             return;
         }

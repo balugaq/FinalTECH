@@ -1,10 +1,9 @@
 package io.taraxacum.libs.slimefun.dto;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.taraxacum.finaltech.setup.FinalTechItems;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.finaltech.util.ConstantTableUtil;
-import io.taraxacum.libs.plugin.dto.ItemWrapper;
+import io.taraxacum.libs.plugin.is.ItemWrapper;
 import io.taraxacum.libs.slimefun.interfaces.ValidItem;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

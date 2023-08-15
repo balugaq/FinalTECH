@@ -5,7 +5,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.interfaces.DigitalItem;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,7 +22,7 @@ public class NormalTriggerableElectricityShootPile extends AbstractDigitElectric
 
     @Override
     protected int getDigit(@Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory == null) {
             return -1;
         }

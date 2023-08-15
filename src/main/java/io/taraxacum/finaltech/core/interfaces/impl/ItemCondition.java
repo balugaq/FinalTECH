@@ -3,7 +3,7 @@ package io.taraxacum.finaltech.core.interfaces.impl;
 import io.taraxacum.common.util.StringUtil;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.interfaces.Condition;
-import io.taraxacum.libs.plugin.dto.ItemAmountWrapper;
+import io.taraxacum.libs.plugin.is.ItemAmountWrapper;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.plugin.util.TextUtil;
 import org.bukkit.entity.Player;

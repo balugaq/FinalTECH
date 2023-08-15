@@ -3,7 +3,7 @@ package io.taraxacum.libs.slimefun.interfaces;
 import com.xzavier0722.mc.plugin.slimefun4.storage.controller.SlimefunBlockData;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetProvider;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.slimefun.dto.LocationBlockStorageData;
 import io.taraxacum.libs.slimefun.dto.LocationDatabaseData;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;

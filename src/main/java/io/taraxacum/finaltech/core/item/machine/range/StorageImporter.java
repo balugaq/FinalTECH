@@ -13,7 +13,7 @@ import io.taraxacum.finaltech.core.option.RouteShow;
 import io.taraxacum.finaltech.util.BlockTickerUtil;
 import io.taraxacum.finaltech.util.LocationUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
 import io.taraxacum.libs.slimefun.util.LocationDataUtil;
@@ -65,7 +65,7 @@ public class StorageImporter extends StorageOperator implements RecipeItem {
                 return;
             }
 
-            Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+            Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
             if(inventory == null || InventoryUtil.slotCount(inventory, this.getInputSlot()) < this.getInputSlot().length / 2) {
                 return;
             }

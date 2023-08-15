@@ -12,8 +12,8 @@ import javax.annotation.Nonnull;
 public class LocationBlockStorageData extends SlimefunLocationData {
     private final Config config;
 
-    public LocationBlockStorageData(@Nonnull Location location, @Nonnull Config config, @Nonnull String id, @Nonnull SlimefunItem slimefunItem) {
-        super(location, id, slimefunItem);
+    public LocationBlockStorageData(@Nonnull Location location, @Nonnull Config config, @Nonnull SlimefunItem slimefunItem) {
+        super(location, slimefunItem);
         this.config = config;
     }
 

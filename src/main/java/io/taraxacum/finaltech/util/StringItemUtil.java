@@ -3,7 +3,7 @@ package io.taraxacum.finaltech.util;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.common.util.StringNumberUtil;
 import io.taraxacum.finaltech.core.dto.StringItemCardCache;
-import io.taraxacum.libs.plugin.dto.ItemWrapper;
+import io.taraxacum.libs.plugin.is.ItemWrapper;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

@@ -14,8 +14,8 @@ import io.taraxacum.finaltech.setup.FinalTechItems;
 import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
 import io.taraxacum.finaltech.util.StringItemUtil;
-import io.taraxacum.libs.plugin.dto.ItemWrapper;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.is.ItemWrapper;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import org.bukkit.block.Block;
@@ -24,7 +24,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
@@ -49,11 +48,11 @@ public class StorageInteractPort extends AbstractCargo implements RecipeItem {
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
         Block targetBlock = block.getRelative(BlockFace.UP);
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if(inventory == null) {
             return;
         }
-        if (FinalTech.getLocationDataService().getInventory(targetBlock.getLocation()) == null) {
+        if (FinalTech.getLocationDataService().getRawInventory(targetBlock.getLocation()) == null) {
             if (this.getAddon().getJavaPlugin().getServer().isPrimaryThread()) {
                 BlockState blockState = targetBlock.getState();
                 if (blockState instanceof InventoryHolder inventoryHolder) {

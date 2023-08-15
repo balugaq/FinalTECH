@@ -9,8 +9,8 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.taraxacum.common.util.StringNumberUtil;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.setup.FinalTechItems;
-import io.taraxacum.libs.plugin.dto.ConfigFileManager;
-import io.taraxacum.libs.plugin.dto.ItemAmountWrapper;
+import io.taraxacum.libs.plugin.file.ConfigFileManager;
+import io.taraxacum.libs.plugin.is.ItemAmountWrapper;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import org.bukkit.inventory.ItemStack;
 

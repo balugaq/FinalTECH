@@ -9,7 +9,7 @@ import io.taraxacum.finaltech.core.interfaces.MenuUpdater;
 import io.taraxacum.finaltech.core.inventory.AbstractMachineInventory;
 import io.taraxacum.finaltech.core.inventory.unit.StatusInventory;
 import io.taraxacum.finaltech.core.item.machine.electric.AbstractElectricMachine;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.slimefun.util.EnergyUtil;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.Inventory;
@@ -37,7 +37,7 @@ public abstract class AbstractElectricCapacitor extends AbstractElectricMachine 
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null && !inventory.getViewers().isEmpty()) {
             this.updateInv(inventory, this.statusSlot, this, EnergyUtil.getCharge(FinalTech.getLocationDataService(), locationData));
         }

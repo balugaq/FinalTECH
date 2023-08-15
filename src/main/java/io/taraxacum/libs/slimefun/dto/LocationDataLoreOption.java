@@ -1,8 +1,8 @@
 package io.taraxacum.libs.slimefun.dto;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.taraxacum.libs.plugin.dto.LocationData;
-import io.taraxacum.libs.plugin.interfaces.LocationDataService;
+import io.taraxacum.libs.plugin.ld.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationDataService;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import org.bukkit.Location;
 import org.bukkit.event.inventory.ClickType;

@@ -1,6 +1,6 @@
 package io.taraxacum.finaltech.core.dto;
 
-import io.taraxacum.libs.plugin.dto.ItemWrapper;
+import io.taraxacum.libs.plugin.is.ItemWrapper;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.finaltech.util.StringItemUtil;
 import org.bukkit.inventory.ItemStack;

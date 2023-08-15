@@ -10,7 +10,7 @@ import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.inventory.manual.AbstractManualMachineInventory;
 import io.taraxacum.finaltech.core.inventory.manual.ItemDismantleTableInventory;
 import io.taraxacum.finaltech.util.RecipeUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.slimefun.dto.RecipeTypeRegistry;
 import io.taraxacum.finaltech.core.interfaces.RecipeItem;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
@@ -52,7 +52,7 @@ public class ItemDismantleTable extends AbstractManualMachine implements RecipeI
             FinalTech.getLocationDataService().setLocationData(locationData, this.key, StringNumberUtil.add(count));
         }
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null && !inventory.getViewers().isEmpty()) {
             this.getMachineInventory().updateInventory(inventory, block.getLocation());
         }

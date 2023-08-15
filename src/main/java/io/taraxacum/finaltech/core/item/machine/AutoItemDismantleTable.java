@@ -15,7 +15,7 @@ import io.taraxacum.finaltech.core.item.unusable.ReplaceableCard;
 import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.MachineUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.slimefun.dto.RecipeTypeRegistry;
@@ -61,7 +61,7 @@ public class AutoItemDismantleTable extends AbstractMachine implements RecipeIte
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null && InventoryUtil.isEmpty(inventory, this.getOutputSlot())) {
             ItemStack itemStack = inventory.getItem(this.getInputSlot()[0]);
             SlimefunItem sfItem = SlimefunItem.getByItem(itemStack);

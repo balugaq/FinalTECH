@@ -10,7 +10,7 @@ import io.github.thebusybiscuit.slimefun4.utils.NumberUtils;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.util.BlockTickerUtil;
 import io.taraxacum.finaltech.util.ConfigUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.slimefun.util.LocationDataUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -354,7 +354,7 @@ public class AlteredEnergyNet extends EnergyNet {
                 summary.generatorAmount = this.generators.size();
                 summary.capacitorAmount = this.capacitors.size();
 
-                Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+                Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
                 if (inventory != null && !inventory.getViewers().isEmpty()) {
                     inventoryUpdater.accept(inventory, summary);
                 }

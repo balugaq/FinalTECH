@@ -1,13 +1,12 @@
 package io.taraxacum.finaltech.util;
 
 import io.taraxacum.finaltech.FinalTech;
-import io.taraxacum.libs.plugin.dto.LocationData;
-import io.taraxacum.libs.plugin.interfaces.LocationDataService;
+import io.taraxacum.libs.plugin.ld.LocationDataService;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.plugin.dto.InvWithSlots;
 import io.taraxacum.common.util.JavaUtil;
-import io.taraxacum.libs.plugin.dto.ItemWrapper;
+import io.taraxacum.libs.plugin.is.ItemWrapper;
 import io.taraxacum.finaltech.core.dto.CargoDTO;
 import io.taraxacum.finaltech.core.dto.SimpleCargoDTO;
 import io.taraxacum.finaltech.core.option.*;
@@ -117,7 +116,7 @@ public class CargoUtil {
             InvWithSlots outputMap;
             // Just get inputMap.
             inputMap = CargoUtil.getInvWithSlots(cargoDTO.getLocationDataService(), cargoDTO.getInputBlock(), cargoDTO.getInputSize(), cargoDTO.getInputOrder());
-            if (cargoDTO.getLocationDataService().getInventory(cargoDTO.getOutputBlock().getLocation()) != null) {
+            if (cargoDTO.getLocationDataService().getRawInventory(cargoDTO.getOutputBlock().getLocation()) != null) {
                 outputMap = null;
             } else {
                 if (cargoDTO.getOutputBlock().getState() instanceof InventoryHolder) {
@@ -141,7 +140,7 @@ public class CargoUtil {
                 InvWithSlots outputMap;
                 // Just get inputMap.
                 inputMap = CargoUtil.getInvWithSlots(cargoDTO.getLocationDataService(), cargoDTO.getInputBlock(), cargoDTO.getInputSize(), cargoDTO.getInputOrder());
-                if (cargoDTO.getLocationDataService().getInventory(cargoDTO.getOutputBlock().getLocation()) != null) {
+                if (cargoDTO.getLocationDataService().getRawInventory(cargoDTO.getOutputBlock().getLocation()) != null) {
                     outputMap = null;
                 } else {
                     if (cargoDTO.getOutputBlock().getState() instanceof InventoryHolder) {
@@ -171,7 +170,7 @@ public class CargoUtil {
             InvWithSlots outputMap;
             // Just get outputMap.
             outputMap = CargoUtil.getInvWithSlots(cargoDTO.getLocationDataService(), cargoDTO.getOutputBlock(), cargoDTO.getOutputSize(), cargoDTO.getOutputOrder());
-            if (cargoDTO.getLocationDataService().getInventory(cargoDTO.getInputBlock().getLocation()) != null) {
+            if (cargoDTO.getLocationDataService().getRawInventory(cargoDTO.getInputBlock().getLocation()) != null) {
                 inputMap = null;
             } else {
                 if (cargoDTO.getInputBlock().getState() instanceof InventoryHolder) {
@@ -195,7 +194,7 @@ public class CargoUtil {
                 InvWithSlots outputMap;
                 // Just get outputMap.
                 outputMap = CargoUtil.getInvWithSlots(cargoDTO.getLocationDataService(), cargoDTO.getOutputBlock(), cargoDTO.getOutputSize(), cargoDTO.getOutputOrder());
-                if (cargoDTO.getLocationDataService().getInventory(cargoDTO.getInputBlock().getLocation()) != null) {
+                if (cargoDTO.getLocationDataService().getRawInventory(cargoDTO.getInputBlock().getLocation()) != null) {
                     inputMap = null;
                 } else {
                     if (cargoDTO.getInputBlock().getState() instanceof InventoryHolder) {
@@ -653,7 +652,7 @@ public class CargoUtil {
     @Nullable
     public static InvWithSlots getInvWithSlots(@Nonnull LocationDataService locationDataService, @Nonnull Block block, @Nonnull String size, @Nonnull String order, @Nonnull ItemStack itemStack) {
         Location location = block.getLocation();
-        Inventory inventory = locationDataService.getInventory(block.getLocation());
+        Inventory inventory = locationDataService.getRawInventory(block.getLocation());
         int[] slots = null;
         if (inventory != null) {
             if(locationDataService instanceof SlimefunLocationDataService slimefunLocationDataService) {
@@ -790,6 +789,6 @@ public class CargoUtil {
     }
 
     public static boolean hasInventory(@Nonnull LocationDataService locationDataService, @Nonnull Location location) {
-        return locationDataService.getInventory(location) != null || location.getBlock().getState() instanceof InventoryHolder;
+        return locationDataService.getRawInventory(location) != null || location.getBlock().getState() instanceof InventoryHolder;
     }
 }

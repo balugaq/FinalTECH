@@ -10,7 +10,7 @@ import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.item.usable.UsableSlimefunItem;
 import io.taraxacum.finaltech.util.BlockTickerUtil;
 import io.taraxacum.finaltech.util.ConfigUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
 import io.taraxacum.libs.slimefun.util.LocationDataUtil;

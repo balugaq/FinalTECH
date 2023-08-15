@@ -1,7 +1,7 @@
 package io.taraxacum.finaltech.core.inventory;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.taraxacum.libs.plugin.interfaces.LogicInventory;
+import io.taraxacum.libs.plugin.inventory.template.LogicInventory;
 
 import javax.annotation.Nonnull;
 

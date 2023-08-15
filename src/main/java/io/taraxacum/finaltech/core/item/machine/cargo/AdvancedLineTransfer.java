@@ -17,7 +17,7 @@ import io.taraxacum.finaltech.core.option.*;
 import io.taraxacum.finaltech.core.interfaces.RecipeItem;
 import io.taraxacum.finaltech.util.*;
 import io.taraxacum.libs.plugin.dto.InvWithSlots;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
 import io.taraxacum.libs.slimefun.dto.SlimefunLocationData;
 import org.bukkit.Location;
@@ -100,7 +100,7 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if(inventory == null) {
             return;
         }
@@ -194,12 +194,12 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
                     continue;
                 }
 
-                if (CargoMode.VALUE_INPUT_MAIN.equals(cargoMode) && FinalTech.getLocationDataService().getInventory(outputBlock.getLocation()) != null) {
+                if (CargoMode.VALUE_INPUT_MAIN.equals(cargoMode) && FinalTech.getLocationDataService().getRawInventory(outputBlock.getLocation()) != null) {
                     outputMap = null;
                 } else {
                     outputMap = CargoUtil.getInvWithSlots(FinalTech.getLocationDataService(), outputBlock, outputSize, outputOrder);
                 }
-                if (CargoMode.VALUE_OUTPUT_MAIN.equals(cargoMode) && FinalTech.getLocationDataService().getInventory(inputBlock.getLocation()) != null) {
+                if (CargoMode.VALUE_OUTPUT_MAIN.equals(cargoMode) && FinalTech.getLocationDataService().getRawInventory(inputBlock.getLocation()) != null) {
                     inputMap = null;
                 } else {
                     inputMap = CargoUtil.getInvWithSlots(FinalTech.getLocationDataService(), inputBlock, inputSize, inputOrder);
@@ -348,7 +348,7 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
                             continue;
                         }
 
-                        Inventory inputInventory = FinalTech.getLocationDataService().getInventory(inputBlock.getLocation());
+                        Inventory inputInventory = FinalTech.getLocationDataService().getRawInventory(inputBlock.getLocation());
                         if (CargoMode.VALUE_OUTPUT_MAIN.equals(cargoMode) && inputInventory != null) {
                             inputMap = null;
                         } else if (inputInventory != null) {
@@ -359,7 +359,7 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
                             continue;
                         }
 
-                        Inventory outputInventory = FinalTech.getLocationDataService().getInventory(outputBlock.getLocation());
+                        Inventory outputInventory = FinalTech.getLocationDataService().getRawInventory(outputBlock.getLocation());
                         if (CargoMode.VALUE_INPUT_MAIN.equals(cargoMode) && outputInventory != null) {
                             outputMap = null;
                         } else if (outputInventory != null) {
@@ -443,7 +443,7 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
     public void injectDigit(@Nonnull LocationData locationData, int digit) {
         CargoNumber.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, String.valueOf(digit));
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.digitInjectInventoryUpdater.accept(inventory, locationData);
         }
@@ -457,7 +457,7 @@ public class AdvancedLineTransfer extends AbstractCargo implements RecipeItem, D
             CargoFilter.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, CargoFilter.VALUE_WHITE);
         }
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.logicInjectInventoryUpdater.accept(inventory, locationData);
         }

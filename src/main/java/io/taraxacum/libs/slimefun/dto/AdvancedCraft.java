@@ -2,9 +2,9 @@ package io.taraxacum.libs.slimefun.dto;
 
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
-import io.taraxacum.libs.plugin.dto.AdvancedMachineRecipe;
-import io.taraxacum.libs.plugin.dto.ItemAmountWrapper;
-import io.taraxacum.libs.plugin.dto.ItemWrapper;
+import io.taraxacum.libs.plugin.recipe.AdvancedMachineRecipe;
+import io.taraxacum.libs.plugin.is.ItemAmountWrapper;
+import io.taraxacum.libs.plugin.is.ItemWrapper;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecipe;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

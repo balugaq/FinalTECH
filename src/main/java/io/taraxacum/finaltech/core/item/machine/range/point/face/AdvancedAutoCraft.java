@@ -16,9 +16,9 @@ import io.taraxacum.finaltech.core.option.Icon;
 import io.taraxacum.finaltech.core.option.SlotSearchOrder;
 import io.taraxacum.finaltech.core.option.SlotSearchSize;
 import io.taraxacum.finaltech.util.*;
-import io.taraxacum.libs.plugin.dto.AdvancedMachineRecipe;
+import io.taraxacum.libs.plugin.recipe.AdvancedMachineRecipe;
 import io.taraxacum.libs.plugin.dto.InvWithSlots;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.slimefun.dto.AdvancedCraft;
@@ -67,7 +67,7 @@ public class AdvancedAutoCraft extends AbstractFaceMachine implements RecipeItem
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if(inventory == null) {
             return;
         }
@@ -84,7 +84,7 @@ public class AdvancedAutoCraft extends AbstractFaceMachine implements RecipeItem
         if (containerLocationData == null) {
             return;
         }
-        Inventory containerInventory = FinalTech.getLocationDataService().getInventory(containerLocationData);
+        Inventory containerInventory = FinalTech.getLocationDataService().getRawInventory(containerLocationData);
         if(containerInventory == null) {
             return;
         }

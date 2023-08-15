@@ -3,7 +3,7 @@ package io.taraxacum.libs.slimefun.service.impl;
 import com.xzavier0722.mc.plugin.slimefun4.storage.controller.BlockDataController;
 import com.xzavier0722.mc.plugin.slimefun4.storage.controller.SlimefunBlockData;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.slimefun.dto.LocationDatabaseData;
 import io.taraxacum.libs.slimefun.dto.SlimefunLocationData;
 import io.taraxacum.libs.slimefun.service.SlimefunLocationDataService;
@@ -83,15 +83,14 @@ public class DatabaseDataService implements SlimefunLocationDataService {
     }
 
     @Nullable
-    @Override
-    public Inventory getInventory(@Nonnull LocationData locationData) {
+    public Inventory getRawInventory(@Nonnull LocationData locationData) {
         BlockMenu blockMenu = ((LocationDatabaseData) locationData).getSlimefunBlockData().getBlockMenu();
         return blockMenu == null ? null : blockMenu.toInventory();
     }
 
     @Nullable
     @Override
-    public Inventory getInventory(@Nonnull Location location) {
+    public Inventory getRawInventory(@Nonnull Location location) {
         SlimefunBlockData slimefunBlockData = this.blockDataController.getBlockDataFromCache(location);
         if(slimefunBlockData != null) {
             BlockMenu blockMenu = slimefunBlockData.getBlockMenu();
@@ -152,12 +151,6 @@ public class DatabaseDataService implements SlimefunLocationDataService {
     public SlimefunItem getSlimefunItem(@Nonnull Location location) {
         SlimefunBlockData slimefunBlockData = this.blockDataController.getBlockDataFromCache(location);
         return slimefunBlockData == null ? null : SlimefunItem.getById(slimefunBlockData.getSfId());
-    }
-
-    @Nonnull
-    @Override
-    public SlimefunItem getSlimefunItem(@Nonnull SlimefunLocationData locationData) {
-        return locationData.getSlimefunItem();
     }
 
     @Nullable

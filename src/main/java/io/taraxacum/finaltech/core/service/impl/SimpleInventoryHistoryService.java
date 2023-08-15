@@ -11,7 +11,7 @@ import io.taraxacum.finaltech.core.group.SubFlexItemGroup;
 import io.taraxacum.finaltech.core.inventory.common.MainItemGroupInventory;
 import io.taraxacum.finaltech.core.option.Icon;
 import io.taraxacum.finaltech.setup.FinalTechMenus;
-import io.taraxacum.libs.plugin.dto.SimpleVirtualInventory;
+import io.taraxacum.libs.plugin.inventory.SimpleVirtualInventory;
 import io.taraxacum.libs.plugin.service.InventoryHistoryService;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

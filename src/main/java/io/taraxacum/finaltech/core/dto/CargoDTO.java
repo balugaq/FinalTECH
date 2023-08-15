@@ -4,7 +4,7 @@ import io.taraxacum.finaltech.core.option.CargoFilter;
 import io.taraxacum.finaltech.core.option.CargoLimit;
 import io.taraxacum.finaltech.core.option.SlotSearchOrder;
 import io.taraxacum.finaltech.core.option.SlotSearchSize;
-import io.taraxacum.libs.plugin.interfaces.LocationDataService;
+import io.taraxacum.libs.plugin.ld.LocationDataService;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.Location;
 import org.bukkit.block.Block;

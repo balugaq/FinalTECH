@@ -14,9 +14,9 @@ import io.taraxacum.finaltech.core.inventory.simple.CraftStorageInventory;
 import io.taraxacum.finaltech.core.operation.CraftStorageOperation;
 import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
-import io.taraxacum.libs.plugin.dto.ItemAmountWrapper;
-import io.taraxacum.libs.plugin.dto.ItemWrapper;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.is.ItemAmountWrapper;
+import io.taraxacum.libs.plugin.is.ItemWrapper;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.slimefun.dto.RecipeTypeRegistry;
@@ -82,7 +82,7 @@ public class CraftStorage extends AbstractOperationMachine implements MenuUpdate
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if(inventory == null) {
             return;
         }

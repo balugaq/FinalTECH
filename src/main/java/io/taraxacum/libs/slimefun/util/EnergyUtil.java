@@ -2,8 +2,8 @@ package io.taraxacum.libs.slimefun.util;
 
 import io.taraxacum.common.util.JavaUtil;
 import io.taraxacum.finaltech.util.ConstantTableUtil;
-import io.taraxacum.libs.plugin.interfaces.LocationDataService;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationDataService;
+import io.taraxacum.libs.plugin.ld.LocationData;
 
 import javax.annotation.Nonnull;
 

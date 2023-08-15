@@ -11,7 +11,7 @@ import io.taraxacum.finaltech.core.interfaces.LogicInjectableItem;
 import io.taraxacum.finaltech.core.inventory.AbstractMachineInventory;
 import io.taraxacum.finaltech.core.inventory.cargo.MeshTransferInventory;
 import io.taraxacum.libs.plugin.dto.InvWithSlots;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
 import io.taraxacum.finaltech.core.interfaces.RecipeItem;
 import io.taraxacum.finaltech.core.dto.SimpleCargoDTO;
@@ -92,7 +92,7 @@ public class MeshTransfer extends AbstractCargo implements RecipeItem, LogicInje
 
     @Override
     public void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if(inventory == null) {
             return;
         }
@@ -169,7 +169,7 @@ public class MeshTransfer extends AbstractCargo implements RecipeItem, LogicInje
 
             for (Block outputBlock : outputBlocks) {
                 InvWithSlots outputMap;
-                if (FinalTech.getLocationDataService().getInventory(outputBlock.getLocation()) != null) {
+                if (FinalTech.getLocationDataService().getRawInventory(outputBlock.getLocation()) != null) {
                     outputMap = null;
                 } else {
                     outputMap = CargoUtil.getInvWithSlots(FinalTech.getLocationDataService(), outputBlock, outputSize, outputOrder);
@@ -221,7 +221,7 @@ public class MeshTransfer extends AbstractCargo implements RecipeItem, LogicInje
 
             for (Block inputBlock : inputBlocks) {
                 InvWithSlots inputMap;
-                if (FinalTech.getLocationDataService().getInventory(inputBlock.getLocation()) != null) {
+                if (FinalTech.getLocationDataService().getRawInventory(inputBlock.getLocation()) != null) {
                     inputMap = null;
                 } else {
                     inputMap = CargoUtil.getInvWithSlots(FinalTech.getLocationDataService(), inputBlock, inputSize, inputOrder);
@@ -325,7 +325,7 @@ public class MeshTransfer extends AbstractCargo implements RecipeItem, LogicInje
                     for (int i = 0; i < outputBlocks.length; i++) {
                         Block outputBlock = outputBlocks[i];
                         InvWithSlots outputMap;
-                        if (FinalTech.getLocationDataService().getInventory(outputBlock.getLocation()) != null) {
+                        if (FinalTech.getLocationDataService().getRawInventory(outputBlock.getLocation()) != null) {
                             outputMap = null;
                         } else if (outputVanillaInventories[i] != null) {
                             outputMap = CargoUtil.calInvWithSlots(outputVanillaInventories[i], outputOrder);
@@ -375,7 +375,7 @@ public class MeshTransfer extends AbstractCargo implements RecipeItem, LogicInje
                     for (int i = 0; i < inputBlocks.length; i++) {
                         Block inputBlock = inputBlocks[i];
                         InvWithSlots inputMap;
-                        if (FinalTech.getLocationDataService().getInventory(inputBlock.getLocation()) != null) {
+                        if (FinalTech.getLocationDataService().getRawInventory(inputBlock.getLocation()) != null) {
                             inputMap = null;
                         } else if (inputVanillaInventories[i] != null) {
                             inputMap = CargoUtil.calInvWithSlots(inputVanillaInventories[i], inputOrder);
@@ -451,7 +451,7 @@ public class MeshTransfer extends AbstractCargo implements RecipeItem, LogicInje
             CargoFilter.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, CargoFilter.VALUE_WHITE);
         }
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.logicInjectInventoryUpdater.accept(inventory, locationData);
         }

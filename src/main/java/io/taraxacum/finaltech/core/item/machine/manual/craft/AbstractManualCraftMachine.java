@@ -12,7 +12,7 @@ import io.taraxacum.finaltech.core.inventory.manual.AbstractManualMachineInvento
 import io.taraxacum.finaltech.core.inventory.manual.ManualCraftMachineInventory;
 import io.taraxacum.finaltech.core.item.machine.manual.AbstractManualMachine;
 import io.taraxacum.finaltech.util.ConfigUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.slimefun.util.EnergyUtil;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -57,7 +57,7 @@ public abstract class AbstractManualCraftMachine extends AbstractManualMachine i
 
         EnergyUtil.setCharge(FinalTech.getLocationDataService(), locationData, String.valueOf(Math.min(charge, this.capacity)));
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null && !inventory.getViewers().isEmpty()) {
             this.getMachineInventory().updateInventory(inventory, block.getLocation());
         }

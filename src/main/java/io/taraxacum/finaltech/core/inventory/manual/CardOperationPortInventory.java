@@ -12,7 +12,7 @@ import io.taraxacum.finaltech.setup.FinalTechItemStacks;
 import io.taraxacum.finaltech.setup.FinalTechItems;
 import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.StringItemUtil;
-import io.taraxacum.libs.plugin.interfaces.LogicInventory;
+import io.taraxacum.libs.plugin.inventory.template.LogicInventory;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;

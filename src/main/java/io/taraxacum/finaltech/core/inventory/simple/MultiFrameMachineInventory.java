@@ -3,7 +3,7 @@ package io.taraxacum.finaltech.core.inventory.simple;
 import io.taraxacum.common.util.JavaUtil;
 import io.taraxacum.finaltech.core.inventory.AbstractOrdinaryMachineInventory;
 import io.taraxacum.finaltech.core.item.machine.AbstractMachine;
-import io.taraxacum.libs.plugin.dto.ItemWrapper;
+import io.taraxacum.libs.plugin.is.ItemWrapper;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;

@@ -5,7 +5,7 @@ import io.taraxacum.common.util.JavaUtil;
 import io.taraxacum.common.util.StringNumberUtil;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.item.machine.AbstractMachine;
-import io.taraxacum.libs.plugin.interfaces.LogicInventory;
+import io.taraxacum.libs.plugin.inventory.template.LogicInventory;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.slimefun.dto.ItemValueTableV2;
 import org.bukkit.Location;

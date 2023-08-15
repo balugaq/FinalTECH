@@ -25,6 +25,7 @@ import java.util.Random;
 /**
  * @author Final_ROOT
  */
+// TODO update or delete?
 public class ResearchUnlockTicket extends UsableSlimefunItem implements RecipeItem {
     public ResearchUnlockTicket(@Nonnull ItemGroup itemGroup, @Nonnull SlimefunItemStack item) {
         super(itemGroup, item);

@@ -11,10 +11,10 @@ import io.taraxacum.finaltech.core.interfaces.LogicInjectableItem;
 import io.taraxacum.finaltech.core.inventory.AbstractMachineInventory;
 import io.taraxacum.finaltech.core.inventory.limit.lock.AdvancedMachineInventory;
 import io.taraxacum.finaltech.core.option.MachineMaxStack;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.slimefun.dto.AdvancedCraft;
-import io.taraxacum.libs.plugin.dto.AdvancedMachineRecipe;
+import io.taraxacum.libs.plugin.recipe.AdvancedMachineRecipe;
 import io.taraxacum.libs.slimefun.dto.MachineRecipeFactory;
 import io.taraxacum.finaltech.core.interfaces.RecipeItem;
 import io.taraxacum.finaltech.core.option.Icon;
@@ -72,7 +72,7 @@ public abstract class AbstractAdvancedMachine extends AbstractMachine implements
 
     @Override
     protected final void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if(inventory == null) {
             return;
         }
@@ -122,7 +122,7 @@ public abstract class AbstractAdvancedMachine extends AbstractMachine implements
     public void injectDigit(@Nonnull LocationData locationData, int digit) {
         MachineMaxStack.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, String.valueOf(digit));
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.digitInjectInventoryUpdater.accept(inventory, locationData);
         }
@@ -136,7 +136,7 @@ public abstract class AbstractAdvancedMachine extends AbstractMachine implements
             MachineRecipeLock.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, MachineRecipeLock.VALUE_LOCK_OFF);
         }
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.logicInjectInventoryUpdater.accept(inventory, locationData);
         }

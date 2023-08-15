@@ -15,7 +15,7 @@ import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.ConstantTableUtil;
 import io.taraxacum.finaltech.util.MachineUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.slimefun.interfaces.BeautifulEnergyProvider;
 import io.taraxacum.libs.slimefun.util.EnergyUtil;
 import org.bukkit.Location;
@@ -80,7 +80,7 @@ public class TimeGenerator extends AbstractMachine implements EnergyNetProvider,
         charge = ++charge > this.capacity ? 0 : charge;
         EnergyUtil.setCharge(FinalTech.getLocationDataService(), locationData, String.valueOf(charge));
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null && !inventory.getViewers().isEmpty()) {
             this.updateInv(inventory, this.statusSlot, this,
                     String.valueOf(charge));

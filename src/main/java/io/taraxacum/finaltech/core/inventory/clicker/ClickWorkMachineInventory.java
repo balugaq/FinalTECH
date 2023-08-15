@@ -3,7 +3,7 @@ package io.taraxacum.finaltech.core.inventory.clicker;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.item.machine.clicker.AbstractClickerMachine;
 import io.taraxacum.finaltech.core.option.ForceClose;
-import io.taraxacum.libs.plugin.interfaces.LogicInventory;
+import io.taraxacum.libs.plugin.inventory.template.LogicInventory;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.plugin.util.ParticleUtil;

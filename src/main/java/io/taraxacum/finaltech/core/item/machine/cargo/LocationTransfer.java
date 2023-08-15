@@ -12,7 +12,7 @@ import io.taraxacum.finaltech.core.interfaces.LogicInjectableItem;
 import io.taraxacum.finaltech.core.inventory.AbstractMachineInventory;
 import io.taraxacum.finaltech.core.inventory.cargo.LocationTransferInventory;
 import io.taraxacum.finaltech.util.*;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
 import io.taraxacum.finaltech.core.interfaces.RecipeItem;
@@ -81,7 +81,7 @@ public class LocationTransfer extends AbstractCargo implements RecipeItem, Logic
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if(inventory == null) {
             return;
         }
@@ -163,7 +163,7 @@ public class LocationTransfer extends AbstractCargo implements RecipeItem, Logic
             CargoOrder.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, CargoOrder.VALUE_REVERSE);
         }
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.logicInjectInventoryUpdater.accept(inventory, locationData);
         }

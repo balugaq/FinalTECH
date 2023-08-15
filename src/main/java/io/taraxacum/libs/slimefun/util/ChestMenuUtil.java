@@ -1,10 +1,10 @@
 package io.taraxacum.libs.slimefun.util;
 
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import io.taraxacum.libs.plugin.interfaces.CloseFunctionInventory;
-import io.taraxacum.libs.plugin.interfaces.InventoryTemplate;
-import io.taraxacum.libs.plugin.interfaces.LogicInventory;
-import io.taraxacum.libs.plugin.interfaces.OpenFunctionInventory;
+import io.taraxacum.libs.plugin.inventory.template.CloseFunctionInventory;
+import io.taraxacum.libs.plugin.inventory.template.InventoryTemplate;
+import io.taraxacum.libs.plugin.inventory.template.LogicInventory;
+import io.taraxacum.libs.plugin.inventory.template.OpenFunctionInventory;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
@@ -29,8 +29,46 @@ import java.util.function.Consumer;
  */
 public class ChestMenuUtil {
 
+    public static InventoryTemplate warpInventoryTemplate(@Nonnull BlockMenuPreset blockMenuPreset) {
+        return new InventoryTemplate() {
+            @Nonnull
+            @Override
+            public String getId() {
+                return blockMenuPreset.getID();
+            }
+
+            @Nonnull
+            @Override
+            public String getName() {
+                return blockMenuPreset.getTitle();
+            }
+
+            @Override
+            public int getSize() {
+                return blockMenuPreset.getSize() != -1 ? blockMenuPreset.getSize() : blockMenuPreset.;
+            }
+
+            @Nonnull
+            @Override
+            public Map<Integer, ItemStack> getDefaultItemStacks() {
+                return null;
+            }
+
+            @Nullable
+            @Override
+            public Consumer<InventoryClickEvent> onClick(@Nonnull Location location, int slot) {
+                return null;
+            }
+
+            @Override
+            public boolean canOpen(@Nonnull Player player, @Nonnull Location location) {
+                return false;
+            }
+        };
+    }
+
     @Nonnull
-    public static BlockMenuPreset warpBlockMenuPreset(InventoryTemplate inventoryTemplate) {
+    public static BlockMenuPreset warpBlockMenuPreset(@Nonnull InventoryTemplate inventoryTemplate) {
         return new BlockMenuPreset(inventoryTemplate.getId(), inventoryTemplate.getName()) {
             @Override
             public void init() {

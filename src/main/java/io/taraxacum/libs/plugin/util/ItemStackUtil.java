@@ -1,8 +1,8 @@
 package io.taraxacum.libs.plugin.util;
 
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.nms.ItemNameAdapter;
-import io.taraxacum.libs.plugin.dto.ItemAmountWrapper;
-import io.taraxacum.libs.plugin.dto.ItemWrapper;
+import io.taraxacum.libs.plugin.is.ItemAmountWrapper;
+import io.taraxacum.libs.plugin.is.ItemWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

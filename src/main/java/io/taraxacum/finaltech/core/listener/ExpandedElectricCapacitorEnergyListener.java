@@ -5,7 +5,7 @@ import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.event.EnergyDepositEvent;
 import io.taraxacum.finaltech.core.event.EnergyWithdrawEvent;
 import io.taraxacum.finaltech.core.item.machine.electric.capacitor.expanded.AbstractExpandedElectricCapacitor;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.slimefun.util.LocationDataUtil;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;

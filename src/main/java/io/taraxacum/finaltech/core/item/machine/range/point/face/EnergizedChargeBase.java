@@ -9,7 +9,7 @@ import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.interfaces.RecipeItem;
 import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.slimefun.util.EnergyUtil;
 import io.taraxacum.libs.slimefun.util.LocationDataUtil;
 import org.bukkit.block.Block;
@@ -45,7 +45,7 @@ public class EnergizedChargeBase extends AbstractChargeBase implements RecipeIte
 
         LocationData tempLocationData = FinalTech.getLocationDataService().getLocationData(block.getLocation());
         if(tempLocationData != null) {
-            Inventory inventory = FinalTech.getLocationDataService().getInventory(tempLocationData);
+            Inventory inventory = FinalTech.getLocationDataService().getRawInventory(tempLocationData);
             if (inventory != null && !inventory.getViewers().isEmpty()) {
                 this.updateInv(inventory, this.statusSlot, this,
                         String.valueOf(storedEnergy),

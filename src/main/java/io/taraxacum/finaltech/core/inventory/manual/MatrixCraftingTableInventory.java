@@ -4,7 +4,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.enums.LogSourceType;
 import io.taraxacum.finaltech.core.item.machine.AbstractMachine;
-import io.taraxacum.libs.plugin.interfaces.LogicInventory;
+import io.taraxacum.libs.plugin.inventory.template.LogicInventory;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.plugin.util.ParticleUtil;

@@ -8,7 +8,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.item.usable.UsableSlimefunItem;
 import io.taraxacum.finaltech.util.PermissionUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
 import io.taraxacum.libs.slimefun.dto.SlimefunLocationData;
 import io.taraxacum.libs.slimefun.service.SlimefunLocationDataService;

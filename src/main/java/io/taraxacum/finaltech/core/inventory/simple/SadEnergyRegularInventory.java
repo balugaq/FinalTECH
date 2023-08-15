@@ -2,7 +2,7 @@ package io.taraxacum.finaltech.core.inventory.simple;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.taraxacum.finaltech.core.inventory.AbstractMachineInventory;
-import io.taraxacum.libs.plugin.interfaces.OpenFunctionInventory;
+import io.taraxacum.libs.plugin.inventory.template.OpenFunctionInventory;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;

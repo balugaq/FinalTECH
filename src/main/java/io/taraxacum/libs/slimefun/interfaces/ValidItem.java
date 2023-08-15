@@ -1,6 +1,6 @@
 package io.taraxacum.libs.slimefun.interfaces;
 
-import io.taraxacum.libs.plugin.dto.ItemWrapper;
+import io.taraxacum.libs.plugin.is.ItemWrapper;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;

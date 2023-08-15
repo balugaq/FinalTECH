@@ -1,7 +1,7 @@
 package io.taraxacum.libs.plugin.util;
 
-import io.taraxacum.libs.plugin.dto.ItemAmountWrapper;
-import io.taraxacum.libs.plugin.dto.ItemWrapper;
+import io.taraxacum.libs.plugin.is.ItemAmountWrapper;
+import io.taraxacum.libs.plugin.is.ItemWrapper;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.HumanEntity;

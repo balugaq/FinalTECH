@@ -16,7 +16,7 @@ import io.taraxacum.finaltech.core.inventory.cargo.AdvancedLocationTransferInven
 import io.taraxacum.finaltech.core.option.*;
 import io.taraxacum.finaltech.core.interfaces.RecipeItem;
 import io.taraxacum.finaltech.util.*;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
 import org.bukkit.Location;
@@ -89,7 +89,7 @@ public class AdvancedLocationTransfer extends AbstractCargo implements RecipeIte
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if(inventory == null) {
             return;
         }
@@ -167,7 +167,7 @@ public class AdvancedLocationTransfer extends AbstractCargo implements RecipeIte
     public void injectDigit(@Nonnull LocationData locationData, int digit) {
         CargoNumber.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, String.valueOf(digit));
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.digitInjectInventoryUpdater.accept(inventory, locationData);
         }
@@ -181,7 +181,7 @@ public class AdvancedLocationTransfer extends AbstractCargo implements RecipeIte
             CargoOrder.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, CargoOrder.VALUE_REVERSE);
         }
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.logicInjectInventoryUpdater.accept(inventory, locationData);
         }

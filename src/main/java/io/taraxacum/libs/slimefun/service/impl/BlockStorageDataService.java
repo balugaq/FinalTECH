@@ -1,9 +1,8 @@
 package io.taraxacum.libs.slimefun.service.impl;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.inventory.template.InventoryTemplate;
 import io.taraxacum.libs.slimefun.dto.LocationBlockStorageData;
-import io.taraxacum.libs.slimefun.dto.SlimefunLocationData;
 import io.taraxacum.libs.slimefun.service.SlimefunLocationDataService;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.api.BlockInfoConfig;
@@ -22,7 +21,7 @@ import java.util.Set;
 /**
  * @author Final_ROOT
  */
-public class BlockStorageDataService implements SlimefunLocationDataService {
+public class BlockStorageDataService implements SlimefunLocationDataService<LocationBlockStorageData> {
     private final Map<Location, Long> locationMap = new HashMap<>();
 
     // 100ms
@@ -37,8 +36,8 @@ public class BlockStorageDataService implements SlimefunLocationDataService {
 
     @Nullable
     @Override
-    public String getLocationData(@Nonnull LocationData locationData, @Nonnull String key) {
-        return ((LocationBlockStorageData) locationData).getConfig().getString(key);
+    public String getLocationData(@Nonnull LocationBlockStorageData locationData, @Nonnull String key) {
+        return locationData.getConfig().getString(key);
     }
 
     @Nonnull
@@ -55,8 +54,8 @@ public class BlockStorageDataService implements SlimefunLocationDataService {
 
     @Nonnull
     @Override
-    public Set<String> getKeys(@Nonnull LocationData locationData) {
-        Config config = ((LocationBlockStorageData) locationData).getConfig();
+    public Set<String> getKeys(@Nonnull LocationBlockStorageData locationData) {
+        Config config = locationData.getConfig();
         return config.getString("id") == null ? new HashSet<>() : config.getKeys();
     }
 
@@ -80,7 +79,7 @@ public class BlockStorageDataService implements SlimefunLocationDataService {
     }
 
     @Override
-    public void setLocationData(@Nonnull LocationData locationData, @Nonnull String key, @Nullable String value) {
+    public void setLocationData(@Nonnull LocationBlockStorageData locationData, @Nonnull String key, @Nullable String value) {
         if(value != null) {
             Long lastChangeTime = this.locationMap.computeIfAbsent(locationData.getLocation(), l -> 0L);
             long nowTime = System.currentTimeMillis();
@@ -88,16 +87,16 @@ public class BlockStorageDataService implements SlimefunLocationDataService {
                 BlockStorage.addBlockInfo(locationData.getLocation(), key, value);
                 this.locationMap.put(locationData.getLocation(), nowTime);
             } else {
-                ((LocationBlockStorageData) locationData).getConfig().setValue(key, value);
+                locationData.getConfig().setValue(key, value);
             }
         } else {
-            ((LocationBlockStorageData) locationData).getConfig().setValue(key, null);
+            locationData.getConfig().setValue(key, null);
         }
     }
 
     @Override
-    public void setLocationData(@Nonnull LocationData locationData) {
-        LocationBlockStorageData locationBlockStorageData = (LocationBlockStorageData) locationData;
+    public void setLocationData(@Nonnull LocationBlockStorageData locationData) {
+        LocationBlockStorageData locationBlockStorageData = locationData;
         BlockStorage.addBlockInfo(locationData.getLocation(), "id", locationBlockStorageData.getId());
         Config config = BlockStorage.getLocationInfo(locationData.getLocation());
         for(String key : locationBlockStorageData.getConfig().getKeys()) {
@@ -107,14 +106,19 @@ public class BlockStorageDataService implements SlimefunLocationDataService {
 
     @Nullable
     @Override
-    public Inventory getInventory(@Nonnull Location location) {
+    public Inventory getRawInventory(@Nonnull Location location) {
         BlockMenu blockMenu = BlockStorage.getInventory(location);
         return blockMenu == null ? null : blockMenu.toInventory();
     }
 
     @Nullable
     @Override
-    public Inventory getInventory(@Nonnull LocationData locationData) {
+    public InventoryTemplate getInventory(@Nonnull LocationBlockStorageData locationData) {
+        return null;
+    }
+
+    @Nullable
+    public Inventory getRawInventory(@Nonnull LocationBlockStorageData locationData) {
         BlockMenu blockMenu = BlockStorage.getInventory(locationData.getLocation());
         return blockMenu == null ? null : blockMenu.toInventory();
     }
@@ -200,12 +204,6 @@ public class BlockStorageDataService implements SlimefunLocationDataService {
         return SlimefunItem.getById(id);
     }
 
-    @Nonnull
-    @Override
-    public SlimefunItem getSlimefunItem(@Nonnull SlimefunLocationData locationData) {
-        return locationData.getSlimefunItem();
-    }
-
     @Nullable
     @Override
     public BlockMenu getBlockMenu(@Nonnull Location location) {
@@ -214,7 +212,7 @@ public class BlockStorageDataService implements SlimefunLocationDataService {
 
     @Nullable
     @Override
-    public BlockMenu getBlockMenu(@Nonnull SlimefunLocationData locationData) {
-        return BlockStorage.getInventory(locationData.getLocation());
+    public BlockMenu getBlockMenu(@Nonnull LocationBlockStorageData locationData) {
+        return null;
     }
 }

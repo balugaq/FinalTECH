@@ -13,7 +13,7 @@ import io.taraxacum.finaltech.core.item.machine.electric.capacitor.AbstractElect
 import io.taraxacum.finaltech.core.listener.ExpandedElectricCapacitorEnergyListener;
 import io.taraxacum.finaltech.util.ConstantTableUtil;
 import io.taraxacum.finaltech.util.RecipeUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.slimefun.util.EnergyUtil;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.Inventory;
@@ -54,7 +54,7 @@ public abstract class AbstractExpandedElectricCapacitor extends AbstractElectric
 
         this.setEnergy(locationData, allEnergy);
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null && !inventory.getViewers().isEmpty()) {
             this.updateInv(inventory, this.statusSlot, this, String.valueOf(energy), energyStackStr);
         }

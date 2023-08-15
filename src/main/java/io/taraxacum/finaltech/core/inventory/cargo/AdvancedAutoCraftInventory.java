@@ -4,7 +4,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.option.Icon;
 import io.taraxacum.finaltech.core.option.SlotSearchSize;
-import io.taraxacum.libs.plugin.dto.AdvancedMachineRecipe;
+import io.taraxacum.libs.plugin.recipe.AdvancedMachineRecipe;
 import org.bukkit.Location;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;

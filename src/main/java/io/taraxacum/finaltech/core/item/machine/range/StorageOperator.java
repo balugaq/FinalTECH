@@ -12,8 +12,8 @@ import io.taraxacum.finaltech.core.inventory.simple.StorageOperatorInventory;
 import io.taraxacum.finaltech.core.option.EnableOption;
 import io.taraxacum.finaltech.util.ConstantTableUtil;
 import io.taraxacum.finaltech.util.LocationUtil;
-import io.taraxacum.libs.plugin.dto.ItemWrapper;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.is.ItemWrapper;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.slimefun.service.SlimefunLocationDataService;
@@ -162,7 +162,7 @@ public abstract class StorageOperator extends AbstractRangeMachine implements Lo
             EnableOption.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, EnableOption.VALUE_FALSE);
         }
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.logicInjectInventoryUpdater.accept(inventory, locationData);
         }

@@ -2,7 +2,7 @@ package io.taraxacum.finaltech.core.operation;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.core.machines.MachineOperation;
-import io.taraxacum.libs.plugin.dto.ItemAmountWrapper;
+import io.taraxacum.libs.plugin.is.ItemAmountWrapper;
 
 import javax.annotation.Nonnull;
 import java.math.BigInteger;

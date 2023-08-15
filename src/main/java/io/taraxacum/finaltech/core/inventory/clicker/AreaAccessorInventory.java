@@ -3,17 +3,15 @@ package io.taraxacum.finaltech.core.inventory.clicker;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.item.machine.clicker.AbstractClickerMachine;
-import io.taraxacum.finaltech.core.item.machine.clicker.AreaAccessor;
 import io.taraxacum.finaltech.core.option.Icon;
 import io.taraxacum.finaltech.util.LocationUtil;
 import io.taraxacum.finaltech.util.MachineUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
-import io.taraxacum.libs.plugin.dto.SimpleVirtualInventory;
+import io.taraxacum.libs.plugin.ld.LocationData;
+import io.taraxacum.libs.plugin.inventory.SimpleVirtualInventory;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
 import io.taraxacum.libs.slimefun.dto.SlimefunLocationData;
 import io.taraxacum.libs.slimefun.service.SlimefunLocationDataService;
 import io.taraxacum.libs.slimefun.util.LocationDataUtil;
-import io.taraxacum.libs.slimefun.util.SfItemUtil;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -89,7 +87,7 @@ public class AreaAccessorInventory extends AbstractClickerInventory {
                 for (int z = minZ; z <= maxZ; z++) {
                     tempLocation.setZ(z);
                     if (tempLocation.getChunk().isLoaded()
-                            && FinalTech.getLocationDataService().getInventory(tempLocation) != null
+                            && FinalTech.getLocationDataService().getRawInventory(tempLocation) != null
                             && FinalTech.getLocationDataService().getLocationData(tempLocation) != null) {
                         int distance = Math.abs(tempLocation.getBlockX() - location.getBlockX())
                                 + Math.abs(tempLocation.getBlockY() - location.getBlockY())
@@ -136,7 +134,7 @@ public class AreaAccessorInventory extends AbstractClickerInventory {
                         // BlockMenu may be updated after the menu generated.
                         LocationData tempLocationData = FinalTech.getLocationDataService().getLocationData(finalLocation);
                         if (tempLocationData != null
-                                && FinalTech.getLocationDataService().getInventory(tempLocationData) != null
+                                && FinalTech.getLocationDataService().getRawInventory(tempLocationData) != null
                                 && blockMenu.canOpen(finalLocation.getBlock(), player)) {
                             JavaPlugin javaPlugin = this.slimefunItem.getAddon().getJavaPlugin();
                             javaPlugin.getServer().getScheduler().runTaskAsynchronously(javaPlugin, () -> ParticleUtil.drawCubeByBlock(javaPlugin, Particle.WAX_OFF, 0, blockMenu.getBlock()));

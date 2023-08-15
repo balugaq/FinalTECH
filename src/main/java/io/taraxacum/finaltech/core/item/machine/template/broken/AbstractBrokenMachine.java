@@ -10,14 +10,13 @@ import io.taraxacum.finaltech.core.interfaces.DigitInjectableItem;
 import io.taraxacum.finaltech.core.interfaces.LogicInjectableItem;
 import io.taraxacum.finaltech.core.interfaces.RecipeItem;
 import io.taraxacum.finaltech.core.inventory.AbstractMachineInventory;
-import io.taraxacum.finaltech.core.inventory.limit.lock.BasicMachineInventory;
 import io.taraxacum.finaltech.core.inventory.limit.lock.BrokenMachineInventory;
 import io.taraxacum.finaltech.core.item.machine.AbstractMachine;
 import io.taraxacum.finaltech.core.option.MachineMaxStack;
 import io.taraxacum.finaltech.core.option.MachineRecipeLock;
 import io.taraxacum.finaltech.util.MachineUtil;
-import io.taraxacum.libs.plugin.dto.AdvancedMachineRecipe;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.recipe.AdvancedMachineRecipe;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.slimefun.dto.AdvancedCraft;
 import io.taraxacum.libs.slimefun.dto.MachineRecipeFactory;
@@ -70,7 +69,7 @@ public abstract class AbstractBrokenMachine extends AbstractMachine implements R
 
     @Override
     protected final void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if(inventory == null) {
             return;
         }
@@ -120,7 +119,7 @@ public abstract class AbstractBrokenMachine extends AbstractMachine implements R
     public void injectDigit(@Nonnull LocationData locationData, int digit) {
         MachineMaxStack.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, String.valueOf(digit));
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.digitInjectInventoryUpdater.accept(inventory, locationData);
         }
@@ -134,7 +133,7 @@ public abstract class AbstractBrokenMachine extends AbstractMachine implements R
             MachineRecipeLock.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, MachineRecipeLock.VALUE_LOCK_OFF);
         }
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.logicInjectInventoryUpdater.accept(inventory, locationData);
         }

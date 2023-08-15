@@ -2,8 +2,7 @@ package io.taraxacum.finaltech.core.inventory.manual;
 
 import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.item.machine.manual.process.AbstractProcessMachine;
-import io.taraxacum.finaltech.util.ConfigUtil;
-import io.taraxacum.libs.plugin.interfaces.LogicInventory;
+import io.taraxacum.libs.plugin.inventory.template.LogicInventory;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;

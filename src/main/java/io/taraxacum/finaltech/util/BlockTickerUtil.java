@@ -5,10 +5,10 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.MachineProcessHolder;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import io.taraxacum.common.api.RunnableLockFactory;
 import io.taraxacum.finaltech.FinalTech;
-import io.taraxacum.libs.plugin.interfaces.LocationDataService;
+import io.taraxacum.libs.plugin.ld.LocationDataService;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.slimefun.dto.SlimefunLocationData;
 import io.taraxacum.libs.slimefun.service.SlimefunLocationDataService;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -175,7 +175,7 @@ public class BlockTickerUtil {
                                 world.dropItem(locationData.getLocation(), ItemStackUtil.cloneItem(slimefunItem.getItem(), 1));
                             }
                             if(dropSlots.length > 0) {
-                                Inventory inventory = FinalTech.getLocationDataService().getInventory(tempLocationData);
+                                Inventory inventory = FinalTech.getLocationDataService().getRawInventory(tempLocationData);
                                 if(inventory != null) {
                                     InventoryUtil.dropItems(inventory, location, dropSlots);
                                 }

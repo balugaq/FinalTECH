@@ -8,7 +8,7 @@ import io.taraxacum.finaltech.FinalTech;
 import io.taraxacum.finaltech.core.inventory.common.SlimefunItemBigRecipeInventory;
 import io.taraxacum.finaltech.core.inventory.common.SlimefunItemSmallRecipeInventory;
 import io.taraxacum.finaltech.util.MachineUtil;
-import io.taraxacum.libs.plugin.dto.SimpleVirtualInventory;
+import io.taraxacum.libs.plugin.inventory.SimpleVirtualInventory;
 import io.taraxacum.libs.plugin.service.InventoryHistoryService;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import org.bukkit.NamespacedKey;

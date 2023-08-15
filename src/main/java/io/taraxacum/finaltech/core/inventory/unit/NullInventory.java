@@ -2,7 +2,7 @@ package io.taraxacum.finaltech.core.inventory.unit;
 
 import io.taraxacum.finaltech.core.inventory.AbstractOrdinaryMachineInventory;
 import io.taraxacum.finaltech.core.item.machine.AbstractMachine;
-import io.taraxacum.libs.plugin.interfaces.CloseFunctionInventory;
+import io.taraxacum.libs.plugin.inventory.template.CloseFunctionInventory;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

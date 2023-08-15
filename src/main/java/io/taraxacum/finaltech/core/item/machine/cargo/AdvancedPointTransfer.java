@@ -20,7 +20,7 @@ import io.taraxacum.finaltech.core.interfaces.RecipeItem;
 import io.taraxacum.finaltech.setup.FinalTechItemStacks;
 import io.taraxacum.finaltech.util.*;
 import io.taraxacum.libs.plugin.dto.InvWithSlots;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.ParticleUtil;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -103,7 +103,7 @@ public class AdvancedPointTransfer extends AbstractCargo implements RecipeItem, 
 
     @Override
     public void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData)  {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if(inventory == null) {
             return;
         }
@@ -178,7 +178,7 @@ public class AdvancedPointTransfer extends AbstractCargo implements RecipeItem, 
                     String cargoMode = CargoMode.OPTION.getOrDefaultValue(FinalTech.getLocationDataService(), locationData);
 
                     InvWithSlots inputMap;
-                    if (FinalTech.getLocationDataService().getInventory(inputBlock.getLocation()) != null) {
+                    if (FinalTech.getLocationDataService().getRawInventory(inputBlock.getLocation()) != null) {
                         if (CargoMode.VALUE_OUTPUT_MAIN.equals(cargoMode)) {
                             inputMap = null;
                         } else {
@@ -191,7 +191,7 @@ public class AdvancedPointTransfer extends AbstractCargo implements RecipeItem, 
                     }
 
                     InvWithSlots outputMap;
-                    if (FinalTech.getLocationDataService().getInventory(outputBlock.getLocation()) != null) {
+                    if (FinalTech.getLocationDataService().getRawInventory(outputBlock.getLocation()) != null) {
                         if (CargoMode.VALUE_INPUT_MAIN.equals(cargoMode)) {
                             outputMap = null;
                         } else {
@@ -237,7 +237,7 @@ public class AdvancedPointTransfer extends AbstractCargo implements RecipeItem, 
         Set<Location> locationSet = new HashSet<>();
         locationSet.add(begin.getLocation());
         while(true) {
-            if (FinalTech.getLocationDataService().getInventory(result.getLocation()) != null && !result.getType().equals(FinalTechItemStacks.POINT_TRANSFER.getType())) {
+            if (FinalTech.getLocationDataService().getRawInventory(result.getLocation()) != null && !result.getType().equals(FinalTechItemStacks.POINT_TRANSFER.getType())) {
                 particleLocationList.add(LocationUtil.getCenterLocation(result));
                 break;
             }
@@ -288,7 +288,7 @@ public class AdvancedPointTransfer extends AbstractCargo implements RecipeItem, 
     public void injectDigit(@Nonnull LocationData locationData, int digit) {
         CargoNumber.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, String.valueOf(digit));
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.digitInjectInventoryUpdater.accept(inventory, locationData);
         }
@@ -302,7 +302,7 @@ public class AdvancedPointTransfer extends AbstractCargo implements RecipeItem, 
             CargoFilter.OPTION.setOrClearValue(FinalTech.getLocationDataService(), locationData, CargoFilter.VALUE_WHITE);
         }
 
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory != null) {
             this.logicInjectInventoryUpdater.accept(inventory, locationData);
         }

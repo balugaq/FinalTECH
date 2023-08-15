@@ -11,9 +11,9 @@ import io.taraxacum.finaltech.core.inventory.simple.AdvancedCraftStorageInventor
 import io.taraxacum.finaltech.core.operation.CraftStorageOperation;
 import io.taraxacum.finaltech.util.ConfigUtil;
 import io.taraxacum.finaltech.util.MachineUtil;
-import io.taraxacum.libs.plugin.dto.AdvancedMachineRecipe;
-import io.taraxacum.libs.plugin.dto.ItemAmountWrapper;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.recipe.AdvancedMachineRecipe;
+import io.taraxacum.libs.plugin.is.ItemAmountWrapper;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import io.taraxacum.libs.plugin.util.InventoryUtil;
 import io.taraxacum.libs.plugin.util.ItemStackUtil;
 import io.taraxacum.libs.slimefun.dto.MachineRecipeFactory;
@@ -111,7 +111,7 @@ public class AdvancedCraftStorage extends CraftStorage {
             }
 
             List<ItemAmountWrapper> recipeList = ItemStackUtil.calItemListWithAmount(slimefunItem.getRecipe());
-            Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+            Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
             for(i = 0; i < this.parseSlot.length; i++) {
                 int slot = this.parseSlot[i];
                 ItemStack itemStack = inventory.getItem(slot);

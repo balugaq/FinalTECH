@@ -4,7 +4,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import io.taraxacum.finaltech.core.option.Icon;
-import io.taraxacum.libs.plugin.interfaces.InventoryTemplate;
+import io.taraxacum.libs.plugin.inventory.template.InventoryTemplate;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -69,7 +69,7 @@ public abstract class AbstractMachineInventory implements InventoryTemplate {
     }
 
     @Override
-    public final AbstractMachineInventory init() {
+    public final @Nonnull InventoryTemplate init() {
         if(!this.init) {
             for(int slot : this.getBorder()) {
                 this.defaultItemStack.put(slot, Icon.BORDER_ICON);

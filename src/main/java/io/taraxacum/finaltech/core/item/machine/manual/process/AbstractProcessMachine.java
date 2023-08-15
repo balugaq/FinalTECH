@@ -9,7 +9,7 @@ import io.taraxacum.finaltech.core.inventory.manual.AbstractManualMachineInvento
 import io.taraxacum.finaltech.core.inventory.manual.ProcessMachineInventory;
 import io.taraxacum.finaltech.core.item.machine.manual.AbstractManualMachine;
 import io.taraxacum.finaltech.util.RecipeUtil;
-import io.taraxacum.libs.plugin.dto.LocationData;
+import io.taraxacum.libs.plugin.ld.LocationData;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public abstract class AbstractProcessMachine extends AbstractManualMachine imple
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull SlimefunItem slimefunItem, @Nonnull LocationData locationData) {
-        Inventory inventory = FinalTech.getLocationDataService().getInventory(locationData);
+        Inventory inventory = FinalTech.getLocationDataService().getRawInventory(locationData);
         if (inventory == null) {
             return;
         }
